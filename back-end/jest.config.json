@@ -1,0 +1,26 @@
+{
+  "clearMocks": false,
+  "collectCoverage": true,
+  "coverageDirectory": "./coverage",
+  "coverageProvider": "v8",
+
+  "displayName": "Back-end",
+
+  "modulePaths": [
+    "./sources/"
+  ],
+  "roots": [
+    "./__mocks__/",
+    "./__tests__/",
+    "./sources/"
+  ],
+
+  "testMatch": [
+    "**/*.test.ts"
+  ],
+  "transform": {
+    "^.+\\.ts?$": "ts-jest"
+  },
+
+  "verbose": true
+}
