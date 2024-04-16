@@ -10,7 +10,7 @@ export interface Navigation {
    *
    * [segment]: https://datatracker.ietf.org/doc/html/rfc3986#section-3.3
    */
-  page: string,
+  page: "index" | (string & {}),
 
   /**
    * All the query string parameters for a given page.
