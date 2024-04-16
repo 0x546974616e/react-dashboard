@@ -37,5 +37,5 @@ export const Ajv = new _Ajv({
   coerceTypes: "array",
 });
 
-addFormats(Ajv);
+addFormats(Ajv, [ "date-time", "date" ]);
 addKeywords(Ajv, [ "transform" ]);

@@ -1,19 +1,32 @@
-import { Text } from "./components";
-import { LogUpdates } from "./utils";
-
-import { Test } from "back-end";
+import { NavigationProvider } from "./contexts";
+import { Navigation } from "./navigation";
+import { Pages } from "./types";
 
 import "./theme";
 
+const pages: Pages = [
+  {
+    path: "home",
+    i18nLabel: "Page_Home",
+    content: () => <div>Dada</div>
+  },
+  {
+    path: "notifications",
+    i18nLabel: "Page_Notifications",
+    content: () => <div>Dada</div>
+  },
+  {
+    path: "settings",
+    i18nLabel: "Page_Settings",
+    content: () => <div>Dada</div>
+  },
+];
+
 export function Main(): JSX.Element {
-  const test: Test = { dada: "dada", fafa: 1234 };
-  console.log({ test });
 
   return (
-    <div>
-      <LogUpdates id="main">
-        <Text>Dada</Text>
-      </LogUpdates>
-    </div>
+    <NavigationProvider>
+      <Navigation pages={pages}/>
+    </NavigationProvider>
   );
 }
