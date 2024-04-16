@@ -1,5 +1,5 @@
 import { Home, Notifications, Settings } from "./screens";
-import { NavigationProvider } from "./contexts";
+import { DimensionsProvider, NavigationProvider } from "./contexts";
 import { Navigation } from "./navigation";
 import { Pages } from "./types";
 import { LogUpdates } from "./utils";
@@ -30,7 +30,9 @@ export function Main(): JSX.Element {
   return (
     <LogUpdates id="main">
       <NavigationProvider>
-        <Navigation pages={pages}/>
+        <DimensionsProvider>
+          <Navigation pages={pages}/>
+        </DimensionsProvider>
       </NavigationProvider>
     </LogUpdates>
   );

@@ -3,7 +3,11 @@ import { createElement } from "react";
 import "./Text.scss";
 
 export interface TextPros {
-  as?: "p" | "span",
+  as?: (
+    | `h${1 | 2 | 3 | 4 | 5 | 6}`
+    | "span"
+    | "p"
+  ),
   children?: string,
 }
 

@@ -28,7 +28,7 @@
     "module": "esnext", // before: NodeNext
     "moduleResolution": "node", // before: NodeNext
     "resolveJsonModule": true,
-    "rootDir": "./",
+    "rootDir": "./src", // Or "/"?
 
     /// Type Checking
     "allowUnreachableCode": false,

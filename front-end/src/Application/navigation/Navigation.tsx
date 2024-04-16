@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useNavigation } from "Application/contexts";
+import { useNavigation } from "Application/hooks";
 import { Language } from "Application/locales";
 import { Pages } from "Application/types";
 
@@ -47,7 +47,7 @@ export function Navigation(
   );
 
   return (
-    <div>
+    <div id="navigation">
       <nav>
         <ul>
           {pages.map(
@@ -89,7 +89,7 @@ export function Navigation(
       <pre>
         {JSON.stringify(navigation, null, 2)}
       </pre>
-      <div>
+      <div id="pages">
         {pages.map(
           ({ path, content }) => (
             <LazyLoad

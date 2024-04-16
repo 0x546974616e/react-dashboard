@@ -5,12 +5,7 @@ import { Text } from "./Text";
 test(
   "Renders react text.",
   function() {
-    render(
-      <Text as={"span"}>
-        Dada
-      </Text>
-    );
-
+    render(<Text as={"span"}>Dada</Text>);
     const text = screen.getByText(/Dada/i);
     expect(text).toBeInTheDocument();
   }

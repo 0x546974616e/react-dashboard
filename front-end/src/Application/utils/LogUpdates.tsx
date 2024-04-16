@@ -1,4 +1,10 @@
-import { ReactNode, createElement, useEffect, useMemo } from "react";
+import {
+  Fragment,
+  ReactNode,
+  createElement,
+  useEffect,
+  useMemo,
+} from "react";
 
 /**
  * @return The assigned ID.
@@ -47,13 +53,19 @@ export function LogUpdates<As extends string>(
 {
   const id = useLogUpdates(props);
 
-  return (
-    createElement(
-      props.as ?? "div", {
+  if (props.as) {
+    return createElement(
+      props.as, {
         children: props.children,
         "data-log-id": id,
         key: id,
       },
-    )
+    );
+  }
+
+  return (
+    <Fragment key={id}>
+      {props.children}
+    </Fragment>
   );
 }

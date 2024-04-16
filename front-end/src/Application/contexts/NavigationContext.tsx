@@ -1,6 +1,5 @@
 import {
   createContext,
-  useContext,
   useEffect,
   useMemo,
   useState,
@@ -8,21 +7,17 @@ import {
 
 import { Navigation } from "Application/types";
 
-interface NavigationContext {
+export interface NavigationContext {
   navigation: Navigation | null,
   setNavigation(navigation: Navigation | string): void,
 }
 
-const NavigationContext = (
+export const NavigationContext = (
   createContext<NavigationContext>({
     setNavigation: () => {},
     navigation: null,
   })
 );
-
-export function useNavigation(): NavigationContext {
-  return useContext(NavigationContext);
-}
 
 export function NavigationProvider(
     props: { children?: React.ReactNode }
