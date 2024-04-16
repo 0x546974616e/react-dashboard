@@ -35,6 +35,7 @@
     "rules": {
       "@typescript-eslint/consistent-type-assertions": "off",
       "@typescript-eslint/no-redeclare": "off",
+      "react-hooks/exhaustive-deps": "off",
       "no-cond-assign": "off",
       "eqeqeq": "off"
     }

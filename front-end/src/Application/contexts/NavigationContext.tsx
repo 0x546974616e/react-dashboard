@@ -29,7 +29,9 @@ export function NavigationProvider(
   ): React.ReactElement
 {
   const [ navigation, setNavigation ] = (
-    useState<Navigation | null>(null)
+    useState<Navigation | null>(
+      useMemo(Navigation.retrieveState, [])
+    )
   );
 
   useEffect(
@@ -39,7 +41,6 @@ export function NavigationProvider(
         setNavigation(navigation);
       }
 
-      urlChanged();
       window.addEventListener("popstate", urlChanged);
       return () => window.removeEventListener("popstate", urlChanged);
     }, []

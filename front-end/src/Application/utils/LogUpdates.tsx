@@ -50,10 +50,10 @@ export function LogUpdates<As extends string>(
   return (
     createElement(
       props.as ?? "div", {
+        children: props.children,
         "data-log-id": id,
-         key: id,
+        key: id,
       },
-      props.children
     )
   );
 }

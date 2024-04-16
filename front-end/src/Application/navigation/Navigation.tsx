@@ -1,7 +1,11 @@
-import { useNavigation } from "Application/contexts";
-import { Pages } from "Application/types";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { useNavigation } from "Application/contexts";
+import { Language } from "Application/locales";
+import { Pages } from "Application/types";
+
+import { LazyLoad } from "./LazyLoad";
 
 export function Navigation(
     { pages }: { pages: Pages }
@@ -13,8 +17,10 @@ export function Navigation(
   const page = useMemo(
     () => (
       pages.find(
-        ({ path }) => (
-          path.trim().toLowerCase() == navigation?.page
+        ({ path, index }) => (
+          // First check if the page can be the "index" one.
+          ((!navigation || navigation.page == "index") && index)
+          || path.trim().toLowerCase() == navigation?.page
         )
       )
     ),
@@ -68,11 +74,39 @@ export function Navigation(
               </li>
             )
           )}
+          {[ Language.French, Language.English ].map(
+            (language) => (
+              <li
+                key={language.id}
+                onClick={() => language.set()}
+              >
+                {language.id}
+              </li>
+            )
+          )}
         </ul>
       </nav>
       <pre>
         {JSON.stringify(navigation, null, 2)}
       </pre>
+      <div>
+        {pages.map(
+          ({ path, content }) => (
+            <LazyLoad
+              key={path}
+              content={content}
+              value={page?.path}
+              when={path}
+            />
+          )
+        )}
+
+        <LazyLoad
+          content={() => <div>Error</div>}
+          value={page?.path}
+          when={undefined}
+        />
+      </div>
     </div>
   )
 }
