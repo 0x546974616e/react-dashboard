@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 
-import { Navigation } from "Application/types";
+import { Navigation } from "./Navigation";
 
 export interface NavigationContext {
   navigation: Navigation | null,

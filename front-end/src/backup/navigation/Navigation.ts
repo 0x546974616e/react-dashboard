@@ -1,4 +1,4 @@
-import { NavigationSchema } from "Application/schemas";
+import { NavigationSchema } from "./NavigationSchema";
 import { isEmpty } from "Application/utils";
 
 export interface Navigation {

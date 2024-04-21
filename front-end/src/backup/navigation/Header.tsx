@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 
-import { Language } from "Application/locales";
-import { Page, Pages } from "Application/types";
-import { useNavigation } from "Application/hooks";
+import { useNavigation } from "./useNavigation";
+import { Page, Pages } from "./Page";
 
 import "./Header.scss";
 
@@ -50,16 +49,18 @@ export function Header(
               </li>
             )
           )}
-          {[ Language.French, Language.English ].map(
-            (language) => (
-              <li
-                key={language.id}
-                onClick={() => language.set()}
-              >
-                {language.id}
-              </li>
-            )
-          )}
+          {/*
+            {[ Language.French, Language.English ].map(
+              (language) => (
+                <li
+                  key={language.id}
+                  onClick={() => language.set()}
+                >
+                  {language.id}
+                </li>
+              )
+            )}
+          */}
         </ul>
       </nav>
     </header>

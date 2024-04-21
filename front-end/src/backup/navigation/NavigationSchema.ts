@@ -1,5 +1,5 @@
-import { Ajv, type JSONSchemaType } from "./Ajv";
-import { Navigation } from "Application/types";
+import { Ajv, type JSONSchemaType } from "Application/schemas";
+import { Navigation } from "./Navigation";
 
 export const NavigationSchema = (
   Ajv.compile(
