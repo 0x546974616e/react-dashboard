@@ -2,17 +2,19 @@ import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useNavigation } from "Application/hooks";
-import { Language } from "Application/locales";
 import { Pages } from "Application/types";
 
 import { LazyLoad } from "./LazyLoad";
+import { Header } from "./Header";
+
+import "./Navigation.scss";
 
 export function Navigation(
     { pages }: { pages: Pages }
   ): JSX.Element
 {
   const { t } = useTranslation();
-  const { navigation, setNavigation } = useNavigation();
+  const { navigation } = useNavigation();
 
   const page = useMemo(
     () => (
@@ -48,47 +50,7 @@ export function Navigation(
 
   return (
     <div id="navigation">
-      <nav>
-        <ul>
-          {pages.map(
-            ({ path, i18nLabel }) => (
-              <li key={path}>
-                <a
-                  href={`/${path}`}
-                  onClick={
-                    (event) => {
-                      // Prevent the link from being opened to stay on the SPA but
-                      // keep the href as a failover/fallback if the `history`
-                      // API is not supported by the navigator.
-                      event.preventDefault();
-                      setNavigation({
-                        parameters: {},
-                        page: path,
-                      });
-                    }
-                  }
-                >
-                  {t(i18nLabel)}
-                </a>
-                {path == page?.path ? "CURRENT" : ""}
-              </li>
-            )
-          )}
-          {[ Language.French, Language.English ].map(
-            (language) => (
-              <li
-                key={language.id}
-                onClick={() => language.set()}
-              >
-                {language.id}
-              </li>
-            )
-          )}
-        </ul>
-      </nav>
-      <pre>
-        {JSON.stringify(navigation, null, 2)}
-      </pre>
+      {/* <Header pages={pages} page={page}/> */}
       <div id="pages">
         {pages.map(
           ({ path, content }) => (

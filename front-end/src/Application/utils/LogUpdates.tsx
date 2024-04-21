@@ -4,15 +4,22 @@ import {
   createElement,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 
 /**
  * @return The assigned ID.
  */
 export function useLogUpdates(
-    props: { id?: string }
+    props: {
+      id?: string,
+      disabled?: boolean,
+    }
   ): string
 {
+  const disabled = useRef(props.disabled);
+  disabled.current = props.disabled;
+
   const id = useMemo(
     () => {
       const id = props.id?.trim();
@@ -24,8 +31,14 @@ export function useLogUpdates(
 
   useEffect(
     () => {
-      console.info("MOUNT", id);
-      return () => console.info("UNMOUNT", id);
+      if (!disabled.current) {
+        console.info("MOUNT", id);
+      }
+      return () => {
+        if (!disabled.current) {
+          console.info("UNMOUNT", id);
+        }
+      };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [ /* ID is used only once. */ ]
@@ -33,7 +46,9 @@ export function useLogUpdates(
 
   useEffect(
     () => {
-      console.info("UPDATE", id);
+      if (!disabled.current) {
+        console.info("UPDATE", id);
+      }
     }
   );
 
@@ -48,6 +63,7 @@ export function LogUpdates<As extends string>(
       id?: string,
       as?: Lowercase<As>,
       children?: ReactNode,
+      disabled?: boolean,
     }
   ): JSX.Element
 {
