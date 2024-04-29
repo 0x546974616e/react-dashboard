@@ -1,1 +1,1 @@
-export * from "./_Chart";
+export * from "./Chart";
