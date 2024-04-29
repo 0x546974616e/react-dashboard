@@ -3,7 +3,9 @@ import { ChartContext } from "./ChartContext";
 
 export interface ChartProps {
   children?: ReactNode,
-  onMove?(vx: number, vy: number): void,
+  onMouseMove?(pointer: { vx: number, vy: number }): void,
+  onMouseDown?(pointer: { vx: number, vy: number }): void,
+  onMouseUp?(pointer: { vx: number, vy: number }): void,
   width: number | number,
   height: number | number,
   viewBoxWidth: number,
@@ -20,7 +22,9 @@ const _Chart = memo(Svg);
 
 function Svg(
     { children,
-      onMove,
+      onMouseMove,
+      onMouseDown,
+      onMouseUp,
       width,
       height,
       viewBoxWidth,
@@ -34,53 +38,73 @@ function Svg(
 
   const pointer = useRef<number | null>(null);
 
-  const onPointerMove = useCallback(
+  const normalizeToViewBox = useCallback(
     (event: PointerEvent<SVGSVGElement>) => {
-      if (event.pointerId == pointer.current && onMove) {
-        const { top, left } = event.currentTarget.getBoundingClientRect();
+      const { top, left } = event.currentTarget.getBoundingClientRect();
 
-        const cx = event.clientX - left;
-        const cy = event.clientY - top;
+      const cx = event.clientX - left;
+      const cy = event.clientY - top;
 
-        const sx = clamp(cx, inset!, width - inset!) - inset!;
-        const sy = clamp(cy, inset!, height - inset!) - inset!;
+      const sx = clamp(cx, inset!, width - inset!) - inset!;
+      const sy = clamp(cy, inset!, height - inset!) - inset!;
 
-        const vx = sx / (width - 2 * inset!) * viewBoxWidth;
-        const vy = sy / (height - 2 * inset!) * viewBoxHeight;
+      const vx = sx / (width - 2 * inset!) * viewBoxWidth;
+      const vy = sy / (height - 2 * inset!) * viewBoxHeight;
 
-        onMove(vx, vy);
-      }
+      return { vx, vy };
     }, [
       width,
       height,
       viewBoxWidth,
       viewBoxHeight,
-      onMove,
+      inset,
     ]
   );
 
   const onPointerDown = useCallback(
     (event: PointerEvent<SVGSVGElement>) => {
-      if (pointer.current != null) {
-        event.currentTarget.releasePointerCapture(pointer.current);
+      event.preventDefault();
+      event.currentTarget.classList.remove("touch-pan-y", "touch-pinch-zoom");
+
+      if (pointer.current == null || event.pointerId == pointer.current) {
+        event.currentTarget.setPointerCapture(pointer.current = event.pointerId);
+
+        if (onMouseDown && event.pointerType != "touch") {
+          onMouseDown(normalizeToViewBox(event));
+        }
       }
-
-      event.currentTarget.setPointerCapture(
-        pointer.current = event.pointerId
-      );
-
-      onPointerMove(event);
     },
-    [ onPointerMove ]
+    [ normalizeToViewBox ]
   );
 
   const onPointerUp = useCallback(
     (event: PointerEvent<SVGSVGElement>) => {
+      event.preventDefault();
+      event.currentTarget.classList.add("touch-pan-y", "touch-pinch-zoom");
+
       if (event.pointerId == pointer.current) {
-        event.currentTarget.releasePointerCapture(pointer.current);
-        pointer.current = null;
+        if (event.currentTarget.hasPointerCapture(pointer.current)) {
+          event.currentTarget.releasePointerCapture(pointer.current);
+          pointer.current = null;
+        }
+
+        if (onMouseUp) {
+          onMouseUp(normalizeToViewBox(event));
+        }
       }
-    }, []
+    },
+    [ normalizeToViewBox ]
+  );
+
+  const onPointerMove = useCallback(
+    (event: PointerEvent<SVGSVGElement>) => {
+      event.preventDefault();
+
+      if (event.pointerId == pointer.current && onMouseMove) {
+        onMouseMove(normalizeToViewBox(event));
+      }
+    },
+    [ normalizeToViewBox ]
   );
 
   return (
@@ -108,11 +132,12 @@ function Svg(
         height={height}
         viewBox={`0 0 ${width} ${height}`}
         onPointerUp={onPointerUp}
-        onPointerLeave={onPointerUp}
-        onPointerEnter={onPointerUp}
+        // onPointerLeave={onPointerUp}
+        // onPointerEnter={onPointerUp}
         onPointerCancel={onPointerUp}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
+        className={"select-none touch-pan-y touch-pinch-zoom"}
       >
         {debug && (
           <g id="debug-rect">

@@ -21,15 +21,15 @@ export function Dada(): JSX.Element {
   const height = clamp(screenHeight / 2, 200, 600);
   const [ width, setWidth ] = useState(0);
 
-  const [ p, setP ] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
-
   const vw = 130;
   const vh = 250;
   const stroke = 20;
 
+  const [ p, setP ] = useState<{ x: number, y: number }>({ x: vw * 0.75, y: 0 });
+
   return (
-    <div className="p-4 bg-stone-50 rounded-md hover:bg-stone-100 shadow">
-      <div className="p-4 bg-white rounded-lg">
+    <div className="m-4 p-4 bg-stone-50 rounded-md hover:bg-stone-100 shadow">
+      <div className="p-2 bg-white rounded-lg">
         <div ref={(ref) => setWidth(ref?.getBoundingClientRect().width ?? 0)}>
           <Chart
             width={width}
@@ -37,8 +37,10 @@ export function Dada(): JSX.Element {
             viewBoxWidth={vw}
             viewBoxHeight={vh}
             inset={stroke / 2}
-            onMove={(vx, vy) => setP({ x: vx, y: vy })}
-            debug
+            onMouseMove={({ vx: x, vy: y }) => setP({ x, y })}
+            onMouseDown={({ vx: x, vy: y }) => setP({ x, y })}
+            onMouseUp={({ vy: y }) => setP({ x: vw * 0.75, y })}
+            // debug
           >
             <Chart.Line
               x1={vw * 0.25} y1={vh * 0.75}
@@ -63,6 +65,13 @@ export function Dada(): JSX.Element {
             >
               dada dadada
             </Chart.Text>
+            <Chart.Line
+              x1={vw * 0.75} y1={0}
+              x2={vw * 0.75} y2={vh}
+              stroke={"gray"}
+              strokeWidth={stroke / 3}
+              // strokeLinecap={"round"}
+            />
             <Chart.Line
               x1={p.x} y1={0}
               x2={p.x} y2={vh}
@@ -89,6 +98,7 @@ export function Dada(): JSX.Element {
           </Chart>
         </div>
       </div>
+      {[...Array(50)].map((_, i) => <p key={i}>{i}</p>)}
     </div>
   );
 }
