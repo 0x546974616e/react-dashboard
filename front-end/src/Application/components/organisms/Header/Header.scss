@@ -1,0 +1,13 @@
+
+#header {
+  border: 1px solid black;
+
+  li {
+    padding: 5px;
+    display: inline-block;
+
+    a.active {
+      background-color: red;
+    }
+  }
+}

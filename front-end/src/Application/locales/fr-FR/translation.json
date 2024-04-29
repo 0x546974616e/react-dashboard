@@ -1,8 +1,16 @@
 {
+  "kpi": {
+    "feature": {
+      "graph": "Voir l'évolution du KPI",
+      "ranking": "Voir le classement du KPI",
+      "info": "Voir la description du KPI"
+    }
+  },
+
   "//": "---- PAGE ----",
-  "Page_Home": "Accueil",
-  "Page_Notifications": "Notifications",
-  "Page_Settings": "Paramètres",
+  "page.home": "Accueil",
+  "page.notifications": "Notifications",
+  "page.settings": "Paramètres",
 
   "//": "---- EOF ----"
 }

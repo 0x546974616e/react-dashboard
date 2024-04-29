@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   margin: 0;
@@ -30,4 +33,18 @@ code {
   --tr-space-small: 5px;
   --tr-space-medium: 7px;
   --tr-space-large: 9px;
+}
+
+.margin-safe {
+  margin-top: env(safe-area-inset-top);
+  margin-bottom: env(safe-area-inset-bottom);
+  margin-right: env(safe-area-inset-right);
+  margin-left: env(safe-area-inset-left);
+}
+
+.padding-safe {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-right: env(safe-area-inset-right);
+  padding-left: env(safe-area-inset-left);
 }

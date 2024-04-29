@@ -1,8 +1,16 @@
 {
+  "kpi": {
+    "feature": {
+      "graph": "See KPI evolution",
+      "ranking": "See KPI ranking",
+      "info": "See KPI description"
+    }
+  },
+
   "//": "---- PAGE ----",
-  "Page_Home": "Home",
-  "Page_Notifications": "Notifications",
-  "Page_Settings": "Settings",
+  "page.home": "Home",
+  "page.notifications": "Notifications",
+  "page.settings": "Settings",
 
   "//": "---- EOF ----"
 }

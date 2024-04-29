@@ -73,8 +73,8 @@ export function LogUpdates<As extends string>(
     return createElement(
       props.as, {
         children: props.children,
-        "data-log-id": id,
         key: id,
+        id,
       },
     );
   }
