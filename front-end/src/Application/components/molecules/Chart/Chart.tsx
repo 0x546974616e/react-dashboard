@@ -1,4 +1,14 @@
-import { PointerEvent, ReactNode, createElement, memo, useCallback, useMemo, useRef } from "react";
+import {
+  PointerEvent,
+  ReactNode,
+  createElement,
+  memo,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+
+import { clamp } from "Application/utils";
 import { ChartContext } from "./ChartContext";
 
 export interface ChartProps {
@@ -115,8 +125,7 @@ function Svg(
             nw: (value) => value / viewBoxWidth * (width - 2 * inset!) + inset!,
             nh: (value) => value / viewBoxHeight * (height - 2 * inset!) + inset!,
             vw: viewBoxWidth,
-            vh: viewBoxWidth,
-            inset: inset!,
+            vh: viewBoxHeight,
           }), [
             width,
             height,
@@ -167,20 +176,25 @@ function Svg(
 
 /* eslint-disable import/first */
 import { Circle as _Circle } from "./elements/Circle";
+import { Grid as _Grid } from "./elements/Grid";
 import { Group as _Group } from "./elements/Group";
 import { Line as _Line } from "./elements/Line";
 import { Path as _Path } from "./elements/Path";
 import { Polygon as _Polygon } from "./elements/Polygon";
+import { Polyline as _Polyline } from "./elements/Polyline";
 import { Rect as _Rect } from "./elements/Rect";
 import { Text as _Text } from "./elements/Text";
-import { clamp } from "Application/utils";
+import { Transform as _Transform } from "./elements/Transform";
 
 export namespace Chart {
   export const Circle = _Circle;
+  export const Grid = _Grid;
   export const Group = _Group;
   export const Line = _Line;
   export const Path = _Path;
   export const Polygon = _Polygon;
+  export const Polyline = _Polyline;
   export const Rect = _Rect;
   export const Text = _Text;
+  export const Transform = _Transform;
 }

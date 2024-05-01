@@ -20,6 +20,12 @@ function _HomeLayout(
 {
   const layout = useLayout(layouts);
 
+  /*
+  switch (layout) {
+    case
+  }
+  */
+
   return (
     <div style={{ flexDirection: "row" }}>
       {Layout[layout]}

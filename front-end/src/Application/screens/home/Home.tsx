@@ -6,6 +6,7 @@ import { useDimensions, useScrollPosition } from "Application/hooks";
 
 import "./Home.scss";
 import { KpiGraph, KpiValues } from "Application/components";
+import { KpiChart } from "Application/components";
 
 export const Home = React.memo(_Home);
 
@@ -20,6 +21,8 @@ function _Home(): JSX.Element {
         Hello world!
       </h1>
       <div className="p-4 flex flex-col gap-4">
+        <KpiChart/>
+
         <KpiGraph
         />
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { LogUpdates, clamp } from "Application/utils";
 import { Chart } from "Application/components";
 import { useDimensions } from "Application/hooks";
@@ -28,7 +28,7 @@ export function Dada(): JSX.Element {
   const [ p, setP ] = useState<{ x: number, y: number }>({ x: vw * 0.75, y: 0 });
 
   return (
-    <div className="m-4 p-4 bg-stone-50 rounded-md hover:bg-stone-100 shadow">
+    <div className="p-4 bg-stone-50 rounded-md hover:bg-stone-100">
       <div className="p-2 bg-white rounded-lg">
         <div ref={(ref) => setWidth(ref?.getBoundingClientRect().width ?? 0)}>
           <Chart
@@ -95,6 +95,23 @@ export function Dada(): JSX.Element {
             >
               ici et là
             </Chart.Text>
+            <Chart.Polyline
+              fill="none"
+              stroke="cyan"
+              strokeWidth={2}
+              points={
+                useMemo(
+                  () => {
+                    return [...Array(Math.floor(Math.random() * 10) + 50)].map(
+                      (_, i, l) => [
+                        (i / l.length) * vw,
+                        (i / l.length) * vh * 0.75 + Math.random() * vh * 0.25,
+                      ]
+                    )
+                  }, []
+                )
+              }
+            />
           </Chart>
         </div>
       </div>
