@@ -93,12 +93,12 @@ function _KpiChart(
       <ChartGrid
         x={0.25 * w}
         y={0.25 * h}
-        w={w * 0.25}
-        h={h * 0.25}
+        w={w * 0.5}
+        h={h * 0.5}
 
         minX={-1.2}
         maxX={7.3}
-        offsetXLegend={2.1}
+        offsetXLegend={1}
         nearestXLegend={1.75}
         renderXLegend={useCallback((v: number) => `${v.toFixed(2)} €`, [])}
 
@@ -109,9 +109,9 @@ function _KpiChart(
         renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
       >
         <ChartLine
-          x1={0} y1={0}
-          x2={w} y2={h}
-          stroke={"gray"}
+          x1={-1.2} y1={-1500}
+          x2={7.3} y2={89652}
+          stroke={"magenta"}
           strokeWidth={5}
           strokeLinecap={"round"}
         />

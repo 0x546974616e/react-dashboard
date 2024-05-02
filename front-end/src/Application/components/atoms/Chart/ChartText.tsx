@@ -4,10 +4,10 @@ import { ChartContext } from "Application/contexts";
 export interface ChartTextProps extends
   Pick<JSX.IntrinsicElements["text"],
     | "children"
+    | "fill"
     | "textAnchor"
     | "dominantBaseline"
     | "alignmentBaseline"
-    | "fill"
   >
 {
   x: number,
@@ -19,10 +19,10 @@ export const ChartText = memo(_ChartText);
 function _ChartText(
     { x, y,
       children,
+      fill,
       textAnchor,
       dominantBaseline,
       alignmentBaseline,
-      fill,
     }: ChartTextProps
   ): JSX.Element
 {
@@ -32,10 +32,10 @@ function _ChartText(
         <text
           x={nw(x)}
           y={nh(y)}
+          fill={fill}
           textAnchor={textAnchor}
           alignmentBaseline={alignmentBaseline}
           dominantBaseline={dominantBaseline}
-          fill={fill}
         >
           {children}
         </text>

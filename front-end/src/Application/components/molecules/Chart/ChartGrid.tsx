@@ -31,11 +31,58 @@ export interface ChartGridProps extends
   offsetXLegend?: number,
   offsetYLegend?: number,
 
-  renderXLegend?(value: number): string | number;
-  renderYLegend?(value: number): string | number;
+  renderXLegend?(value: number): string;
+  renderYLegend?(value: number): string;
 }
 
 export const ChartGrid = memo(_ChartGrid);
+
+function computeLegend(
+    min: number,
+    max: number,
+    nearest: number,
+    offset?: number,
+    render?: (value: number) => string,
+  ): {
+    labels: string[],
+    min: number,
+    max: number,
+  }
+{
+  nearest = Math.abs(nearest);
+  offset = Math.min(nearest, Math.abs(offset ?? 0))
+
+  let value = Math.floor(min / nearest) * nearest;
+
+  if (offset) {
+    value = (
+      value + offset > min
+        ? value - offset
+        : value + offset
+    );
+  }
+
+  const labels: string[] = [];
+  let first = value;
+  let last = value;
+
+  while (value < max + nearest) {
+    labels.push(
+      render
+        ? render(value)
+        : value.toString()
+    );
+
+    last = value;
+    value += nearest;
+  }
+
+  return {
+    labels,
+    min: first,
+    max: last,
+  };
+}
 
 function _ChartGrid(
     { children,
@@ -51,27 +98,23 @@ function _ChartGrid(
     }: ChartGridProps
   ): JSX.Element
 {
-  const px = w / 4;
-  const py = h / 4;
-
   const xLegend = useMemo(
-    () => {
-      const legends: (number | string)[] = [];
-      let x = Math.floor(minX / nearestXLegend) * nearestXLegend;
+    () => computeLegend(
+      minX, maxX,
+      nearestXLegend,
+      offsetXLegend,
+      renderXLegend,
+    ),
+    [ /* TODO: Accept updates? */ ]
+  );
 
-      if (offsetXLegend) {
-        x = x + offsetXLegend > minX
-          ? x - offsetXLegend
-          : x + offsetXLegend;
-      }
-
-      while (x < maxX + nearestXLegend) {
-        legends.push(renderXLegend ? renderXLegend(x) : x);
-        x += nearestXLegend;
-      }
-
-      return legends;
-    },
+  const yLegend = useMemo(
+    () => computeLegend(
+      minY, maxY,
+      nearestYLegend,
+      offsetYLegend,
+      renderYLegend,
+    ),
     [ /* TODO: Accept updates? */ ]
   );
 
@@ -96,16 +139,7 @@ function _ChartGrid(
         strokeWidth={1}
       />
 
-      <ChartLine
-        x1={x + w - px}
-        y1={y + py}
-        x2={x + px}
-        y2={y + h - py}
-        stroke={"black"}
-        strokeWidth={3}
-      />
-
-      {xLegend.map(
+      {xLegend.labels.map(
         (legend, index, { length }) => {
           const percentage = length <= 1 ? 0 : index / (length - 1);
           return (
@@ -119,8 +153,8 @@ function _ChartGrid(
                 strokeWidth={1}
               />
               <ChartText
+                y={y}
                 x={x + w * percentage}
-                y={y + h * percentage}
                 textAnchor={"middle"}
               >
                 {legend}
@@ -130,16 +164,49 @@ function _ChartGrid(
         }
       )}
 
+      {yLegend.labels.map(
+        (legend, index, { length }) => {
+          const percentage = 1 - (length <= 1 ? 0 : index / (length - 1));
+          return (
+            <Fragment key={index}>
+              <ChartLine
+                x1={x + 0}
+                x2={x + w}
+                y1={y + h * percentage}
+                y2={y + h * percentage}
+                stroke="red"
+                strokeWidth={1}
+              />
+              <ChartText
+                x={x}
+                y={y + h * percentage}
+                textAnchor={"end"}
+                alignmentBaseline={"middle"}
+                dominantBaseline={"middle"}
+              >
+                {legend}
+              </ChartText>
+            </Fragment>
+          );
+        }
+      )}
+
       <ChartContext.Consumer>
-        {({ vw, vh }) => (
-           <ChartTransform
-             x={x + px} y={y + py}
-             w={w - 2 * px} h={h - 2 * py}
-             vw={vw}
-             vh={vh}
-           >
-             {children}
-           </ChartTransform>
+        {({ nw, nh }) => (
+          <ChartContext.Provider
+            value={{
+              nw: (value) => nw(
+                x + ((value - xLegend.min) / (xLegend.max - xLegend.min)) * w
+              ),
+              nh: (value) => nh(
+                y + (1 - (value - yLegend.min) / (yLegend.max - yLegend.min)) * h
+              ),
+              vw: 0, // TODO
+              vh: 0, // TODO
+            }}
+          >
+            <g>{children}</g>
+          </ChartContext.Provider>
         )}
       </ChartContext.Consumer>
     </g>
