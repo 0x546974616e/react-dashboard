@@ -72,6 +72,7 @@ function _KpiChart(
         strokeWidth={stroke}
         strokeLinecap={"round"}
       />
+
       <ChartLine
         x1={0} y1={0}
         x2={w} y2={h}
@@ -79,6 +80,7 @@ function _KpiChart(
         strokeWidth={stroke}
         strokeLinecap={"round"}
       />
+
       <ChartText
         x={w / 2}
         y={h / 2}
@@ -89,12 +91,11 @@ function _KpiChart(
         dada dadada
       </ChartText>
 
-
       <ChartGrid
         x={0.25 * w}
         y={0.25 * h}
-        w={w * 0.5}
-        h={h * 0.5}
+        w={w * 0.75}
+        h={h * 0.75}
 
         minX={-1.2}
         maxX={7.3}
@@ -117,7 +118,6 @@ function _KpiChart(
         />
       </ChartGrid>
 
-
       <ChartTransform
         x={0.50 * w}
         y={0.25 * h}
@@ -133,6 +133,7 @@ function _KpiChart(
           strokeWidth={5}
           strokeLinecap={"round"}
         />
+
         <ChartLine
           x1={w} y1={0}
           x2={0} y2={h}
@@ -141,13 +142,13 @@ function _KpiChart(
           strokeLinecap={"round"}
         />
       </ChartTransform>
+
       <ChartTransform
         x={0.50 * w}
         y={0.75 * h}
         w={w * 0.25}
         h={h * 0.25}
         vw={3} vh={2}
-        // inset={0}
       >
         <ChartLine
           x1={3 * 0.25} y1={2 * 0.75}
@@ -156,6 +157,7 @@ function _KpiChart(
           strokeWidth={stroke}
           strokeLinecap={"round"}
         />
+
         <ChartLine
           x1={0} y1={0}
           x2={3} y2={2}
@@ -163,6 +165,7 @@ function _KpiChart(
           strokeWidth={stroke}
           strokeLinecap={"round"}
         />
+
         <ChartText
           x={3 / 2}
           y={2 / 2}
