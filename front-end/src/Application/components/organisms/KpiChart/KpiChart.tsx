@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
@@ -88,11 +88,25 @@ function _KpiChart(
       >
         dada dadada
       </ChartText>
+
+
       <ChartGrid
         x={0.25 * w}
         y={0.25 * h}
         w={w * 0.25}
         h={h * 0.25}
+
+        minX={-1.2}
+        maxX={7.3}
+        offsetXLegend={2.1}
+        nearestXLegend={1.75}
+        renderXLegend={useCallback((v: number) => `${v.toFixed(2)} €`, [])}
+
+        minY={-1500}
+        maxY={89652}
+        offsetYLegend={23}
+        nearestYLegend={12345}
+        renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
       >
         <ChartLine
           x1={0} y1={0}
@@ -102,6 +116,8 @@ function _KpiChart(
           strokeLinecap={"round"}
         />
       </ChartGrid>
+
+
       <ChartTransform
         x={0.50 * w}
         y={0.25 * h}

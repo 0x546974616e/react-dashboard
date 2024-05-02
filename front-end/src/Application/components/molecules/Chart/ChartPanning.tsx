@@ -108,7 +108,9 @@ export function ChartPanning(
 
   return (
     <div
+      style={{ width, height }}
       className={"select-none touch-pan-y touch-pinch-zoom"}
+
       onPointerDown={_onStart}
       onPointerMove={_onMove}
       onPointerUp={_onStop}
