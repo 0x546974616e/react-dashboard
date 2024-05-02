@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ChartContext } from "../ChartContext";
+import { ChartContext } from "Application/contexts";
 
-export interface CircleProps extends
+export interface ChartCircleProps extends
   Pick<JSX.IntrinsicElements["circle"],
     | "fill"
     | "stroke"
@@ -13,23 +13,23 @@ export interface CircleProps extends
   r: number,
 }
 
-export const Circle = memo(_Circle);
+export const ChartCircle = memo(_ChartCircle);
 
-function _Circle(
+function _ChartCircle(
     { cx, cy, r,
       fill,
       stroke,
       strokeWidth,
-    }: CircleProps
+    }: ChartCircleProps
   ): JSX.Element
 {
   return (
     <ChartContext.Consumer>
       {({ nw, nh }) => (
         <circle
+          r={r}
           cx={nw(cx)}
           cy={nh(cy)}
-          r={r}
           fill={fill}
           stroke={stroke}
           strokeWidth={strokeWidth}

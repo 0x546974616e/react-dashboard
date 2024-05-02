@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { LogUpdates, clamp } from "Application/utils";
-import { Chart } from "Application/components";
 import { useDimensions } from "Application/hooks";
 
 export const Notifications = React.memo(_Notifications);
@@ -29,7 +28,14 @@ export function Dada(): JSX.Element {
 
   return (
     <div className="p-4 bg-stone-50 rounded-md hover:bg-stone-100">
-      <div className="p-2 bg-white rounded-lg">
+      <div className="p-2 bg-white rounded-lg"></div>
+      {[...Array(50)].map((_, i) => <p key={i}>{i}</p>)}
+    </div>
+  );
+}
+
+/*
+
         <div ref={(ref) => setWidth(ref?.getBoundingClientRect().width ?? 0)}>
           <Chart
             width={width}
@@ -114,8 +120,5 @@ export function Dada(): JSX.Element {
             />
           </Chart>
         </div>
-      </div>
-      {[...Array(50)].map((_, i) => <p key={i}>{i}</p>)}
-    </div>
-  );
-}
+
+        */

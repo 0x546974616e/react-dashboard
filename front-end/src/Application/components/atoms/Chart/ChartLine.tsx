@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ChartContext } from "../ChartContext";
+import { ChartContext } from "Application/contexts";
 
-export interface LineProps extends
+export interface ChartLineProps extends
   Pick<JSX.IntrinsicElements["line"],
     | "stroke"
     | "strokeWidth"
@@ -14,15 +14,15 @@ export interface LineProps extends
   y2: number,
 }
 
-export const Line = memo(_Line);
+export const ChartLine = memo(_ChartLine);
 
-function _Line(
+function _ChartLine(
     { x1, y1,
       x2, y2,
       stroke,
       strokeWidth,
       strokeLinecap,
-    }: LineProps
+    }: ChartLineProps
   ): JSX.Element
 {
   return (

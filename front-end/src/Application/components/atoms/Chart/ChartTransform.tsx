@@ -1,7 +1,7 @@
 import { memo, useMemo } from "react";
-import { ChartContext, useChartContext } from "../ChartContext";
+import { ChartContext, useChartContext } from "Application/contexts";
 
-export interface TransformProps extends
+export interface ChartTransformProps extends
   Pick<JSX.IntrinsicElements["g"],
     | "children"
   >
@@ -14,12 +14,12 @@ export interface TransformProps extends
   vh: number,
 }
 
-export const Transform = memo(_Transform);
+export const ChartTransform = memo(_ChartTransform);
 
-function _Transform(
+function _ChartTransform(
     { children,
       x, y, w, h, vw, vh,
-    }: TransformProps
+    }: ChartTransformProps
   ): JSX.Element
 {
   const properties = useChartContext();

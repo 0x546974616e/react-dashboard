@@ -42,7 +42,8 @@
       "@typescript-eslint/no-redeclare": "off",
       "eqeqeq": "off",
       "no-cond-assign": "off",
-      "react-hooks/exhaustive-deps": "off"
+      "react-hooks/exhaustive-deps": "off",
+      "react/jsx-pascal-case": "off"
     }
   },
   "browserslist": {

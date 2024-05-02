@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ChartContext } from "../ChartContext";
+import { ChartContext } from "Application/contexts";
 
-export interface TextProps extends
+export interface ChartTextProps extends
   Pick<JSX.IntrinsicElements["text"],
     | "children"
     | "textAnchor"
@@ -14,16 +14,16 @@ export interface TextProps extends
   y: number,
 }
 
-export const Text = memo(_Text);
+export const ChartText = memo(_ChartText);
 
-function _Text(
+function _ChartText(
     { x, y,
       children,
       textAnchor,
       dominantBaseline,
       alignmentBaseline,
       fill,
-    }: TextProps
+    }: ChartTextProps
   ): JSX.Element
 {
   return (

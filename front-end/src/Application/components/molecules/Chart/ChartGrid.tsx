@@ -1,11 +1,14 @@
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
-import { ChartContext, useChartContext } from "../ChartContext";
-import { Transform } from "./Transform";
-import { Line } from "./Line";
-import { Rect } from "./Rect";
+import {
+  ChartLine,
+  ChartRect,
+  ChartTransform,
+} from "Application/components/atoms";
 
-export interface GridProps extends
+import { ChartContext } from "Application/contexts";
+
+export interface ChartGridProps extends
   Pick<JSX.IntrinsicElements["g"],
     | "children"
   >
@@ -16,38 +19,33 @@ export interface GridProps extends
   h: number,
 }
 
-export const Grid = memo(_Grid);
+export const ChartGrid = memo(_ChartGrid);
 
-function _Grid(
+function _ChartGrid(
     { x, y, w, h,
       children,
-    }: GridProps
+    }: ChartGridProps
   ): JSX.Element
 {
   const px = w / 4;
   const py = h / 4;
 
-  // const { vw, vh } = useChartContext();
-  // console.log({ vw, vh })
-
   return (
     <g>
       <ChartContext.Consumer>
         {({ vw, vh }) => (
-           <Transform
+           <ChartTransform
              x={x + px} y={y + py}
              w={w - 2 * px} h={h - 2 * py}
              vw={vw}
              vh={vh}
            >
              {children}
-           </Transform>
+           </ChartTransform>
         )}
       </ChartContext.Consumer>
 
-
-
-      <Rect
+      <ChartRect
         x={x}
         y={y}
         w={w}
@@ -57,7 +55,7 @@ function _Grid(
         strokeWidth={1}
       />
 
-      <Line
+      <ChartLine
         x1={x}
         y1={y}
         x2={x + w}
@@ -65,7 +63,8 @@ function _Grid(
         stroke={"black"}
         strokeWidth={1}
       />
-      <Line
+
+      <ChartLine
         x1={x + w - px}
         y1={y + py}
         x2={x + px}

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-export function Group(
+export function ChartGroup(
     { children }: {
       children?: ReactNode,
     }

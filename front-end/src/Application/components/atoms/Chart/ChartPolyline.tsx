@@ -1,8 +1,8 @@
 import { memo, useMemo } from "react";
-import { useChartContext } from "../ChartContext";
+import { useChartContext } from "Application/contexts";
 
-export interface PolygonProps extends
-  Pick<JSX.IntrinsicElements["polygon"],
+export interface ChartPolylineProps extends
+  Pick<JSX.IntrinsicElements["polyline"],
     | "fill"
     | "stroke"
     | "strokeWidth"
@@ -12,21 +12,21 @@ export interface PolygonProps extends
   points: [x: number, y: number][],
 }
 
-export const Polygon = memo(_Polygon);
+export const ChartPolyline = memo(_ChartPolyline);
 
-function _Polygon(
+function _ChartPolyline(
     { points,
       fill,
       stroke,
       strokeWidth,
       strokeLinecap,
-    }: PolygonProps
+    }: ChartPolylineProps
   ): JSX.Element
 {
   const { nw, nh } = useChartContext();
 
   return (
-    <polygon
+    <polyline
       points={
         useMemo(
           () => points.map(([ x, y ]) => `${nw(x)},${nh(y)}`).join(" "),

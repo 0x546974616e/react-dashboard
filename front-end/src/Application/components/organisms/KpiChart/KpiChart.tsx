@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 import { clamp } from "Application/utils";
-import { Chart } from "Application/components";
 import { useDimensions } from "Application/hooks";
+import { ChartLine, ChartSvg, ChartText, ChartTransform } from "Application/components/atoms";
+import { ChartGrid } from "Application/components/molecules";
 
 export interface KpiChartProps {
   // onXLegend()
@@ -57,28 +58,28 @@ function _KpiChart(
   const stroke = 20;
 
   return (
-    <Chart
+    <ChartSvg
       width={width}
       height={height}
       viewBoxWidth={w}
       viewBoxHeight={h}
       inset={stroke}
     >
-      <Chart.Line
+      <ChartLine
         x1={w * 0.25} y1={h * 0.75}
         x2={w * 0.75} y2={h * 0.25}
         stroke={"blue"}
         strokeWidth={stroke}
         strokeLinecap={"round"}
       />
-      <Chart.Line
+      <ChartLine
         x1={0} y1={0}
         x2={w} y2={h}
         stroke={"red"}
         strokeWidth={stroke}
         strokeLinecap={"round"}
       />
-      <Chart.Text
+      <ChartText
         x={w / 2}
         y={h / 2}
         textAnchor="middle"
@@ -86,22 +87,22 @@ function _KpiChart(
         alignmentBaseline={"middle"}
       >
         dada dadada
-      </Chart.Text>
-      <Chart.Grid
+      </ChartText>
+      <ChartGrid
         x={0.25 * w}
         y={0.25 * h}
         w={w * 0.25}
         h={h * 0.25}
       >
-        <Chart.Line
+        <ChartLine
           x1={0} y1={0}
           x2={w} y2={h}
           stroke={"gray"}
           strokeWidth={5}
           strokeLinecap={"round"}
         />
-      </Chart.Grid>
-      <Chart.Transform
+      </ChartGrid>
+      <ChartTransform
         x={0.50 * w}
         y={0.25 * h}
         w={w * 0.25}
@@ -109,22 +110,22 @@ function _KpiChart(
         vw={w}
         vh={h}
       >
-        <Chart.Line
+        <ChartLine
           x1={0} y1={0}
           x2={w} y2={h}
           stroke={"cyan"}
           strokeWidth={5}
           strokeLinecap={"round"}
         />
-        <Chart.Line
+        <ChartLine
           x1={w} y1={0}
           x2={0} y2={h}
           stroke={"cyan"}
           strokeWidth={5}
           strokeLinecap={"round"}
         />
-      </Chart.Transform>
-      <Chart.Transform
+      </ChartTransform>
+      <ChartTransform
         x={0.50 * w}
         y={0.75 * h}
         w={w * 0.25}
@@ -132,21 +133,21 @@ function _KpiChart(
         vw={3} vh={2}
         // inset={0}
       >
-        <Chart.Line
+        <ChartLine
           x1={3 * 0.25} y1={2 * 0.75}
           x2={3 * 0.75} y2={2 * 0.25}
           stroke={"green"}
           strokeWidth={stroke}
           strokeLinecap={"round"}
         />
-        <Chart.Line
+        <ChartLine
           x1={0} y1={0}
           x2={3} y2={2}
           stroke={"magenta"}
           strokeWidth={stroke}
           strokeLinecap={"round"}
         />
-        <Chart.Text
+        <ChartText
           x={3 / 2}
           y={2 / 2}
           textAnchor="middle"
@@ -154,8 +155,8 @@ function _KpiChart(
           alignmentBaseline={"middle"}
         >
           dada dadada
-        </Chart.Text>
-      </Chart.Transform>
-    </Chart>
+        </ChartText>
+      </ChartTransform>
+    </ChartSvg>
   );
 }

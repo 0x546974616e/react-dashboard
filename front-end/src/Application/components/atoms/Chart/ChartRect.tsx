@@ -1,7 +1,7 @@
 import { memo } from "react";
-import { ChartContext } from "../ChartContext";
+import { ChartContext } from "Application/contexts";
 
-export interface RectProps extends
+export interface ChartRectProps extends
   Pick<JSX.IntrinsicElements["rect"],
     | "fill"
     | "stroke"
@@ -15,15 +15,15 @@ export interface RectProps extends
   h: number,
 }
 
-export const Rect = memo(_Rect);
+export const ChartRect = memo(_ChartRect);
 
-function _Rect(
+function _ChartRect(
     { x, y, w, h,
       fill,
       stroke,
       strokeWidth,
       strokeLinecap,
-    }: RectProps
+    }: ChartRectProps
   ): JSX.Element
 {
   return (
