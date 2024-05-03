@@ -25,11 +25,11 @@ function _ChartCircle(
 {
   return (
     <ChartContext.Consumer>
-      {({ nw, nh }) => (
+      {({ nx, ny }) => (
         <circle
           r={r}
-          cx={nw(cx)}
-          cy={nh(cy)}
+          cx={nx(cx)}
+          cy={ny(cy)}
           fill={fill}
           stroke={stroke}
           strokeWidth={strokeWidth}

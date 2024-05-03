@@ -1,18 +1,17 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
-import { ChartLine, ChartRect, ChartSvg, ChartText, ChartTransform } from "Application/components/atoms";
-import { ChartGrid } from "Application/components/molecules";
 import { ChartContext } from "Application/contexts";
 
-export interface KpiChartProps {
-  // onXLegend()
-  // nearestXLegend= [nearest, offset] | nearest
-  // (offsetXLength  ^)
-}
+import {
+  ChartLine,
+  ChartRect,
+  ChartSvg,
+  ChartTransform,
+} from "Application/components/atoms";
 
-export function KpiChart(): JSX.Element {
+export function ChartWithNestedTransforms(): JSX.Element {
   const [ width, setWidth ] = useState<number | null>(null);
   const { height: screenHeight } = useDimensions();
   const height = clamp(screenHeight * 0.6, 200, 600);
@@ -38,7 +37,7 @@ export function KpiChart(): JSX.Element {
       )}
 
       {width != null && (
-        <_KpiChart
+        <_ChartWithNestedTransform
           width={width}
           height={height}
         />
@@ -47,7 +46,7 @@ export function KpiChart(): JSX.Element {
   );
 }
 
-function _KpiChart(
+function _ChartWithNestedTransform(
     { width, height }: {
       width: number,
       height: number,

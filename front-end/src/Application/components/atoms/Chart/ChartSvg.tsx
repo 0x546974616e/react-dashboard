@@ -1,12 +1,24 @@
 import { ReactNode, memo, useMemo } from "react";
 import { ChartContext } from "Application/contexts";
+import { div0 } from "Application/utils";
+import { ChartTransform } from "./ChartTransform";
 
 export interface ChartSvgProps {
-  width: number | number,
-  height: number | number,
-  inset?: number,
-  viewBoxWidth: number,
-  viewBoxHeight: number,
+  w: number,
+  h: number,
+
+  pt: number,
+  pb: number,
+
+  pl: number,
+  pr: number,
+
+  vx1: number,
+  vy1: number,
+
+  vx2: number,
+  vy2: number,
+
   children?: ReactNode,
   debug?: boolean,
 }
@@ -14,60 +26,54 @@ export interface ChartSvgProps {
 export const ChartSvg = memo(_ChartSvg);
 
 function _ChartSvg(
-    { width,
-      height,
-      inset,
-      viewBoxWidth,
-      viewBoxHeight,
+    { w, h,
+      pt, pb,
+      pl, pr,
+      vx1, vy1,
+      vx2, vy2,
       children,
       debug,
     }: ChartSvgProps
   ): JSX.Element
 {
-  inset ??= 0;
-
   return (
-    <ChartContext.Provider
-      value={
-        useMemo(
-          () => ({
-            nw: (value) => value / viewBoxWidth * (width - 2 * inset!) + inset!,
-            nh: (value) => value / viewBoxHeight * (height - 2 * inset!) + inset!,
-            vw: viewBoxWidth,
-            vh: viewBoxHeight,
-          }), [
-            width,
-            height,
-            viewBoxWidth,
-            viewBoxHeight,
-            inset,
-          ]
-        )
-      }
+    <svg
+      width={w}
+      height={h}
+      viewBox={`0 0 ${w} ${h}`}
     >
-      <svg
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
+      {debug && (
+        <g id="debug-rect">
+          <rect
+            x={0} y={0}
+            width={w}
+            height={h}
+            fill={"#ff000022"}
+          />
+          <rect
+            x={pl} y={pt}
+            width={w - pl - pr}
+            height={h - pt - pb}
+            fill={"#ff000044"}
+          />
+        </g>
+      )}
+
+      <ChartTransform
+        x1={pl}
+        x2={w - pr}
+
+        y1={pt}
+        y2={h - pb}
+
+        vx1={vx1}
+        vy1={vy1}
+
+        vx2={vx2}
+        vy2={vy2}
       >
-        {debug && (
-          <g id="debug-rect">
-            <rect
-              x={0} y={0}
-              width={width}
-              height={height}
-              fill={"#ff000022"}
-            />
-            <rect
-              x={inset} y={inset}
-              width={width - 2 * inset}
-              height={height - 2 * inset}
-              fill={"#ff000044"}
-            />
-          </g>
-        )}
         {children}
-      </svg>
-    </ChartContext.Provider>
+      </ChartTransform>
+    </svg>
   );
 }

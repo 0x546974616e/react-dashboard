@@ -23,14 +23,14 @@ function _ChartPolyline(
     }: ChartPolylineProps
   ): JSX.Element
 {
-  const { nw, nh } = useChartContext();
+  const { nx,  ny } = useChartContext();
 
   return (
     <polyline
       points={
         useMemo(
-          () => points.map(([ x, y ]) => `${nw(x)},${nh(y)}`).join(" "),
-          [ points, nw, nh ]
+          () => points.map(([ x, y ]) => `${nx(x)},${ny(y)}`).join(" "),
+          [ points, nx, ny ]
         )
       }
       fill={fill}

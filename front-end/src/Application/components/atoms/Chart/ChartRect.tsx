@@ -28,12 +28,12 @@ function _ChartRect(
 {
   return (
     <ChartContext.Consumer>
-      {({ nw, nh }) => (
+      {({ nx, ny, nw, nh }) => (
         <rect
-          x={nw(x)}
-          y={nh(y)}
-          width={nw(w + x) - nw(x)}
-          height={nh(h + y) - nh(y)}
+          x={nx(x)}
+          y={ny(y)}
+          width={nw(w)}
+          height={nh(h)}
           fill={fill}
           stroke={stroke}
           strokeWidth={strokeWidth}

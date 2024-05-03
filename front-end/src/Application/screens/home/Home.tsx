@@ -7,6 +7,7 @@ import { useDimensions, useScrollPosition } from "Application/hooks";
 import "./Home.scss";
 import { KpiValues } from "Application/components";
 import { KpiChart } from "Application/components";
+import { ChartWithNestedTransforms } from "Application/examples";
 
 export const Home = React.memo(_Home);
 
@@ -22,6 +23,7 @@ function _Home(): JSX.Element {
       </h1>
       <div className="p-4 flex flex-col gap-4">
         <KpiChart/>
+        <ChartWithNestedTransforms/>
 
         <hr className=""/>
 

@@ -28,10 +28,10 @@ function _ChartText(
 {
   return (
     <ChartContext.Consumer>
-      {({ nw, nh }) => (
+      {({ nx, ny }) => (
         <text
-          x={nw(x)}
-          y={nh(y)}
+          x={nx(x)}
+          y={ny(y)}
           fill={fill}
           textAnchor={textAnchor}
           alignmentBaseline={alignmentBaseline}

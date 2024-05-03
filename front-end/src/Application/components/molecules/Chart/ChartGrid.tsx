@@ -203,7 +203,7 @@ function _ChartGrid(
         )}
       </g>
 
-      <ChartContext.Consumer>
+{/*       <ChartContext.Consumer>
         {({ nw, nh }) => (
           <ChartContext.Provider
             value={{
@@ -218,7 +218,7 @@ function _ChartGrid(
             </g>
           </ChartContext.Provider>
         )}
-      </ChartContext.Consumer>
+      </ChartContext.Consumer> */}
     </g>
   );
 }

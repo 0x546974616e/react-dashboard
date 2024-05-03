@@ -27,12 +27,12 @@ function _ChartLine(
 {
   return (
     <ChartContext.Consumer>
-      {({ nw, nh }) => (
+      {({ nx, ny }) => (
         <line
-          x1={nw(x1)}
-          y1={nh(y1)}
-          x2={nw(x2)}
-          y2={nh(y2)}
+          x1={nx(x1)}
+          y1={ny(y1)}
+          x2={nx(x2)}
+          y2={ny(y2)}
           stroke={stroke}
           strokeWidth={strokeWidth}
           strokeLinecap={strokeLinecap}
