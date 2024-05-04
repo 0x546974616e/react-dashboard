@@ -265,6 +265,67 @@ function _ChartWithNestedTransform(
           </ChartContext.Consumer>
         </ChartTransform>
       </ChartTransform>
+
+      <ChartTransform
+        x1={-10}
+        y1={20}
+
+        x2={-10 + 110 * 0.25}
+        y2={70}
+
+        vx1={-123}
+        vx2={123}
+
+        vy1={0.100}
+        vy2={0.185}
+      >
+        <ChartRect
+          x={-123}
+          y={0.100 + 0.085 * 0.33333}
+
+          w={123 * 2}
+          h={0.085 * 0.33333}
+
+          fill={"#00ff0044"}
+        />
+
+        <ChartContext.Consumer>
+          {({ ix, iy, iw, ih }) => (
+            <>
+              <ChartRect
+                x={0}
+                y={0.100 + 0.085 * 0.33333}
+
+                w={123}
+                h={0.085 * 0.66666}
+
+                fill={"#ffff0044"}
+              />
+
+              <ChartRect
+                x={ix(157.5)}
+                y={iy(154.86521799999997)}
+
+                w={iw(117.5)}
+                h={ih(289.73043600000005)}
+
+                fill={"#ff880044"}
+              />
+            </>
+          )}
+        </ChartContext.Consumer>
+
+        <ChartLine
+          x1={-123}
+          x2={123}
+
+          y1={0.100}
+          y2={0.185}
+
+          stroke={"red"}
+          strokeWidth={2}
+        />
+      </ChartTransform>
     </ChartSvg>
   );
 }

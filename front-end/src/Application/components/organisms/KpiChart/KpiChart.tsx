@@ -12,6 +12,8 @@ export interface KpiChartProps {
   // (offsetXLength  ^)
 }
 
+const STROKE_WIDTH = 10;
+
 export function KpiChart(): JSX.Element {
   const [ width, setWidth ] = useState<number | null>(null);
   const { height: screenHeight } = useDimensions();
@@ -61,211 +63,48 @@ function _KpiChart(
       w={width}
       h={height}
 
-      pt={10}
-      pb={30}
+      pt={STROKE_WIDTH}
+      pb={STROKE_WIDTH}
 
-      pl={40}
-      pr={20}
+      pl={STROKE_WIDTH}
+      pr={STROKE_WIDTH}
 
-      vx1={-10}
-      vy1={20}
+      vx1={0}
+      vy1={0}
 
-      vx2={100}
-      vy2={70}
+      vx2={1000}
+      vy2={1000}
 
       debug
     >
-      <ChartRect
-        x={(-10 + 100) / 2}
-        y={(20 + 70) / 2}
+      <ChartGrid
+        x={200}
+        y={200}
 
-        w={(100 - -10) / 2}
-        h={(70 - 20) / 2}
+        w={700}
+        h={600}
 
-        fill={"green"}
-      />
+        minX={-1.2}
+        maxX={7.3}
+        offsetXLegend={1}
+        nearestXLegend={1.75}
+        // nearestXLegend={5.75}
+        renderXLegend={useCallback((v: number) => `${v.toFixed(2)} €`, [])}
 
-      <ChartRect
-        x={-10 + (100 + 10) * 0.25}
-        y={20 + (70 - 20) * 0.25}
-
-        w={(100 - -10) * 0.25}
-        h={(70 - 20) * 0.25}
-
-        fill={"#ff00ff"}
-      />
-
-      <ChartContext.Consumer>
-        {({ ix, iy, iw, ih }) => (
-          <ChartRect
-            x={ix(275)}
-            y={iy(227)}
-
-            w={iw(235)}
-            h={ih(108.5)}
-
-            fill={"#00ffff44"}
-          />
-        )}
-      </ChartContext.Consumer>
-
-      <ChartLine
-        x1={-10}
-        y1={20}
-
-        x2={100}
-        y2={70}
-
-        stroke={"blue"}
-        strokeWidth={stroke}
-        strokeLinecap={"round"}
-      />
-
-      <ChartLine
-        x1={(-10 + 100) / 2}
-        y1={(20 + 70) / 2}
-
-        x2={100}
-        y2={70}
-
-        stroke={"red"}
-        strokeWidth={stroke / 2}
-        strokeLinecap={"round"}
-      />
-
-      <ChartTransform
-        x1={-10 + (100 + 10) * 0.50}
-        y1={20 + (70 - 20) * 0.25}
-
-        x2={-10 + (100 + 10) * 0.75}
-        y2={20 + (70 - 20) * 0.50}
-
-        vx1={-5}
-        vx2={5}
-
-        vy1={1200}
-        vy2={2200}
+        minY={-1500}
+        maxY={89652}
+        offsetYLegend={23}
+        nearestYLegend={12345}
+        renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
       >
-        <ChartRect
-          x={-5 + (5 - -5) * (1 / 6)}
-          y={1200 + (2200 - 1200) * (1 / 6)}
-
-          w={(5 - -5) * (4 / 6)}
-          h={(2200 - 1200) * (4 / 6)}
-
-          fill={"yellow"}
-        />
-
-        <ChartContext.Consumer>
-          {({ ix, iy, iw, ih }) => (
-            <ChartRect
-              x={ix(549.1666666666667)}
-              y={iy(136.58333333333337)}
-
-              w={iw(156.66666666666666)}
-              h={ih(72.33333333333331)}
-
-              fill={"#ff000044"}
-            />
-          )}
-        </ChartContext.Consumer>
-
         <ChartLine
-          x1={-5}
-          x2={5}
-
-          y1={1200}
-          y2={2200}
-
-          stroke={"cyan"}
-          strokeWidth={10}
-        />
-
-        <ChartLine
-          x1={-5 + (5 - -5) * 0.75}
-          x2={-5 + (5 - -5) * 0.25}
-
-          y1={1200 + (2200 - 1200) * 0.25}
-          y2={1200 + (2200 - 1200) * 0.75}
-
-          stroke={"red"}
+          x1={-1.2} y1={-1500}
+          x2={7.3} y2={89652}
+          stroke={"magenta"}
           strokeWidth={5}
+          strokeLinecap={"round"}
         />
-
-        <ChartTransform
-          x1={0}
-          x2={5}
-          y1={1200 - (2200 - 1200)}
-          y2={1200}
-
-          vx1={-536}
-          vx2={-500}
-
-          vy1={123456}
-          vy2={789012}
-        >
-          <ChartRect
-            x={-536 + 36 * 0.333}
-            y={123456 + (789012 - 123456) * 0.333}
-
-            w={36 * 0.666}
-            h={(789012 - 123456) * 0.666}
-
-            fill={"cyan"}
-          />
-
-          <ChartLine
-            x1={-536}
-            x2={-500}
-
-            y1={123456}
-            y2={789012}
-
-            stroke={"black"}
-            strokeWidth={10}
-            strokeLinecap={"round"}
-          />
-
-          <ChartLine
-            x1={-536}
-            x2={-500}
-
-            y1={123456}
-            y2={789012}
-
-            stroke={"gray"}
-            strokeWidth={6}
-            strokeLinecap={"round"}
-          />
-
-          <ChartContext.Consumer>
-            {({ ix, iy, iw, ih }) => (
-              <>
-                <ChartRect
-                  x={ix(745)}
-                  y={iy(118.5)}
-
-                  w={iw(78.25500000000001)}
-                  h={ih(72.26100000000001)}
-
-                  fill={"#00ffff44"}
-                  stroke={"red"}
-                />
-                <ChartLine
-                  x1={ix(745)}
-                  x2={ix(627.5)}
-
-                  y1={iy(118.64999999999999)}
-                  y2={iy(10)}
-
-                  stroke={"white"}
-                  strokeWidth={2}
-                />
-              </>
-            )}
-          </ChartContext.Consumer>
-        </ChartTransform>
-      </ChartTransform>
+      </ChartGrid>
     </ChartSvg>
   );
 }

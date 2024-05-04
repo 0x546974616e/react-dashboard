@@ -1,4 +1,9 @@
 
+/**
+ * Screen dimensions.
+ *
+ * @todo Rename interface.
+ */
 export interface Dimensions {
   width: number,
   height: number,
