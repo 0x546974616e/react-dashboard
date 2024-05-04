@@ -75,7 +75,7 @@ function _ChartTransform(
         )
       }
     >
-      <g className="chart-transform">
+      <g className={"chart-transform"}>
         {children}
       </g>
     </ChartContext.Provider>

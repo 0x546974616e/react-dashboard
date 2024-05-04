@@ -12,20 +12,17 @@ import {
 } from "Application/components/atoms";
 
 export function ChartWithNestedTransforms(): JSX.Element {
-  const [ width, setWidth ] = useState<number | null>(null);
+  // A state is used instead a ref to prevent multiple re-render.
+  const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
+
   const { height: screenHeight } = useDimensions();
+  const width = container?.getBoundingClientRect().width ?? null;
   const height = clamp(screenHeight * 0.6, 200, 600);
 
   return (
     <div
       className={"w-full"}
-      ref={
-        (element) => {
-          if (element) {
-            setWidth(element.getBoundingClientRect().width);
-          }
-        }
-      }
+      ref={(element) => setContainer(element)}
     >
       {width == null && (
         <div

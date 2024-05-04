@@ -2,20 +2,13 @@ import { useCallback, useRef, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
-import { ChartCircle, ChartLine, ChartRect, ChartSvg, ChartText, ChartTransform } from "Application/components/atoms";
+import { ChartCircle, ChartLine, ChartSvg, ChartText } from "Application/components/atoms";
 import { ChartGrid, ChartPanning } from "Application/components/molecules";
-import { ChartContext } from "Application/contexts";
 import { Position } from "Application/types";
 
-export interface KpiChartProps {
-  // onXLegend()
-  // nearestXLegend= [nearest, offset] | nearest
-  // (offsetXLength  ^)
-}
+const STROKE_WIDTH = 10;
 
-const STROKE_WIDTH = 0;
-
-export function KpiChart(): JSX.Element {
+export function ChartWithGrid(): JSX.Element {
   // A state is used instead a ref to prevent multiple re-render.
   const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
 
@@ -38,7 +31,7 @@ export function KpiChart(): JSX.Element {
       )}
 
       {width != null && (
-        <_KpiChart
+        <_ChartWithGrid
           width={width}
           height={height}
         />
@@ -47,7 +40,7 @@ export function KpiChart(): JSX.Element {
   );
 }
 
-function _KpiChart(
+function _ChartWithGrid(
     { width, height }: {
       width: number,
       height: number,
@@ -76,11 +69,11 @@ function _KpiChart(
       debug
     >
       <ChartGrid
-        x={0}
-        y={0}
+        x={200}
+        y={200}
 
-        w={1000}
-        h={1000}
+        w={700}
+        h={600}
 
         minX={-1.2}
         maxX={7.3}
@@ -114,6 +107,17 @@ function _KpiChart(
             cy={position.y}
             fill={"red"}
           />
+
+          <ChartText
+            x={position.x}
+            y={position.y}
+            fill={"yellow"}
+            textAnchor={"middle"}
+            alignmentBaseline={"middle"}
+            dominantBaseline={"middle"}
+          >
+            Ici et là
+          </ChartText>
         </ChartPanning>
       </ChartGrid>
     </ChartSvg>

@@ -26,8 +26,8 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
   } = useChartGrid(props);
 
   return (
-    <g className="chart-grid">
-      <g className="chart-grid-rules">
+    <g className={"chart-grid"}>
+      <g className={"chart-grid-rules"}>
         <ChartRect
           x={props.x} y={props.y}
           w={props.w} h={props.h}

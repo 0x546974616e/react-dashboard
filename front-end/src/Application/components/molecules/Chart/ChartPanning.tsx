@@ -1,86 +1,94 @@
 import {
   PointerEvent,
   ReactNode,
+  memo,
   useCallback,
   useRef,
+  useState,
 } from "react";
 
+import { ChartLine, ChartRect } from "Application/components/atoms";
+import { useChartContext } from "Application/contexts";
 import { Position } from "Application/types";
 import { clamp } from "Application/utils";
 
-export interface UseHorizontalPanningProps {
-  width: number,
-  height: number,
-  inset?: number,
-  viewBoxWidth: number,
-  viewBoxHeight: number,
-  children?: ReactNode,
+export interface ChartPanningProps {
   onStart?: (position: Position) => void,
   onMove?: (position: Position) => void,
   onStop?: (position: Position) => void,
+  children?: ReactNode,
 }
 
-export function ChartPanning(
-    { width,
-      height,
-      inset,
-      viewBoxWidth,
-      viewBoxHeight,
-      children,
+export const ChartPanning = memo(_ChartPanning);
+
+/**
+ * Horizontal panning only so far.
+ *
+ * TODO:
+ * - touch-pan-y, touch-pinch-zoom, select-none?
+ * - min/max props
+ */
+function _ChartPanning(
+    { children,
       onStart,
       onMove,
       onStop,
-    }: UseHorizontalPanningProps
+    }: ChartPanningProps
   ): JSX.Element
 {
-  inset ??= 0;
+  const {
+    x1, y1,
+    x2, y2,
+    ix, iy,
+  } = useChartContext();
 
   const pointer = useRef<number | null>(null);
+  const [ position, setPosition ] = useState(Position.ZERO);
 
-  const normalizeToViewBox = useCallback(
-    (event: PointerEvent<HTMLDivElement>): Position => {
-      const { top, left } = event.currentTarget.getBoundingClientRect();
+  const normalize = useCallback(
+    (event: PointerEvent<SVGGElement>): Position | null => {
+      const { ownerSVGElement } = event.currentTarget;
+      if (!ownerSVGElement) {
+        return null;
+      }
 
-      const cx = event.clientX - left;
-      const cy = event.clientY - top;
+      const { top, left } = ownerSVGElement.getBoundingClientRect();
 
-      const sx = clamp(cx, inset!, width - inset!) - inset!;
-      const sy = clamp(cy, inset!, height - inset!) - inset!;
+      const cx = ix(event.clientX - left);
+      const cy = iy(event.clientY - top);
 
-      const x = sx / (width - 2 * inset!) * viewBoxWidth;
-      const y = sy / (height - 2 * inset!) * viewBoxHeight;
+      const x = clamp(cx, x1, x2);
+      const y = clamp(cy, y1, y2);
 
       return { x, y };
     }, [
-      width,
-      height,
-      viewBoxWidth,
-      viewBoxHeight,
-      inset,
+      x1, y1,
+      x2, y2,
+      ix, iy,
     ]
   );
 
   const _onStart = useCallback(
-    (event: PointerEvent<HTMLDivElement>) => {
+    (event: PointerEvent<SVGGElement>) => {
       event.preventDefault();
-      event.currentTarget.classList.remove("touch-pan-y", "touch-pinch-zoom");
-
       if (pointer.current == null || event.pointerId == pointer.current) {
         event.currentTarget.setPointerCapture(pointer.current = event.pointerId);
 
-        if (onStart && event.pointerType != "touch") {
-          onStart(normalizeToViewBox(event));
+        if (onStart && event.pointerType == "mouse") {
+          const position = normalize(event);
+          if (position) {
+            onStart(position);
+            setPosition(position);
+          }
         }
       }
     },
-    [ normalizeToViewBox ]
+    [ normalize ]
   );
 
   const _onStop = useCallback(
-    (event: PointerEvent<HTMLDivElement>) => {
+    (event: PointerEvent<SVGGElement>) => {
       event.preventDefault();
-      event.currentTarget.classList.add("touch-pan-y", "touch-pinch-zoom");
-
       if (event.pointerId == pointer.current) {
         if (event.currentTarget.hasPointerCapture(pointer.current)) {
           event.currentTarget.releasePointerCapture(pointer.current);
@@ -88,29 +96,34 @@ export function ChartPanning(
         }
 
         if (onStop) {
-          onStop(normalizeToViewBox(event));
+          const position = normalize(event);
+          if (position) {
+            onStop(position);
+            setPosition(position);
+          }
         }
       }
     },
-    [ normalizeToViewBox ]
+    [ normalize]
   );
 
   const _onMove = useCallback(
-    (event: PointerEvent<HTMLDivElement>) => {
+    (event: PointerEvent<SVGGElement>) => {
       event.preventDefault();
-
       if (event.pointerId == pointer.current && onMove) {
-        onMove(normalizeToViewBox(event));
+        const position = normalize(event);
+        if (position) {
+          onMove(position);
+          setPosition(position);
+        }
       }
     },
-    [ normalizeToViewBox ]
+    [ normalize]
   );
 
   return (
-    <div
-      style={{ width, height }}
-      className={"select-none touch-pan-y touch-pinch-zoom"}
-
+    <g
+      className={"chart-panning touch-pan-y touch-pinch-zoom"}
       onPointerDown={_onStart}
       onPointerMove={_onMove}
       onPointerUp={_onStop}
@@ -118,7 +131,24 @@ export function ChartPanning(
       // onPointerLeave={onPointerUp}
       // onPointerEnter={onPointerUp}
     >
+      <ChartRect
+        x={x1}
+        y={y1}
+        w={x2 - x1}
+        h={y2 - y1}
+        fill={"rgb(0, 0, 0, 0)"}
+        stroke={"none"}
+      />
+
       {children}
-    </div>
+
+      <ChartLine
+        x1={position.x} y1={y1}
+        x2={position.x} y2={y2}
+        stroke={"black"}
+        strokeWidth={5}
+        strokeLinecap={"round"}
+      />
+    </g>
   );
 }
