@@ -4,9 +4,12 @@ import { useChartContext } from "Application/contexts";
 
 import { ChartGridProps } from "./ChartGridProps";
 import { computeLegend } from "./computeLegend";
+import { Size } from "Application/types";
+import { ChartGridRule } from "Application/theme";
 
 export function useChartGrid(
-    { minX, minY,
+    { x, y, w, h,
+      minX, minY,
       maxX, maxY,
       nearestXLegend,
       nearestYLegend,
@@ -19,25 +22,21 @@ export function useChartGrid(
 {
   const { iw, ih } = useChartContext();
 
-  const [ _maxXLegendHeight, setMaxXLengthHeight ] = useReducer(
-    (current: number, width: number) => Math.max(current, width), 0
-  );
-
-  const [ _maxYLegendWidth, setMaxYLengthWidth ] = useReducer(
-    (current: number, width: number) => Math.max(current, width), 0
-  );
+  const [ maxXLayout, setMaxXLayout ] = useReducer(Size.max, Size.ZERO);
+  const [ maxYLayout, setMaxYLayout ] = useReducer(Size.max, Size.ZERO);
 
   return {
-    maxXLegendHeight: ih(_maxXLegendHeight),
-    maxYLegendWidth: iw(_maxYLegendWidth),
+    xLegendMarginBottom: ih(ChartGridRule.xLegendMarginBottom),
+    yLegendMarginRight: iw(ChartGridRule.yLegendMarginRight),
 
-    onXLegentLayout: useCallback(
-      ({ height }: DOMRect) => setMaxXLengthHeight(height), []
-    ),
+    x1: x + iw(maxYLayout.width + ChartGridRule.yLegendMarginRight),
+    y1: y + ih(maxXLayout.height + ChartGridRule.xLegendMarginBottom),
 
-    onYLegentLayout: useCallback(
-      ({ width }: DOMRect) => setMaxYLengthWidth(width), []
-    ),
+    x2: x + w - iw(maxXLayout.width) / 2,
+    y2: y + h - ih(maxYLayout.height) / 2,
+
+    onXLegentLayout: setMaxXLayout,
+    onYLegentLayout: setMaxYLayout,
 
     xLegend: useMemo(
       () => computeLegend(

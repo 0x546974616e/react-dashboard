@@ -2,7 +2,7 @@
 /**
  * Screen dimensions.
  *
- * @todo Rename interface.
+ * @todo Rename interface to not be confused with `Size`.
  */
 export interface Dimensions {
   width: number,

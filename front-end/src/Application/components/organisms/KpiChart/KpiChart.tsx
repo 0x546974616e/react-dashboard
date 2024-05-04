@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
@@ -15,20 +15,17 @@ export interface KpiChartProps {
 const STROKE_WIDTH = 10;
 
 export function KpiChart(): JSX.Element {
-  const [ width, setWidth ] = useState<number | null>(null);
+  // A state is used instead a ref to prevent multiple re-render.
+  const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
+
   const { height: screenHeight } = useDimensions();
+  const width = container?.getBoundingClientRect().width ?? null;
   const height = clamp(screenHeight * 0.6, 200, 600);
 
   return (
     <div
       className={"w-full"}
-      ref={
-        (element) => {
-          if (element) {
-            setWidth(element.getBoundingClientRect().width);
-          }
-        }
-      }
+      ref={(element) => setContainer(element)}
     >
       {width == null && (
         <div
@@ -56,8 +53,6 @@ function _KpiChart(
     }
   ): JSX.Element
 {
-  const stroke = 20;
-
   return (
     <ChartSvg
       w={width}
@@ -95,6 +90,7 @@ function _KpiChart(
         maxY={89652}
         offsetYLegend={23}
         nearestYLegend={12345}
+        // nearestYLegend={50000}
         renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
       >
         <ChartLine

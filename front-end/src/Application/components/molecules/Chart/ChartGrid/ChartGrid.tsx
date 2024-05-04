@@ -15,25 +15,22 @@ export const ChartGrid = memo(_ChartGrid);
 function _ChartGrid(props: ChartGridProps): JSX.Element {
 
   const {
+    x1, y1,
+    x2, y2,
     xLegend,
     yLegend,
-    maxXLegendHeight,
-    maxYLegendWidth,
+    xLegendMarginBottom,
+    yLegendMarginRight,
     onXLegentLayout,
     onYLegentLayout,
   } = useChartGrid(props);
-
-  const {
-    children,
-    x, y, w, h,
-  } = props;
 
   return (
     <g className="chart-grid">
       <g className="chart-grid-rules">
         <ChartRect
-          x={x} y={y}
-          w={w} h={h}
+          x={props.x} y={props.y}
+          w={props.w} h={props.h}
           fill="#00ff0088"
           strokeWidth={1}
         />
@@ -41,23 +38,21 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
         {xLegend.labels.map(
           (legend, index, { length }) => {
             const percentage = length <= 1 ? 0 : index / (length - 1);
-
-            const horizontal = x + maxYLegendWidth + (w - maxYLegendWidth) * percentage;
-            const vertical = y + maxXLegendHeight;
+            const horizontal = x1 + (x2 - x1) * percentage;
 
             return (
               <Fragment key={index}>
                 <ChartLine
                   x1={horizontal}
                   x2={horizontal}
-                  y1={vertical}
-                  y2={y + h}
+                  y1={y1 - xLegendMarginBottom / 2}
+                  y2={y2}
                   stroke="red"
                   strokeWidth={1}
                 />
                 <ChartText
-                  y={vertical}
                   x={horizontal}
+                  y={y1 - xLegendMarginBottom}
                   onLayout={onXLegentLayout}
                   textAnchor={"middle"}
                 >
@@ -71,22 +66,20 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
         {yLegend.labels.map(
           (legend, index, { length }) => {
             const percentage = 1 - (length <= 1 ? 0 : index / (length - 1));
-
-            const horizontal = x + maxYLegendWidth;
-            const vertical = y + maxXLegendHeight + (h - maxXLegendHeight) * percentage;
+            const vertical = y1 + (y2 - y1) * percentage;
 
             return (
               <Fragment key={index}>
                 <ChartLine
-                  x1={horizontal}
-                  x2={x + w}
+                  x1={x1 - yLegendMarginRight / 2}
+                  x2={x2}
                   y1={vertical}
                   y2={vertical}
                   stroke="red"
                   strokeWidth={1}
                 />
                 <ChartText
-                  x={horizontal}
+                  x={x1 - yLegendMarginRight}
                   y={vertical}
                   onLayout={onYLegentLayout}
                   textAnchor={"end"}
@@ -102,11 +95,8 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
       </g>
 
       <ChartTransform
-        x1={x + maxYLegendWidth}
-        y1={y + maxXLegendHeight}
-
-        x2={x + w}
-        y2={y + h}
+        x1={x1} y1={y1}
+        x2={x2} y2={y2}
 
         vx1={xLegend.min}
         vx2={xLegend.max}
@@ -114,7 +104,7 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
         vy1={yLegend.max}
         vy2={yLegend.min}
       >
-        {children}
+        {props.children}
       </ChartTransform>
     </g>
   );
