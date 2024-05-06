@@ -1,11 +1,10 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { clamp } from "Application/utils";
-import { useDimensions } from "Application/hooks";
-import { ChartCircle, ChartLine, ChartRect, ChartSvg, ChartText, ChartTransform } from "Application/components/atoms";
-import { ChartGrid, ChartPanning } from "Application/components/molecules";
-import { ChartContext } from "Application/contexts";
 import { Position } from "Application/types";
+import { useDimensions } from "Application/hooks";
+import { ChartCircle, ChartLine, ChartPolyline, ChartSvg } from "Application/components/atoms";
+import { ChartCursor, ChartGrid, ChartPanning } from "Application/components/molecules";
 
 export interface KpiChartProps {
   // onXLegend()
@@ -54,8 +53,6 @@ function _KpiChart(
     }
   ): JSX.Element
 {
-  const [ position, setPosition ] = useState(Position.ZERO);
-
   return (
     <ChartSvg
       w={width}
@@ -73,7 +70,7 @@ function _KpiChart(
       vx2={1000}
       vy2={1000}
 
-      debug
+      // debug
     >
       <ChartGrid
         x={0}
@@ -96,10 +93,7 @@ function _KpiChart(
         // nearestYLegend={50000}
         renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
       >
-        <ChartPanning
-          onStart={setPosition}
-          onMove={setPosition}
-        >
+        <ChartPanning>
           <ChartLine
             x1={-1.2} y1={-1500}
             x2={7.3} y2={89652}
@@ -107,13 +101,20 @@ function _KpiChart(
             strokeWidth={5}
             strokeLinecap={"round"}
           />
-
-          <ChartCircle
-            r={10}
-            cx={position.x}
-            cy={position.y}
-            fill={"red"}
+          <ChartPolyline
+            points={
+              useMemo(
+                () => (
+                  [[ -1, -1000 ], [ 2, 1000 ], [ 2.5, 15151 ], [ 3, 20000 ], [ 6, 50000 ], [ 7.2, 89000 ]]
+                ), []
+              )
+            }
+            fill={"none"}
+            stroke={"cyan"}
+            strokeWidth={5}
+            strokeLinecap={"round"}
           />
+          <ChartCursor/>
         </ChartPanning>
       </ChartGrid>
     </ChartSvg>

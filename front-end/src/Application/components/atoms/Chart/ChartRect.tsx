@@ -7,6 +7,7 @@ export interface ChartRectProps extends
     | "stroke"
     | "strokeWidth"
     | "strokeLinecap"
+    | "className"
   >
 {
   x: number,
@@ -23,6 +24,7 @@ function _ChartRect(
       stroke,
       strokeWidth,
       strokeLinecap,
+      className,
     }: ChartRectProps
   ): JSX.Element
 {
@@ -38,6 +40,7 @@ function _ChartRect(
           stroke={stroke}
           strokeWidth={strokeWidth}
           strokeLinecap={strokeLinecap}
+          className={className}
         />
       )}
     </ChartContext.Consumer>

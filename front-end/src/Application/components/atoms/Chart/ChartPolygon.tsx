@@ -7,6 +7,7 @@ export interface ChartPolygonProps extends
     | "stroke"
     | "strokeWidth"
     | "strokeLinecap"
+    | "className"
   >
 {
   points: [x: number, y: number][],
@@ -20,6 +21,7 @@ function _ChartPolygon(
       stroke,
       strokeWidth,
       strokeLinecap,
+      className,
     }: ChartPolygonProps
   ): JSX.Element
 {
@@ -37,6 +39,7 @@ function _ChartPolygon(
       stroke={stroke}
       strokeWidth={strokeWidth}
       strokeLinecap={strokeLinecap}
+      className={className}
     />
   );
 }

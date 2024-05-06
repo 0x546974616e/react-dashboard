@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
@@ -69,6 +69,8 @@ function _ChartWithGrid(
       debug
     >
       <ChartGrid
+        debug
+
         x={200}
         y={200}
 
@@ -80,7 +82,13 @@ function _ChartWithGrid(
         offsetXLegend={1}
         nearestXLegend={1.75}
         // nearestXLegend={5.75}
-        renderXLegend={useCallback((v: number) => `${v.toFixed(2)} €`, [])}
+        renderXLegend={
+          useCallback(
+            (v: number, i: number) => (
+              i % 2 ? null : `${v.toFixed(2)} €`
+            ), []
+          )
+        }
 
         minY={-1500}
         maxY={89652}

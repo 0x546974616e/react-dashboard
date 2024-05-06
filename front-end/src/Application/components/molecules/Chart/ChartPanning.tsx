@@ -7,8 +7,8 @@ import {
   useState,
 } from "react";
 
-import { ChartLine, ChartRect } from "Application/components/atoms";
-import { useChartContext } from "Application/contexts";
+import { ChartRect } from "Application/components/atoms";
+import { ChartPanningContext, useChartContext } from "Application/contexts";
 import { Position } from "Application/types";
 import { clamp } from "Application/utils";
 
@@ -21,13 +21,6 @@ export interface ChartPanningProps {
 
 export const ChartPanning = memo(_ChartPanning);
 
-/**
- * Horizontal panning only so far.
- *
- * TODO:
- * - touch-pan-y, touch-pinch-zoom, select-none?
- * - min/max props
- */
 function _ChartPanning(
     { children,
       onStart,
@@ -43,7 +36,7 @@ function _ChartPanning(
   } = useChartContext();
 
   const pointer = useRef<number | null>(null);
-  const [ position, setPosition ] = useState(Position.ZERO);
+  const [ position, setPosition ] = useState<Position | null>(null);
 
   const normalize = useCallback(
     (event: PointerEvent<SVGGElement>): Position | null => {
@@ -74,12 +67,10 @@ function _ChartPanning(
       if (pointer.current == null || event.pointerId == pointer.current) {
         event.currentTarget.setPointerCapture(pointer.current = event.pointerId);
 
-        if (onStart && event.pointerType == "mouse") {
+        if (event.pointerType == "mouse") {
           const position = normalize(event);
-          if (position) {
-            onStart(position);
-            setPosition(position);
-          }
+          position && onStart?.(position);
+          setPosition(position);
         }
       }
     },
@@ -95,35 +86,31 @@ function _ChartPanning(
           pointer.current = null;
         }
 
-        if (onStop) {
-          const position = normalize(event);
-          if (position) {
-            onStop(position);
-            setPosition(position);
-          }
-        }
+        const position = normalize(event);
+        position && onStop?.(position);
+        setPosition(null);
       }
     },
-    [ normalize]
+    [ normalize ]
   );
 
   const _onMove = useCallback(
     (event: PointerEvent<SVGGElement>) => {
       event.preventDefault();
-      if (event.pointerId == pointer.current && onMove) {
+      if (event.pointerId == pointer.current) {
         const position = normalize(event);
-        if (position) {
-          onMove(position);
-          setPosition(position);
-        }
+        position && onMove?.(position);
+        setPosition(position);
       }
     },
-    [ normalize]
+    [ normalize ]
   );
 
   return (
     <g
+      // This prevents horizontal panning.
       className={"chart-panning touch-pan-y touch-pinch-zoom"}
+
       onPointerDown={_onStart}
       onPointerMove={_onMove}
       onPointerUp={_onStop}
@@ -140,15 +127,9 @@ function _ChartPanning(
         stroke={"none"}
       />
 
-      {children}
-
-      <ChartLine
-        x1={position.x} y1={y1}
-        x2={position.x} y2={y2}
-        stroke={"black"}
-        strokeWidth={5}
-        strokeLinecap={"round"}
-      />
+      <ChartPanningContext.Provider value={position}>
+        {children}
+      </ChartPanningContext.Provider>
     </g>
   );
 }

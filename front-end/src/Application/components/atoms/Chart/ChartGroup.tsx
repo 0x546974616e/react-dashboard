@@ -3,16 +3,21 @@ import { ReactNode } from "react";
 export interface ChartGroupProps extends
   Pick<JSX.IntrinsicElements["g"],
     | "children"
+    | "className"
   >
 {
   // Nothing so far.
 }
 
 export function ChartGroup(
-    { children }: ChartGroupProps
+    { children,
+      className,
+    }: ChartGroupProps
   ): JSX.Element
 {
   return (
-    <g>{children}</g>
+    <g className={className}>
+      {children}
+    </g>
   );
 }

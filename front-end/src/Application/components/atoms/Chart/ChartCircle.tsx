@@ -6,6 +6,7 @@ export interface ChartCircleProps extends
     | "fill"
     | "stroke"
     | "strokeWidth"
+    | "className"
   >
 {
   cx: number,
@@ -20,6 +21,7 @@ function _ChartCircle(
       fill,
       stroke,
       strokeWidth,
+      className
     }: ChartCircleProps
   ): JSX.Element
 {
@@ -33,6 +35,7 @@ function _ChartCircle(
           fill={fill}
           stroke={stroke}
           strokeWidth={strokeWidth}
+          className={className}
         />
       )}
     </ChartContext.Consumer>

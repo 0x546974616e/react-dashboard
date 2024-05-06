@@ -28,12 +28,14 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
   return (
     <g className={"chart-grid"}>
       <g className={"chart-grid-rules"}>
-        <ChartRect
-          x={props.x} y={props.y}
-          w={props.w} h={props.h}
-          fill="#00ff0088"
-          strokeWidth={1}
-        />
+        {props.debug && (
+          <ChartRect
+            x={props.x} y={props.y}
+            w={props.w} h={props.h}
+            fill="#00ff0088"
+            strokeWidth={1}
+          />
+        )}
 
         {xLegend.labels.map(
           (legend, index, { length }) => {
@@ -50,14 +52,16 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
                   stroke="red"
                   strokeWidth={1}
                 />
-                <ChartText
-                  x={horizontal}
-                  y={y1 - xLegendMarginBottom}
-                  onLayout={onXLegentLayout}
-                  textAnchor={"middle"}
-                >
-                  {legend}
-                </ChartText>
+                {legend && (
+                  <ChartText
+                    x={horizontal}
+                    y={y1 - xLegendMarginBottom}
+                    onLayout={onXLegentLayout}
+                    textAnchor={"middle"}
+                  >
+                    {legend}
+                  </ChartText>
+                )}
               </Fragment>
             );
           }
@@ -78,16 +82,18 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
                   stroke="red"
                   strokeWidth={1}
                 />
-                <ChartText
-                  x={x1 - yLegendMarginRight}
-                  y={vertical}
-                  onLayout={onYLegentLayout}
-                  textAnchor={"end"}
-                  alignmentBaseline={"middle"}
-                  dominantBaseline={"middle"}
-                >
-                  {legend}
-                </ChartText>
+                {legend && (
+                  <ChartText
+                    x={x1 - yLegendMarginRight}
+                    y={vertical}
+                    onLayout={onYLegentLayout}
+                    textAnchor={"end"}
+                    alignmentBaseline={"middle"}
+                    dominantBaseline={"middle"}
+                  >
+                    {legend}
+                  </ChartText>
+                )}
               </Fragment>
             );
           }

@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useReducer } from "react";
+import { useMemo, useReducer } from "react";
 
 import { useChartContext } from "Application/contexts";
+import { ChartGridRule } from "Application/theme";
+import { Size } from "Application/types";
 
 import { ChartGridProps } from "./ChartGridProps";
 import { computeLegend } from "./computeLegend";
-import { Size } from "Application/types";
-import { ChartGridRule } from "Application/theme";
 
 export function useChartGrid(
     { x, y, w, h,

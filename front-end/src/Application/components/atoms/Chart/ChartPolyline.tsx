@@ -7,6 +7,7 @@ export interface ChartPolylineProps extends
     | "stroke"
     | "strokeWidth"
     | "strokeLinecap"
+    | "className"
   >
 {
   points: [x: number, y: number][],
@@ -20,10 +21,11 @@ function _ChartPolyline(
       stroke,
       strokeWidth,
       strokeLinecap,
+      className,
     }: ChartPolylineProps
   ): JSX.Element
 {
-  const { nx,  ny } = useChartContext();
+  const { nx, ny } = useChartContext();
 
   return (
     <polyline
@@ -37,6 +39,7 @@ function _ChartPolyline(
       stroke={stroke}
       strokeWidth={strokeWidth}
       strokeLinecap={strokeLinecap}
+      className={className}
     />
   );
 }

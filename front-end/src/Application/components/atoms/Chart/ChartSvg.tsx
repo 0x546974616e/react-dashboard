@@ -20,6 +20,8 @@ export interface ChartSvgProps {
   vy2: number,
 
   children?: ReactNode,
+  className?: string,
+
   debug?: boolean,
 }
 
@@ -32,6 +34,7 @@ function _ChartSvg(
       vx1, vy1,
       vx2, vy2,
       children,
+      className,
       debug,
     }: ChartSvgProps
   ): JSX.Element
@@ -41,6 +44,7 @@ function _ChartSvg(
       width={w}
       height={h}
       viewBox={`0 0 ${w} ${h}`}
+      className={className}
     >
       {debug && (
         <g id="debug-rect">

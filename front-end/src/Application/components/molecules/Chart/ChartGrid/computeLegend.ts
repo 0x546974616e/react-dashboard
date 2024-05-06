@@ -4,9 +4,9 @@ export function computeLegend(
     max: number,
     nearest: number,
     offset?: number,
-    render?: (value: number) => string,
+    render?: (value: number, index: number) => string | null,
   ): {
-    labels: string[],
+    labels: (string | null)[],
     maxLength: number,
     min: number,
     max: number,
@@ -26,7 +26,7 @@ export function computeLegend(
   }
 
   let maxLength = 0;
-  const labels: string[] = [];
+  const labels: (string | null)[] = [];
 
   let first = value;
   let last = value;
@@ -34,11 +34,11 @@ export function computeLegend(
   while (value < max + nearest) {
     const label = (
       render
-        ? render(value)
+        ? render(value, labels.length)
         : value.toString()
     );
 
-    if (label.length > maxLength) {
+    if (label && label.length > maxLength) {
       maxLength = label.length;
     }
 

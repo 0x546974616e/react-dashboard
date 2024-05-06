@@ -6,6 +6,7 @@ export interface ChartLineProps extends
     | "stroke"
     | "strokeWidth"
     | "strokeLinecap"
+    | "className"
   >
 {
   x1: number,
@@ -22,6 +23,7 @@ function _ChartLine(
       stroke,
       strokeWidth,
       strokeLinecap,
+      className,
     }: ChartLineProps
   ): JSX.Element
 {
@@ -36,6 +38,7 @@ function _ChartLine(
           stroke={stroke}
           strokeWidth={strokeWidth}
           strokeLinecap={strokeLinecap}
+          className={className}
         />
       )}
     </ChartContext.Consumer>

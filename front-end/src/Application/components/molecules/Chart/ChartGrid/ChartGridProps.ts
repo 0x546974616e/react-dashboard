@@ -21,6 +21,8 @@ export interface ChartGridProps extends
   offsetXLegend?: number,
   offsetYLegend?: number,
 
-  renderXLegend?(value: number): string;
-  renderYLegend?(value: number): string;
+  renderXLegend?(value: number, index: number): string | null;
+  renderYLegend?(value: number, index: number): string | null;
+
+  debug?: boolean,
 }

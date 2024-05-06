@@ -8,6 +8,7 @@ export interface ChartTextProps extends
     | "textAnchor"
     | "dominantBaseline"
     | "alignmentBaseline"
+    | "className"
   >
 {
   x: number,
@@ -26,6 +27,7 @@ function _ChartText(
       textAnchor,
       dominantBaseline,
       alignmentBaseline,
+      className,
     }: ChartTextProps
   ): JSX.Element
 {
@@ -48,6 +50,7 @@ function _ChartText(
           textAnchor={textAnchor}
           alignmentBaseline={alignmentBaseline}
           dominantBaseline={dominantBaseline}
+          className={className}
         >
           {children}
         </text>
