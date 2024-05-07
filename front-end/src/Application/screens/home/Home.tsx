@@ -17,13 +17,15 @@ export const Home = React.memo(_Home);
 
 function _Home(): JSX.Element {
   return (
-    <div>
+    <div className="bg-stone-100">
       <p>Home</p>
       <h1 className="text-3xl font-bold underline text-blue-600">
         Hello world!
       </h1>
       <div className="p-4 flex flex-col gap-4">
-        <KpiChart/>
+        <div className="bg-white rounded-lg shadow p-4 w-full">
+          <KpiChart/>
+        </div>
 
         <ChartWithGrid/>
         <ChartWithNestedTransforms/>

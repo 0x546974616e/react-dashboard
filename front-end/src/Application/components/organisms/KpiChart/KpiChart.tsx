@@ -1,10 +1,15 @@
 import { useCallback, useMemo, useState } from "react";
 
 import { clamp } from "Application/utils";
-import { Position } from "Application/types";
 import { useDimensions } from "Application/hooks";
-import { ChartCircle, ChartLine, ChartPolyline, ChartSvg } from "Application/components/atoms";
-import { ChartCursorCircle, ChartCursorLine, ChartGrid, ChartPanning } from "Application/components/molecules";
+import { ChartPolyline, ChartSvg } from "Application/components/atoms";
+
+import {
+  ChartCursorCircle,
+  ChartCursorLine,
+  ChartGrid,
+  ChartPanning,
+} from "Application/components/molecules";
 
 export interface KpiChartProps {
   // onXLegend()
