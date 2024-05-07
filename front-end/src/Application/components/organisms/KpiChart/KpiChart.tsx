@@ -4,7 +4,7 @@ import { clamp } from "Application/utils";
 import { Position } from "Application/types";
 import { useDimensions } from "Application/hooks";
 import { ChartCircle, ChartLine, ChartPolyline, ChartSvg } from "Application/components/atoms";
-import { ChartCursor, ChartGrid, ChartPanning } from "Application/components/molecules";
+import { ChartCursorCircle, ChartCursorLine, ChartGrid, ChartPanning } from "Application/components/molecules";
 
 export interface KpiChartProps {
   // onXLegend()
@@ -12,7 +12,8 @@ export interface KpiChartProps {
   // (offsetXLength  ^)
 }
 
-const STROKE_WIDTH = 0;
+const INSET = 0;
+const RADIUS = 10;
 
 export function KpiChart(): JSX.Element {
   // A state is used instead a ref to prevent multiple re-render.
@@ -53,16 +54,40 @@ function _KpiChart(
     }
   ): JSX.Element
 {
+  const points1 = useMemo(
+    () => [
+      [ -1, 9000 ],
+      [ 2, 1000 ],
+      [ 2.5, 45151 ],
+      [ 3, 30000 ],
+      [ 6, 50000 ],
+      [ 6.9, 89000 ],
+    ] as [number, number][],
+    []
+  );
+
+  const points2 = useMemo(
+    () => [
+      [ -1.3, -10000 ],
+      [ 2.7, 21000 ],
+      [ 3.8, 42151 ],
+      [ 4.1, 28000 ],
+      [ 4.9, 55000 ],
+      // [ 7.3, 81000 ],
+    ] as [number, number][],
+    []
+  );
+
   return (
     <ChartSvg
       w={width}
       h={height}
 
-      pt={STROKE_WIDTH}
-      pb={STROKE_WIDTH}
+      pt={INSET}
+      pb={INSET}
 
-      pl={STROKE_WIDTH}
-      pr={STROKE_WIDTH}
+      pl={INSET}
+      pr={INSET}
 
       vx1={0}
       vy1={0}
@@ -79,6 +104,9 @@ function _KpiChart(
         w={1000}
         h={1000}
 
+        stroke={"gray"}
+        strokeWidth={1}
+
         minX={-1.2}
         maxX={7.3}
         offsetXLegend={1}
@@ -94,27 +122,45 @@ function _KpiChart(
         renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
       >
         <ChartPanning>
-          <ChartLine
-            x1={-1.2} y1={-1500}
-            x2={7.3} y2={89652}
-            stroke={"magenta"}
-            strokeWidth={5}
-            strokeLinecap={"round"}
-          />
           <ChartPolyline
-            points={
-              useMemo(
-                () => (
-                  [[ -1, -1000 ], [ 2, 1000 ], [ 2.5, 15151 ], [ 3, 20000 ], [ 6, 50000 ], [ 7.2, 89000 ]]
-                ), []
-              )
-            }
+            points={points2}
             fill={"none"}
             stroke={"cyan"}
             strokeWidth={5}
             strokeLinecap={"round"}
+            animated={true}
           />
-          <ChartCursor/>
+          <ChartPolyline
+            points={points1}
+            fill={"none"}
+            stroke={"blue"}
+            strokeWidth={5}
+            strokeLinecap={"round"}
+            animated={true}
+          />
+
+          <ChartCursorLine
+            defaultX={6.3}
+          />
+
+          <ChartCursorCircle
+            defaultX={6.3}
+            points={points2}
+            fill={"cyan"}
+            stroke={"black"}
+            strokeWidth={2}
+            r={RADIUS}
+            interpolate
+          />
+          <ChartCursorCircle
+            defaultX={6.3}
+            points={points1}
+            fill={"blue"}
+            stroke={"black"}
+            strokeWidth={2}
+            r={RADIUS}
+            interpolate
+          />
         </ChartPanning>
       </ChartGrid>
     </ChartSvg>

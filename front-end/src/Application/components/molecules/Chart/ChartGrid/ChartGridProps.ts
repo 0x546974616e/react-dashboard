@@ -2,6 +2,8 @@
 export interface ChartGridProps extends
   Pick<JSX.IntrinsicElements["g"],
     | "children"
+    | "stroke"
+    | "strokeWidth"
   >
 {
   x: number,

@@ -22,14 +22,3 @@
   padding-right: env(safe-area-inset-right);
   padding-left: env(safe-area-inset-left);
 }
-
-polyline { // TMP
-  stroke-dasharray: 10;
-  animation: dash 5s linear infinite;
-}
-
-@keyframes dash { // TMP
-  to {
-    stroke-dashoffset: 1000;
-  }
-}

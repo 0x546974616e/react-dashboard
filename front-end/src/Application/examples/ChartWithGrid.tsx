@@ -77,6 +77,9 @@ function _ChartWithGrid(
         w={700}
         h={600}
 
+        stroke={"red"}
+        strokeWidth={1}
+
         minX={-1.2}
         maxX={7.3}
         offsetXLegend={1}

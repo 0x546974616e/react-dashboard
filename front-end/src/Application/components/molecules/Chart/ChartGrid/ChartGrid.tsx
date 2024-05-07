@@ -25,6 +25,12 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
     onYLegentLayout,
   } = useChartGrid(props);
 
+  const {
+    stroke,
+    strokeWidth,
+    children,
+  } = props;
+
   return (
     <g className={"chart-grid"}>
       <g className={"chart-grid-rules"}>
@@ -37,67 +43,72 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
           />
         )}
 
-        {xLegend.labels.map(
-          (legend, index, { length }) => {
-            const percentage = length <= 1 ? 0 : index / (length - 1);
-            const horizontal = x1 + (x2 - x1) * percentage;
+        <g className={"chart-grid-rules-x"}>
+          {xLegend.labels.map(
+            (legend, index, { length }) => {
+              const percentage = length <= 1 ? 0 : index / (length - 1);
+              const horizontal = x1 + (x2 - x1) * percentage;
 
-            return (
-              <Fragment key={index}>
-                <ChartLine
-                  x1={horizontal}
-                  x2={horizontal}
-                  y1={y1 - xLegendMarginBottom / 2}
-                  y2={y2}
-                  stroke="red"
-                  strokeWidth={1}
-                />
-                {legend && (
-                  <ChartText
-                    x={horizontal}
-                    y={y1 - xLegendMarginBottom}
-                    onLayout={onXLegentLayout}
-                    textAnchor={"middle"}
-                  >
-                    {legend}
-                  </ChartText>
-                )}
-              </Fragment>
-            );
-          }
-        )}
+              return (
+                <Fragment key={index}>
+                  <ChartLine
+                    x1={horizontal}
+                    x2={horizontal}
+                    y1={y1 - xLegendMarginBottom / 2}
+                    y2={y2}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                  />
+                  {legend && (
+                    <ChartText
+                      x={horizontal}
+                      y={y1 - xLegendMarginBottom}
+                      onLayout={onXLegentLayout}
+                      textAnchor={"middle"}
+                    >
+                      {legend}
+                    </ChartText>
+                  )}
+                </Fragment>
+              );
+            }
+          )}
+        </g>
 
-        {yLegend.labels.map(
-          (legend, index, { length }) => {
-            const percentage = 1 - (length <= 1 ? 0 : index / (length - 1));
-            const vertical = y1 + (y2 - y1) * percentage;
+        <g className={"chart-grid-rules-y"}>
+          {yLegend.labels.map(
+            (legend, index, { length }) => {
+              const percentage = 1 - (length <= 1 ? 0 : index / (length - 1));
+              const vertical = y1 + (y2 - y1) * percentage;
 
-            return (
-              <Fragment key={index}>
-                <ChartLine
-                  x1={x1 - yLegendMarginRight / 2}
-                  x2={x2}
-                  y1={vertical}
-                  y2={vertical}
-                  stroke="red"
-                  strokeWidth={1}
-                />
-                {legend && (
-                  <ChartText
-                    x={x1 - yLegendMarginRight}
-                    y={vertical}
-                    onLayout={onYLegentLayout}
-                    textAnchor={"end"}
-                    alignmentBaseline={"middle"}
-                    dominantBaseline={"middle"}
-                  >
-                    {legend}
-                  </ChartText>
-                )}
-              </Fragment>
-            );
-          }
-        )}
+              return (
+                <Fragment key={index}>
+                  <ChartLine
+                    x1={x1 - yLegendMarginRight / 2}
+                    x2={x2}
+                    y1={vertical}
+                    y2={vertical}
+                    stroke={stroke}
+                    strokeWidth={strokeWidth}
+                    strokeDasharray={"3"}
+                  />
+                  {legend && (
+                    <ChartText
+                      x={x1 - yLegendMarginRight}
+                      y={vertical}
+                      onLayout={onYLegentLayout}
+                      textAnchor={"end"}
+                      alignmentBaseline={"middle"}
+                      dominantBaseline={"middle"}
+                    >
+                      {legend}
+                    </ChartText>
+                  )}
+                </Fragment>
+              );
+            }
+          )}
+        </g>
       </g>
 
       <ChartTransform
@@ -110,7 +121,7 @@ function _ChartGrid(props: ChartGridProps): JSX.Element {
         vy1={yLegend.max}
         vy2={yLegend.min}
       >
-        {props.children}
+        {children}
       </ChartTransform>
     </g>
   );
