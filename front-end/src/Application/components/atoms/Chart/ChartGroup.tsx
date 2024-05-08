@@ -6,17 +6,21 @@ export interface ChartGroupProps extends
     | "className"
   >
 {
-  // Nothing so far.
+  name?: string,
 }
 
 export function ChartGroup(
     { children,
       className,
+      name,
     }: ChartGroupProps
   ): JSX.Element
 {
   return (
-    <g className={className}>
+    <g
+      data-name={name}
+      className={className}
+    >
       {children}
     </g>
   );

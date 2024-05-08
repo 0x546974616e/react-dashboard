@@ -8,7 +8,7 @@ import { Position } from "Application/types";
 
 const STROKE_WIDTH = 10;
 
-export function ChartWithGrid(): JSX.Element {
+export function ChartWithGridExample(): JSX.Element {
   // A state is used instead a ref to prevent multiple re-render.
   const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
 
@@ -31,7 +31,7 @@ export function ChartWithGrid(): JSX.Element {
       )}
 
       {width != null && (
-        <_ChartWithGrid
+        <_ChartWithGridExample
           width={width}
           height={height}
         />
@@ -40,7 +40,7 @@ export function ChartWithGrid(): JSX.Element {
   );
 }
 
-function _ChartWithGrid(
+function _ChartWithGridExample(
     { width, height }: {
       width: number,
       height: number,

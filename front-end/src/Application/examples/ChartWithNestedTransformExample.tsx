@@ -11,7 +11,7 @@ import {
   ChartTransform,
 } from "Application/components/atoms";
 
-export function ChartWithNestedTransforms(): JSX.Element {
+export function ChartWithNestedTransformsExample(): JSX.Element {
   // A state is used instead a ref to prevent multiple re-render.
   const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
 
@@ -34,7 +34,7 @@ export function ChartWithNestedTransforms(): JSX.Element {
       )}
 
       {width != null && (
-        <_ChartWithNestedTransform
+        <_ChartWithNestedTransformExample
           width={width}
           height={height}
         />
@@ -43,7 +43,7 @@ export function ChartWithNestedTransforms(): JSX.Element {
   );
 }
 
-function _ChartWithNestedTransform(
+function _ChartWithNestedTransformExample(
     { width, height }: {
       width: number,
       height: number,

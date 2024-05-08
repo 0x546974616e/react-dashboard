@@ -1,7 +1,8 @@
-import { useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
+import { Dimensions, Position, Position2 } from "Application/types";
 import { ChartPolyline, ChartSvg } from "Application/components/atoms";
 
 import {
@@ -11,16 +12,29 @@ import {
   ChartPanning,
 } from "Application/components/molecules";
 
-export interface KpiChartProps {
-  // onXLegend()
-  // nearestXLegend= [nearest, offset] | nearest
-  // (offsetXLength  ^)
-}
+import { histogramMetrics } from "./histogramMetrics";
+import { KpiHistogramBar } from "./KpiHistogramBar";
 
 const INSET = 0;
 const RADIUS = 10;
 
-export function KpiChart(): JSX.Element {
+export interface KpiChartProps {
+  histogram1: Position2[],
+  histogram2: Position2[],
+
+  onCurrent1Change?(position: Position | null): void,
+  onCurrent2Change?(position: Position | null): void,
+}
+
+export const KpiChart = memo(_KpiChart);
+
+enum Display {
+  Histogram,
+  Cumulative,
+  Combined,
+}
+
+function _KpiChart(props: KpiChartProps): JSX.Element {
   // A state is used instead a ref to prevent multiple re-render.
   const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
 
@@ -43,7 +57,9 @@ export function KpiChart(): JSX.Element {
       )}
 
       {width != null && (
-        <_KpiChart
+        <_KpiGrid
+          {...props}
+          display={Display.Combined}
           width={width}
           height={height}
         />
@@ -52,36 +68,53 @@ export function KpiChart(): JSX.Element {
   );
 }
 
-function _KpiChart(
-    { width, height }: {
-      width: number,
-      height: number,
-    }
+function _KpiGrid(
+    { histogram1,
+      histogram2,
+
+      onCurrent1Change,
+      onCurrent2Change,
+
+      display,
+
+      width, height
+    }: (
+      & KpiChartProps
+      & Dimensions
+      & {
+        display: Display,
+      }
+    )
   ): JSX.Element
 {
-  const points1 = useMemo(
-    () => [
-      [ -1, 9000 ],
-      [ 2, 1000 ],
-      [ 2.5, 45151 ],
-      [ 3, 30000 ],
-      [ 6, 50000 ],
-      [ 6.9, 89000 ],
-    ] as [number, number][],
-    []
+  const metrics1 = useMemo(() => histogramMetrics(histogram1), [ histogram1 ]);
+  const metrics2 = useMemo(() => histogramMetrics(histogram2), [ histogram2 ]);
+
+  const dada = useCallback((v: number) => `${v.toFixed(2)} €`, []);
+  const fafa = useCallback((v: number, i: number) => i % 3 > 0 ? null : `${v.toFixed(2)} km/s`, []);
+
+  const minMax = useMemo(
+    () => {
+      switch (display) {
+        case Display.Histogram:
+          return metrics1?.histogram;
+        case Display.Cumulative:
+          return metrics1?.cumulative;
+        case Display.Combined:
+          return metrics1?.combined;
+      }
+    }, [
+      metrics1,
+      metrics2,
+      display,
+    ]
   );
 
-  const points2 = useMemo(
-    () => [
-      [ -1.3, -10000 ],
-      [ 2.7, 21000 ],
-      [ 3.8, 42151 ],
-      [ 4.1, 28000 ],
-      [ 4.9, 55000 ],
-      // [ 7.3, 81000 ],
-    ] as [number, number][],
-    []
-  );
+  if (!minMax) {
+    return (
+      <div><code>null</code></div>
+    );
+  }
 
   return (
     <ChartSvg
@@ -112,37 +145,47 @@ function _KpiChart(
         stroke={"gray"}
         strokeWidth={1}
 
-        minX={-1.2}
-        maxX={7.3}
+        minX={minMax.limits[0][0]}
+        maxX={minMax.limits[1][0]}
         offsetXLegend={1}
         nearestXLegend={1.75}
         // nearestXLegend={5.75}
-        renderXLegend={useCallback((v: number) => `${v.toFixed(2)} €`, [])}
+        renderXLegend={dada}
 
-        minY={-1500}
-        maxY={89652}
+        minY={minMax.limits[0][1]}
+        maxY={minMax.limits[1][1]}
         offsetYLegend={23}
         nearestYLegend={12345}
         // nearestYLegend={50000}
-        renderYLegend={useCallback((v: number) => `${v.toFixed(2)} km/s`, [])}
+        renderYLegend={fafa}
       >
         <ChartPanning>
-          <ChartPolyline
-            points={points2}
-            fill={"none"}
-            stroke={"cyan"}
-            strokeWidth={5}
-            strokeLinecap={"round"}
-            animated={true}
+          <KpiHistogramBar
+            histogram1={histogram1}
+            histogram2={histogram2}
           />
-          <ChartPolyline
-            points={points1}
-            fill={"none"}
-            stroke={"blue"}
-            strokeWidth={5}
-            strokeLinecap={"round"}
-            animated={true}
-          />
+
+          {display != Display.Cumulative && metrics1 && (
+            <ChartPolyline
+              points={metrics1.histogram.positions}
+              fill={"none"}
+              stroke={"cyan"}
+              strokeWidth={5}
+              strokeLinecap={"round"}
+              animated={true}
+            />
+          )}
+
+          {display != Display.Histogram && metrics1 && (
+            <ChartPolyline
+              points={metrics1.cumulative.positions}
+              fill={"none"}
+              stroke={"cyan"}
+              strokeWidth={5}
+              strokeLinecap={"round"}
+              animated={true}
+            />
+          )}
 
           <ChartCursorLine
             defaultX={6.3}
@@ -150,17 +193,9 @@ function _KpiChart(
 
           <ChartCursorCircle
             defaultX={6.3}
-            points={points2}
+            points={display == Display.Cumulative ? metrics1!.cumulative.positions : metrics1!.histogram.positions}
+            onChange={onCurrent2Change}
             fill={"cyan"}
-            stroke={"black"}
-            strokeWidth={2}
-            r={RADIUS}
-            interpolate
-          />
-          <ChartCursorCircle
-            defaultX={6.3}
-            points={points1}
-            fill={"blue"}
             stroke={"black"}
             strokeWidth={2}
             r={RADIUS}
