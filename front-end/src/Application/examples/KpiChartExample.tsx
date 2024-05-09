@@ -1,24 +1,27 @@
 import { useState } from "react";
 
 import { KpiChart } from "Application/components";
-import { Position, Position2 } from "Application/types";
+import { Position } from "Application/types";
 
-const histogram1: Position2[] = [
-  [ -1, 9000 ],
-  [ 1.2, -2222 ],
-  [ 2.2, 45151 ],
-  [ 3, 30000 ],
-  [ 6, 50000 ],
-  [ 6.9, 89000 ],
+const histogram1: Position[] = [
+  // { x: -1, y: 9000 },
+  // { x: 1.2, y: -2222 },
+  { x: 2.8, y: 45151 },
+  { x: 3, y: 30000 },
+  // { x: 4.5, y: 30010 },
+  { x: 4.6, y: 35010 },
+  // { x: 4.9, y: 5800 },
+  { x: 6, y: 50000 },
+  { x: 6.9, y: 89000 },
 ];
 
-const histogram2: Position2[] = [
-  [ -1.3, -10000 ],
-  [ 2.7, 21000 ],
-  [ 3.8, 42151 ],
-  [ 4.1, 28000 ],
-  [ 4.9, 55000 ],
-  // [ 7.3, 81000 ],
+const histogram2: Position[] = [
+  // { x: -1.3, y: -10000 },
+  // { x: 2.7, y: 21000 },
+  // { x: 3.8, y: 42151 },
+  // { x: 4.1, y: 28000 },
+  // { x: 4.9, y: 55000 },
+  // { x: 7.3, y: 81000 },
 ];
 
 export function KpiChartExample(): JSX.Element {

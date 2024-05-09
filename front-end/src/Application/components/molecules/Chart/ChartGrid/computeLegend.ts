@@ -13,7 +13,7 @@ export function computeLegend(
   }
 {
   nearest = Math.abs(nearest);
-  offset = Math.min(nearest, Math.abs(offset ?? 0))
+  offset = Math.min(nearest, Math.abs(offset ?? 0));
 
   let value = Math.floor(min / nearest) * nearest;
 

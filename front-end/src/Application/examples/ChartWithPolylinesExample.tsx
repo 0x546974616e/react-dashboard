@@ -2,7 +2,7 @@ import { memo, useCallback, useMemo, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
-import { Dimensions, Position2 } from "Application/types";
+import { Dimensions, Interpolation, Position } from "Application/types";
 import { ChartPolyline, ChartSvg } from "Application/components/atoms";
 
 import {
@@ -55,24 +55,24 @@ function __KpiChart(
 {
 
   const histogram1 = useMemo(
-    (): Position2[] => [
-      [ -1, 9000 ],
-      [ 2, 1000 ],
-      [ 2.5, 45151 ],
-      [ 3, 30000 ],
-      [ 6, 50000 ],
-      [ 6.9, 89000 ],
+    (): Position[] => [
+      { x: -1, y: 9000 },
+      { x: 2, y: 1000 },
+      { x: 2.5, y: 45151 },
+      { x: 3, y: 30000 },
+      { x: 6, y: 50000 },
+      { x: 6.9, y: 89000 },
     ], []
   );
 
   const histogram2 = useMemo(
-    (): Position2[] => [
-      [ -1.3, -10000 ],
-      [ 2.7, 21000 ],
-      [ 3.8, 42151 ],
-      [ 4.1, 28000 ],
-      [ 4.9, 55000 ],
-      // [ 7.3, 81000 ],
+    (): Position[] => [
+      { x: -1.3, y: -10000 },
+      { x: 2.7, y: 21000 },
+      { x: 3.8, y: 42151 },
+      { x: 4.1, y: 28000 },
+      { x: 4.9, y: 55000 },
+      // { x: 7.3, y: 81000 },
     ], []
   );
 
@@ -148,7 +148,7 @@ function __KpiChart(
             stroke={"black"}
             strokeWidth={2}
             r={RADIUS}
-            interpolate
+            interpolation={Interpolation.Linear}
           />
           <ChartCursorCircle
             defaultX={6.3}
@@ -157,7 +157,7 @@ function __KpiChart(
             stroke={"black"}
             strokeWidth={2}
             r={RADIUS}
-            interpolate
+            interpolation={Interpolation.Linear}
           />
         </ChartPanning>
       </ChartGrid>

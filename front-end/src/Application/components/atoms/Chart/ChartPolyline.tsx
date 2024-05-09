@@ -1,5 +1,6 @@
 import { memo, useMemo, useState } from "react";
 import { useChartContext } from "Application/contexts";
+import { Position } from "Application/types";
 
 export interface ChartPolylineProps extends
   Pick<JSX.IntrinsicElements["polyline"],
@@ -12,7 +13,7 @@ export interface ChartPolylineProps extends
     | "className"
   >
 {
-  points: [x: number, y: number][],
+  points: Position[],
 
   /**
    * Animates stroke.
@@ -48,7 +49,7 @@ function _ChartPolyline(
       ref={setElement}
       points={
         useMemo(
-          () => points.map(([ x, y ]) => `${nx(x)},${ny(y)}`).join(" "),
+          () => points.map(({ x, y }) => `${nx(x)},${ny(y)}`).join(" "),
           [ points, nx, ny ]
         )
       }

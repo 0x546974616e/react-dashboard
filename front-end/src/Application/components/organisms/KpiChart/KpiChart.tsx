@@ -1,26 +1,25 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
-import { Dimensions, Position, Position2 } from "Application/types";
+import { Dimensions, Position } from "Application/types";
 import { ChartPolyline, ChartSvg } from "Application/components/atoms";
 
 import {
   ChartCursorCircle,
   ChartCursorLine,
+  ChartCurve,
   ChartGrid,
-  ChartHistograms,
+  ChartHistogram,
   ChartPanning,
 } from "Application/components/molecules";
-
-import { histogramMetrics } from "./histogramMetrics";
 
 const INSET = 0;
 const RADIUS = 10;
 
 export interface KpiChartProps {
-  histogram1: Position2[],
-  histogram2: Position2[],
+  histogram1: Position[],
+  histogram2: Position[],
 
   onCurrent1Change?(position: Position | null): void,
   onCurrent2Change?(position: Position | null): void,
@@ -87,34 +86,8 @@ function _KpiGrid(
     )
   ): JSX.Element
 {
-  const metrics1 = useMemo(() => histogramMetrics(histogram1), [ histogram1 ]);
-  const metrics2 = useMemo(() => histogramMetrics(histogram2), [ histogram2 ]);
-
   const dada = useCallback((v: number) => `${v.toFixed(2)} €`, []);
   const fafa = useCallback((v: number, i: number) => i % 3 > 0 ? null : `${v.toFixed(2)} km/s`, []);
-
-  const minMax = useMemo(
-    () => {
-      switch (display) {
-        case Display.Histogram:
-          return metrics1?.histogram;
-        case Display.Cumulative:
-          return metrics1?.cumulative;
-        case Display.Combined:
-          return metrics1?.combined;
-      }
-    }, [
-      metrics1,
-      metrics2,
-      display,
-    ]
-  );
-
-  if (!minMax) {
-    return (
-      <div><code>null</code></div>
-    );
-  }
 
   return (
     <ChartSvg
@@ -145,62 +118,65 @@ function _KpiGrid(
         stroke={"gray"}
         strokeWidth={1}
 
-        minX={minMax.limits[0][0]}
-        maxX={minMax.limits[1][0]}
+        // minX={2.75}
+        minX={-1.2}
+        maxX={7.3}
         offsetXLegend={1}
         nearestXLegend={1.75}
         // nearestXLegend={5.75}
         renderXLegend={dada}
 
-        minY={minMax.limits[0][1]}
-        maxY={minMax.limits[1][1]}
+        minY={-10000}
+        maxY={95000}
         offsetYLegend={23}
         nearestYLegend={12345}
         // nearestYLegend={50000}
         renderYLegend={fafa}
       >
         <ChartPanning>
-          <ChartHistograms
-            histogram1={histogram1}
-            histogram2={histogram2}
+          {/* <ChartPolyline
+            points={histogram1}
+            fill={"none"}
+            stroke={"cyan"}
+            strokeWidth={5}
+            strokeLinecap={"round"}
+            animated={true}
+          /> */}
+
+          <ChartHistogram
+            points={histogram1}
+            color={"cyan"}
+            boxMargin={5}
+            boxOffset={5}
+            panningFollow={true}
+            panningDefaultX={6.3}
+            panningOnChange={onCurrent1Change}
           />
-
-          {display != Display.Cumulative && metrics1 && (
-            <ChartPolyline
-              points={metrics1.histogram.positions}
-              fill={"none"}
-              stroke={"cyan"}
-              strokeWidth={5}
-              strokeLinecap={"round"}
-              animated={true}
-            />
-          )}
-
-          {display != Display.Histogram && metrics1 && (
-            <ChartPolyline
-              points={metrics1.cumulative.positions}
-              fill={"none"}
-              stroke={"cyan"}
-              strokeWidth={5}
-              strokeLinecap={"round"}
-              animated={true}
-            />
-          )}
 
           <ChartCursorLine
             defaultX={6.3}
           />
 
-          <ChartCursorCircle
+          <ChartCurve
+            points={histogram1}
+            strokeColor={"blue"}
+            strokeWidth={5}
+            // panningFollow={true}
+            panningDefaultX={6.3}
+            panningInterpolate={true}
+            panningOnChange={onCurrent1Change}
+          />
+
+          {/* <ChartCursorCircle
             defaultX={6.3}
-            points={display == Display.Cumulative ? metrics1!.cumulative.positions : metrics1!.histogram.positions}
+            points={histogram1}
             onChange={onCurrent2Change}
             fill={"cyan"}
             stroke={"black"}
             strokeWidth={2}
             r={RADIUS}
             interpolate
-          />
+          /> */}
         </ChartPanning>
       </ChartGrid>
     </ChartSvg>

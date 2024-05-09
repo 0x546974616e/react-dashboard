@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 
 import { ChartCircle, ChartCircleProps } from "Application/components/atoms";
 import { useChartPanningContext } from "Application/contexts";
-import { Position } from "Application/types";
+import { Interpolation, Position } from "Application/types";
 
 export interface ChartCursorCircleProps extends
   Pick<ChartCircleProps,
@@ -12,9 +12,9 @@ export interface ChartCursorCircleProps extends
     | "strokeWidth"
   >
 {
-  points: [x: number, y: number][],
+  points: Position[],
   defaultX?: Position["x"],
-  interpolate?: boolean,
+  interpolation?: Interpolation,
   onChange?(position: Position | null): void,
 }
 
@@ -24,7 +24,7 @@ export interface ChartCursorCircleProps extends
 export function ChartCursorCircle(
     { points,
       defaultX,
-      interpolate,
+      interpolation,
       onChange,
       r,
       fill,
@@ -45,12 +45,12 @@ export function ChartCursorCircle(
         return null;
       }
 
-      return Position.findByX(
-        points, position?.x! ?? defaultX, interpolate
+      return Position.findNearestByX(
+        points, position?.x! ?? defaultX, interpolation
       );
     }, [
       onChange,
-      interpolate,
+      interpolation,
       position?.x ?? defaultX,
       points,
     ]

@@ -1,4 +1,4 @@
-import { Position2 } from "./Position2";
+import { Interpolation } from "./Interpolation";
 
 export interface Position {
   x: number,
@@ -8,17 +8,13 @@ export interface Position {
 export namespace Position {
   export const ZERO: Readonly<Position> = { x: 0, y: 0 };
 
-  export function fromTuple([ x, y ]: Position2): Position {
-    return { x, y };
-  }
-
   /**
    * TODO: So far `positions` is an array.
    */
-  export function findByX(
-      positions: Position2[],
-      x: Position["x"],
-      lerp?: boolean,
+  export function findNearestByX(
+      positions: Position[],
+      givenX: Position["x"],
+      interpolation?: Interpolation,
     ): Position | null
   {
     const length = positions.length;
@@ -28,9 +24,7 @@ export namespace Position {
     }
 
     if (length <= 1) {
-      return Position.fromTuple(
-        positions[0]!
-      );
+      return positions[0]!;
     }
 
     let low = 0;
@@ -40,23 +34,32 @@ export namespace Position {
     while (low <= high) {
       const mid = Math.floor((high + low) / 2);
 
-      const [ x1, y1 ] = positions[mid]!;
-      const [ x2, y2 ] = positions[mid + 1]!;
+      const { x: x1, y: y1 } = positions[mid]!;
+      const { x: x2, y: y2 } = positions[mid + 1]!;
 
-      if (x1 <= x && x < x2) {
-        if (lerp) {
-          return {
-            x, y: y1 + (y2 - y1) * ((x - x1) / (x2 - x1)),
-          };
-        }
-        else {
-          return {
-            x: x1, y: y1,
-          };
+      if (x1 <= givenX && givenX < x2) {
+        switch (interpolation) {
+          case Interpolation.Linear:
+            return {
+              x: givenX,
+              y: y1 + (y2 - y1) * ((givenX - x1) / (x2 - x1)),
+            };
+
+          case Interpolation.Horizontal:
+            return {
+              x: givenX,
+              y: y2
+            };
+
+          default:
+            return {
+              x: x1,
+              y: y1,
+            };
         }
       }
 
-      if (x1 < x) {
+      if (x1 < givenX) {
         low = mid + 1;
       }
       else {
@@ -64,9 +67,20 @@ export namespace Position {
       }
     }
 
+    if (low <= 0) {
+      const position = positions[0]!;
+
+      if (interpolation == Interpolation.Horizontal) {
+        return {
+          x: position.x,
+          y: positions[1]!.y,
+        };
+      }
+
+      return position;
+    }
+
     // Return the nearest position.
-    return Position.fromTuple(
-      positions[low <= 0 ? 0 : length - 1]!
-    );
+    return positions[length - 1]!;
   }
 }

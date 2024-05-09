@@ -1,5 +1,6 @@
 export * from "./ChartCursorCircle";
 export * from "./ChartCursorLine";
+export * from "./ChartCurve";
 export * from "./ChartGrid";
-export * from "./ChartHistograms";
+export * from "./ChartHistogram";
 export * from "./ChartPanning";
