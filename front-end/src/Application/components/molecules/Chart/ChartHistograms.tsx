@@ -1,18 +1,23 @@
 import { ChartRect } from "Application/components/atoms";
 import { ChartContext } from "Application/contexts";
+import { ChartHistogramsTheme } from "Application/theme";
 import { Position2 } from "Application/types";
 
-export interface KpiHistogramBarProps {
+export interface ChartHistogramsProps {
   histogram1: Position2[],
   histogram2: Position2[] | null,
 }
 
-export function KpiHistogramBar(
+const SCALE = 0.8;
+
+export function ChartHistograms(
     { histogram1,
       histogram2,
-    }: KpiHistogramBarProps
+    }: ChartHistogramsProps
   ): JSX.Element
 {
+  // const dada = (histogram2 ? 1 : 0) * iw(ChartHistogramsTheme.dada);
+
   return (
     <ChartContext.Consumer>
       {({ nx, ny, nw, nh, iw, ih }) => (
@@ -27,17 +32,13 @@ export function KpiHistogramBar(
                 const [ bx, by ] = histogram[0]!;
                 const [ cx, cy ] = histogram[index - 1]!;
 
-                // if (y < by)
-
                 return (
                   <ChartRect
                     key={index}
-                    x={cx}
+                    x={cx + iw(ChartHistogramsTheme.paddingHorizontal)}
                     y={by}
-                    // y={cy}
-                    w={x - cx}
+                    w={(x - cx) - iw(2 * ChartHistogramsTheme.paddingHorizontal)}
                     h={y - by}
-                    // h={y - cy}
                     fill="red"
                     stroke="black"
                   />

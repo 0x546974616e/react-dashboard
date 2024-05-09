@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 
 export interface ChartGroupProps extends
   Pick<JSX.IntrinsicElements["g"],
@@ -10,9 +9,9 @@ export interface ChartGroupProps extends
 }
 
 export function ChartGroup(
-    { children,
+    { name,
+      children,
       className,
-      name,
     }: ChartGroupProps
   ): JSX.Element
 {

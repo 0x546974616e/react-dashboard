@@ -1,6 +1,4 @@
-import { ReactNode, memo, useMemo } from "react";
-import { ChartContext } from "Application/contexts";
-import { div0 } from "Application/utils";
+import { ReactNode, memo } from "react";
 import { ChartTransform } from "./ChartTransform";
 
 export interface ChartSvgProps {

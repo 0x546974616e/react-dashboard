@@ -1,7 +1,7 @@
 import { useMemo, useReducer } from "react";
 
 import { useChartContext } from "Application/contexts";
-import { ChartGridRule } from "Application/theme";
+import { ChartGridRuleTheme } from "Application/theme";
 import { Size } from "Application/types";
 
 import { ChartGridProps } from "./ChartGridProps";
@@ -26,11 +26,11 @@ export function useChartGrid(
   const [ maxYLayout, setMaxYLayout ] = useReducer(Size.max, Size.ZERO);
 
   return {
-    xLegendMarginBottom: ih(ChartGridRule.xLegendMarginBottom),
-    yLegendMarginRight: iw(ChartGridRule.yLegendMarginRight),
+    xLegendMarginBottom: ih(ChartGridRuleTheme.xLegendMarginBottom),
+    yLegendMarginRight: iw(ChartGridRuleTheme.yLegendMarginRight),
 
-    x1: x + iw(maxYLayout.width + ChartGridRule.yLegendMarginRight),
-    y1: y + ih(maxXLayout.height + ChartGridRule.xLegendMarginBottom),
+    x1: x + iw(maxYLayout.width + ChartGridRuleTheme.yLegendMarginRight),
+    y1: y + ih(maxXLayout.height + ChartGridRuleTheme.xLegendMarginBottom),
 
     x2: x + w - iw(maxXLayout.width) / 2,
     y2: y + h - ih(maxYLayout.height) / 2,

@@ -1,6 +1,7 @@
+import { useState } from "react";
+
 import { KpiChart } from "Application/components";
 import { Position, Position2 } from "Application/types";
-import { useMemo, useState } from "react";
 
 const histogram1: Position2[] = [
   [ -1, 9000 ],

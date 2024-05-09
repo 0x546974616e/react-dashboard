@@ -9,11 +9,11 @@ import {
   ChartCursorCircle,
   ChartCursorLine,
   ChartGrid,
+  ChartHistograms,
   ChartPanning,
 } from "Application/components/molecules";
 
 import { histogramMetrics } from "./histogramMetrics";
-import { KpiHistogramBar } from "./KpiHistogramBar";
 
 const INSET = 0;
 const RADIUS = 10;
@@ -160,7 +160,7 @@ function _KpiGrid(
         renderYLegend={fafa}
       >
         <ChartPanning>
-          <KpiHistogramBar
+          <ChartHistograms
             histogram1={histogram1}
             histogram2={histogram2}
           />

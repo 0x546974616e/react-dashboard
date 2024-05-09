@@ -1,17 +1,19 @@
+// import React from "react";
+
 import { NavigationLayout } from "Application/layouts";
 import { Home, Notifications, Settings } from "Application/screens";
-import React from "react";
+
 import {
-  BrowserRouter,
+  // BrowserRouter,
   createBrowserRouter,
   RouterProvider,
-  Route,
-  Routes,
-  Link,
-  NavLink,
-  Outlet,
+  // Route,
+  // Routes,
+  // Link,
+  // NavLink,
+  // Outlet,
   Navigate,
-  useRouteError,
+  // useRouteError,
 } from "react-router-dom";
 
 const router = createBrowserRouter([

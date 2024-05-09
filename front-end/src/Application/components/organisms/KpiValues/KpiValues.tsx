@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useTransition } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { LuBarChartBig, LuInfo, LuMedal } from "react-icons/lu";
 import { KpiFeature, KpiFormat, KpiRelation } from "Application/types";
 import "./KpiValues.scss";

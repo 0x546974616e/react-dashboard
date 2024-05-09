@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
-import { LogUpdates, clamp } from "Application/utils";
-import { useDimensions } from "Application/hooks";
+import React from "react";
+import { LogUpdates } from "Application/utils";
+// import { useDimensions } from "Application/hooks";
 
 export const Notifications = React.memo(_Notifications);
 
@@ -16,15 +16,15 @@ function _Notifications(): JSX.Element {
 }
 
 export function Dada(): JSX.Element {
-  const { height: screenHeight } = useDimensions();
-  const height = clamp(screenHeight / 2, 200, 600);
-  const [ width, setWidth ] = useState(0);
+  // const { height: screenHeight } = useDimensions();
+  // const height = clamp(screenHeight / 2, 200, 600);
+  // const [ width, setWidth ] = useState(0);
 
-  const vw = 130;
-  const vh = 250;
-  const stroke = 20;
+  // const vw = 130;
+  // const vh = 250;
+  // const stroke = 20;
 
-  const [ p, setP ] = useState<{ x: number, y: number }>({ x: vw * 0.75, y: 0 });
+  // const [ p, setP ] = useState<{ x: number, y: number }>({ x: vw * 0.75, y: 0 });
 
   return (
     <div className="p-4 bg-stone-50 rounded-md hover:bg-stone-100">

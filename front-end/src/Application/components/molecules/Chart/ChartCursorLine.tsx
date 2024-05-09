@@ -1,5 +1,3 @@
-import { Fragment } from "react/jsx-runtime";
-
 import { Position } from "Application/types";
 import { ChartLine } from "Application/components/atoms";
 import { ChartPanningContext, useChartContext } from "Application/contexts";
