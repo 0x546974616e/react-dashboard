@@ -6,7 +6,8 @@ import { Position } from "Application/types";
 const histogram1: Position[] = [
   // { x: -1, y: 9000 },
   // { x: 1.2, y: -2222 },
-  { x: 2.8, y: 45151 },
+  { x: 2.2, y: 45151 },
+  // { x: 2.8, y: 45151 },
   { x: 3, y: 30000 },
   // { x: 4.5, y: 30010 },
   { x: 4.6, y: 35010 },

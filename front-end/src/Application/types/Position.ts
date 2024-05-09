@@ -1,4 +1,5 @@
-import { Interpolation } from "./Interpolation";
+import { clamp } from "Application/utils";
+import { Interpolation, InterpolationOptions } from "./Interpolation";
 
 export interface Position {
   x: number,
@@ -15,6 +16,7 @@ export namespace Position {
       positions: Position[],
       givenX: Position["x"],
       interpolation?: Interpolation,
+      interpolationOptions?: InterpolationOptions,
     ): Position | null
   {
     const length = positions.length;
@@ -46,9 +48,24 @@ export namespace Position {
             };
 
           case Interpolation.Horizontal:
+            let x = givenX;
+
+            if (interpolationOptions) {
+              let {
+                horizontalMargin: margin,
+                horizontalOffset: offset,
+              } = interpolationOptions;
+
+              if (margin || offset) {
+                margin ??= 0;
+                offset ??= 0;
+
+                x = clamp(x, x1 + margin + offset, x2 - margin + offset);
+              }
+            }
+
             return {
-              x: givenX,
-              y: y2
+              x, y: y2
             };
 
           default:
@@ -67,20 +84,52 @@ export namespace Position {
       }
     }
 
+    // Return the nearest position.
     if (low <= 0) {
       const position = positions[0]!;
 
       if (interpolation == Interpolation.Horizontal) {
+        let x = position.x;
+
+        if (interpolationOptions) {
+          let {
+            horizontalMargin: margin,
+            horizontalOffset: offset,
+          } = interpolationOptions;
+
+          if (margin) x += margin;
+          if (offset) x += offset;
+        }
+
         return {
-          x: position.x,
-          y: positions[1]!.y,
+          x, y: positions[1]!.y,
         };
       }
 
       return position;
     }
+    else {
+      const position = positions[length - 1]!;
 
-    // Return the nearest position.
-    return positions[length - 1]!;
+      if (interpolation == Interpolation.Horizontal) {
+        let x = position.x;
+
+        if (interpolationOptions) {
+          let {
+            horizontalMargin: margin,
+            horizontalOffset: offset,
+          } = interpolationOptions;
+
+          if (margin) x -= margin;
+          if (offset) x += offset;
+        }
+
+        return {
+          x, y: position.y,
+        };
+      }
+
+      return position;
+    }
   }
 }

@@ -134,23 +134,15 @@ function _KpiGrid(
         renderYLegend={fafa}
       >
         <ChartPanning>
-          {/* <ChartPolyline
-            points={histogram1}
-            fill={"none"}
-            stroke={"cyan"}
-            strokeWidth={5}
-            strokeLinecap={"round"}
-            animated={true}
-          /> */}
-
           <ChartHistogram
             points={histogram1}
             color={"cyan"}
-            boxMargin={5}
-            boxOffset={5}
+            baseLine={0}
+            boxMargin={20}
+            // boxOffset={10}
             panningFollow={true}
             panningDefaultX={6.3}
-            panningOnChange={onCurrent1Change}
+            panningOnChange={onCurrent2Change}
           />
 
           <ChartCursorLine
@@ -161,22 +153,11 @@ function _KpiGrid(
             points={histogram1}
             strokeColor={"blue"}
             strokeWidth={5}
-            // panningFollow={true}
+            panningFollow={true}
             panningDefaultX={6.3}
             panningInterpolate={true}
             panningOnChange={onCurrent1Change}
           />
-
-          {/* <ChartCursorCircle
-            defaultX={6.3}
-            points={histogram1}
-            onChange={onCurrent2Change}
-            fill={"cyan"}
-            stroke={"black"}
-            strokeWidth={2}
-            r={RADIUS}
-            interpolate
-          /> */}
         </ChartPanning>
       </ChartGrid>
     </ChartSvg>

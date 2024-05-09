@@ -62,12 +62,16 @@ function _ChartHistogram(
         <ChartCursorCircle
           points={points}
           defaultX={panningDefaultX}
-          interpolation={Interpolation.Horizontal}
           onChange={panningOnChange}
           fill={color}
           stroke={"black"}
           strokeWidth={1}
           r={ChartHistogramTheme.cursorRadius}
+          interpolation={Interpolation.Horizontal}
+          interpolationOptions={{
+            horizontalMargin: margin,
+            horizontalOffset: offset,
+          }}
         />
       )}
     </g>
