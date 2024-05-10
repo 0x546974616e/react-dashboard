@@ -1,6 +1,7 @@
 import { memo, useMemo, useState } from "react";
 import { useChartContext } from "Application/contexts";
 import { Position } from "Application/types";
+import { ChartPolylineTheme } from "Application/theme";
 
 export interface ChartPolylineProps extends
   Pick<JSX.IntrinsicElements["polyline"],
@@ -15,13 +16,7 @@ export interface ChartPolylineProps extends
 {
   points: Position[],
 
-  /**
-   * Animates stroke.
-   *
-   * Take precedence overs stroke-dasharray and stroke-dashoffset.
-   *
-   * TODO: Duration.
-   */
+  /** Take precedence overs stroke-dasharray and stroke-dashoffset. */
   animated?: boolean,
 }
 
@@ -63,13 +58,13 @@ function _ChartPolyline(
     >
       {animated && length && (
         <animate
-          dur={"1s"}
-          fill={"freeze"}
           from={length} to={0}
           attributeName={"stroke-dashoffset"}
-          keySplines={"0.0 0.4 0.6 1"}
           calcMode={"spline"}
+          keySplines={ChartPolylineTheme.splines}
+          dur={ChartPolylineTheme.duration}
           repeatCount={1}
+          fill={"freeze"}
         />
       )}
     </polyline>

@@ -9,6 +9,71 @@ export interface Position {
 export namespace Position {
   export const ZERO: Readonly<Position> = { x: 0, y: 0 };
 
+  export function minMax(
+      ...positions: (
+        | Position
+        | Position[]
+        | undefined
+        | null
+      )[]
+    ): null | {
+      min: Position,
+      max: Position,
+    }
+  {
+    let browsed = false;
+
+    let minX = Number.POSITIVE_INFINITY;
+    let minY = Number.POSITIVE_INFINITY;
+
+    let maxX = Number.NEGATIVE_INFINITY;
+    let maxY = Number.NEGATIVE_INFINITY;
+
+    for (const position of positions) {
+      if (!position) {
+        continue;
+      }
+
+      browsed = true;
+
+      if (Array.isArray(position)) {
+        for (const current of position) {
+          const { x, y } = current;
+
+          if (x < minX) minX = x;
+          if (y < minY) minY = y;
+
+          if (x > maxX) maxX = x;
+          if (y > maxY) maxY = y;
+        }
+      }
+      else {
+        const { x, y } = position;
+
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+
+        if (x > maxX) maxX = x;
+        if (y > maxY) maxY = y;
+      }
+    }
+
+    if (browsed) {
+      return {
+        min: {
+          x: minX,
+          y: minY,
+        },
+        max: {
+          x: maxX,
+          y: maxY,
+        },
+      };
+    }
+
+    return null;
+  }
+
   /**
    * TODO: So far `positions` is an array.
    */
@@ -39,7 +104,7 @@ export namespace Position {
       const { x: x1, y: y1 } = positions[mid]!;
       const { x: x2, y: y2 } = positions[mid + 1]!;
 
-      if (x1 <= givenX && givenX < x2) {
+      if ((x1 <= givenX && givenX < x2)) {
         switch (interpolation) {
           case Interpolation.Linear:
             return {
@@ -52,15 +117,18 @@ export namespace Position {
 
             if (interpolationOptions) {
               let {
-                horizontalMargin: margin,
+                horizontalWidth: width,
                 horizontalOffset: offset,
               } = interpolationOptions;
 
-              if (margin || offset) {
-                margin ??= 0;
-                offset ??= 0;
+              if (width || offset) {
+                width ??= 1.0;
+                offset ??= 0.0;
 
-                x = clamp(x, x1 + margin + offset, x2 - margin + offset);
+                x = clamp(x,
+                  x1 + (x2 - x1) * (offset),
+                  x1 + (x2 - x1) * (offset + width),
+                );
               }
             }
 
@@ -86,50 +154,46 @@ export namespace Position {
 
     // Return the nearest position.
     if (low <= 0) {
-      const position = positions[0]!;
-
-      if (interpolation == Interpolation.Horizontal) {
-        let x = position.x;
-
-        if (interpolationOptions) {
-          let {
-            horizontalMargin: margin,
-            horizontalOffset: offset,
-          } = interpolationOptions;
-
-          if (margin) x += margin;
-          if (offset) x += offset;
-        }
-
-        return {
-          x, y: positions[1]!.y,
-        };
+      if (interpolation != Interpolation.Horizontal) {
+        return positions[0]!;
       }
 
-      return position;
+      let width = 1.0;
+      let offset = 0.0;
+
+      if (interpolationOptions) {
+        width = interpolationOptions.horizontalWidth ?? width;
+        offset = interpolationOptions.horizontalOffset ?? offset;
+      }
+
+      const { x: x1, y: y1 } = positions[0]!;
+      const { x: x2, y: y2 } = positions[1]!;
+
+      return {
+        x: x1 + (x2 - x1) * offset,
+        y: y2,
+      };
     }
     else {
-      const position = positions[length - 1]!;
-
-      if (interpolation == Interpolation.Horizontal) {
-        let x = position.x;
-
-        if (interpolationOptions) {
-          let {
-            horizontalMargin: margin,
-            horizontalOffset: offset,
-          } = interpolationOptions;
-
-          if (margin) x -= margin;
-          if (offset) x += offset;
-        }
-
-        return {
-          x, y: position.y,
-        };
+      if (interpolation != Interpolation.Horizontal) {
+        return positions[length - 1]!;
       }
 
-      return position;
+      let width = 1.0;
+      let offset = 0.0;
+
+      if (interpolationOptions) {
+        width = interpolationOptions.horizontalWidth ?? width;
+        offset = interpolationOptions.horizontalOffset ?? offset;
+      }
+
+      const { x: x1, y: y1 } = positions[length - 2]!;
+      const { x: x2, y: y2 } = positions[length - 1]!;
+
+      return {
+        x: x1 + (x2 - x1) * (width + offset),
+        y: y2,
+      };
     }
   }
 }

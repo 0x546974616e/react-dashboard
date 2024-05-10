@@ -18,10 +18,11 @@ const histogram1: Position[] = [
 
 const histogram2: Position[] = [
   // { x: -1.3, y: -10000 },
-  // { x: 2.7, y: 21000 },
-  // { x: 3.8, y: 42151 },
+  { x: 2.7, y: 21000 },
+  { x: 3.8, y: 42151 },
   // { x: 4.1, y: 28000 },
-  // { x: 4.9, y: 55000 },
+  { x: 4.9, y: 55000 },
+  // { x: 6.3, y: -10000 },
   // { x: 7.3, y: 81000 },
 ];
 
@@ -38,8 +39,13 @@ export function KpiChartExample(): JSX.Element {
         histogram1={histogram1}
         histogram2={histogram2}
 
-        onCurrent1Change={setCurrent1}
-        onCurrent2Change={setCurrent2}
+        curve1={histogram1}
+        curve2={histogram2}
+
+        onHistogram1Change={setCurrent1}
+        onHistogram2Change={setCurrent2}
+
+        atMostMinY={0}
       />
     </div>
   );

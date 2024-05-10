@@ -9,7 +9,7 @@ export interface ChartHistogramProps {
   points: Position[];
   baseLine?: number,
   color: string,
-  boxMargin?: number,
+  boxWidth?: number,
   boxOffset?: number,
   panningFollow?: boolean,
   panningDefaultX?: Position["x"],
@@ -22,7 +22,7 @@ function _ChartHistogram(
     { points,
       baseLine,
       color,
-      boxMargin,
+      boxWidth,
       boxOffset,
       panningFollow,
       panningDefaultX,
@@ -31,9 +31,9 @@ function _ChartHistogram(
   ): JSX.Element
 {
   baseLine ??= points[0]?.y;
-  const { iw } = useChartContext();
-  const margin = boxMargin ? iw(boxMargin) : 0;
-  const offset = boxOffset ? iw(boxOffset) : 0;
+
+  boxWidth ??= 1.0;
+  boxOffset ??= 0.0;
 
   return (
     <g className={"chart-curve"}>
@@ -47,10 +47,11 @@ function _ChartHistogram(
 
           return (
             <ChartRect
-              x={nx + margin + offset}
+              x={nx + (x - nx) * boxOffset!}
               y={baseLine!}
-              w={x - nx - 2 * margin}
+              w={(x - nx) * boxWidth!}
               h={y - baseLine!}
+              animated={true}
               stroke={"none"}
               fill={color}
             />
@@ -69,8 +70,8 @@ function _ChartHistogram(
           r={ChartHistogramTheme.cursorRadius}
           interpolation={Interpolation.Horizontal}
           interpolationOptions={{
-            horizontalMargin: margin,
-            horizontalOffset: offset,
+            horizontalWidth: boxWidth,
+            horizontalOffset: boxOffset,
           }}
         />
       )}

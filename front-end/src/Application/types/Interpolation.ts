@@ -5,8 +5,9 @@ export enum Interpolation {
 }
 
 export interface InterpolationOptions {
-  horizontalMargin?: number,
+  /** [ 0.0, 1.0 ] of the width */
+  horizontalWidth?: number,
 
-  /** @pre abs(offset) <= abs(margin) */
+  /** [ 0.0, 1.0 ] of the width */
   horizontalOffset?: number,
 }
