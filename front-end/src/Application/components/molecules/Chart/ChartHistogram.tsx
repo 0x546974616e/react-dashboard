@@ -47,6 +47,7 @@ function _ChartHistogram(
 
           return (
             <ChartRect
+              key={index}
               x={nx + (x - nx) * boxOffset!}
               y={baseLine!}
               w={(x - nx) * boxWidth!}

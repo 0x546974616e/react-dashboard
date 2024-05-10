@@ -32,11 +32,26 @@ export interface KpiChartProps {
   onCurve1Change?(position: Position | null): void,
   onCurve2Change?(position: Position | null): void,
 
+  histogram1BaseLine?: number,
+  histogram2BaseLine?: number,
+
   atMostMinX?: number,
   atMostMinY?: number,
 
   atLeastMaxX?: number,
   atLeastMaxY?: number,
+
+  cursorDefaultX?: number,
+  cursorDefaultXStroke?: string,
+
+  cursorStroke: string,
+  cursorStrokeWidth: number,
+
+  histogram1Color: string,
+  histogram2Color: string,
+
+  curve1Color: string,
+  curve2Color: string,
 }
 
 export const KpiChart = memo(_KpiChart);
@@ -88,11 +103,26 @@ function _KpiGrid(
       onCurve1Change,
       onCurve2Change,
 
+      histogram1BaseLine,
+      histogram2BaseLine,
+
       atMostMinX,
       atMostMinY,
 
       atLeastMaxX,
       atLeastMaxY,
+
+      cursorDefaultX,
+      cursorDefaultXStroke,
+
+      cursorStroke,
+      cursorStrokeWidth,
+
+      histogram1Color,
+      histogram2Color,
+
+      curve1Color,
+      curve2Color,
 
       width,
       height,
@@ -113,11 +143,11 @@ function _KpiGrid(
       );
 
       if (extremum) {
-        if (atMostMinX != undefined && extremum.min.x > atMostMinX) extremum.min.x = atMostMinX;
-        if (atMostMinY != undefined && extremum.min.y > atMostMinY) extremum.min.y = atMostMinY;
+        if (atMostMinX != undefined) extremum.min.x = Math.min(extremum.min.x, atMostMinX);
+        if (atMostMinY != undefined) extremum.min.y = Math.min(extremum.min.y, atMostMinY);
 
-        if (atLeastMaxX != undefined && extremum.max.x > atLeastMaxX) extremum.max.x = atLeastMaxX;
-        if (atLeastMaxY != undefined && extremum.max.y > atLeastMaxY) extremum.max.y = atLeastMaxY;
+        if (atLeastMaxX != undefined) extremum.max.x = Math.max(extremum.max.x, atLeastMaxX);
+        if (atLeastMaxY != undefined) extremum.max.y = Math.max(extremum.max.y, atLeastMaxY);
       }
 
       return extremum;
@@ -189,8 +219,8 @@ function _KpiGrid(
           {histogram1 && (
             <ChartHistogram
               points={histogram1}
-              color={"cyan"}
-              baseLine={0}
+              baseLine={histogram1BaseLine}
+              color={histogram1Color}
               boxWidth={0.5}
               boxOffset={0.1}
               panningFollow={false}
@@ -200,8 +230,8 @@ function _KpiGrid(
           {histogram2 && (
             <ChartHistogram
               points={histogram2}
-              color={"red"}
-              baseLine={0}
+              baseLine={histogram2BaseLine}
+              color={histogram2Color}
               boxWidth={0.5}
               boxOffset={0.4}
               panningFollow={false}
@@ -211,7 +241,7 @@ function _KpiGrid(
           {curve1 && (
             <ChartCurve
               points={curve1}
-              strokeColor={"blue"}
+              strokeColor={curve1Color}
               strokeWidth={5}
               panningFollow={false}
             />
@@ -220,24 +250,27 @@ function _KpiGrid(
           {curve2 && (
             <ChartCurve
               points={curve2}
-              strokeColor={"orange"}
+              strokeColor={curve2Color}
               strokeWidth={5}
               panningFollow={false}
             />
           )}
 
           <ChartCursorLine
-            defaultX={6.3}
+            defaultX={cursorDefaultX}
+            panningStroke={cursorStroke}
+            strokeWidth={cursorStrokeWidth}
+            stroke={cursorDefaultXStroke}
           />
 
           {histogram1 && (
             <ChartCursorCircle
               points={histogram1}
-              defaultX={6.3}
+              defaultX={cursorDefaultX}
               // onChange={onCurrent2Change}
-              fill={"cyan"}
-              stroke={"black"}
-              strokeWidth={2}
+              fill={histogram1Color}
+              stroke={cursorStroke}
+              strokeWidth={cursorStrokeWidth}
               r={ChartHistogramTheme.cursorRadius}
               interpolation={Interpolation.Horizontal}
               interpolationOptions={{
@@ -247,14 +280,44 @@ function _KpiGrid(
             />
           )}
 
+          {histogram2 && (
+            <ChartCursorCircle
+              points={histogram2}
+              defaultX={cursorDefaultX}
+              // onChange={onCurrent2Change}
+              fill={histogram2Color}
+              stroke={cursorStroke}
+              strokeWidth={cursorStrokeWidth}
+              r={ChartHistogramTheme.cursorRadius}
+              interpolation={Interpolation.Horizontal}
+              interpolationOptions={{
+                horizontalWidth: 0.5,
+                horizontalOffset: 0.4,
+              }}
+            />
+          )}
+
           {curve1 && (
             <ChartCursorCircle
               points={curve1}
               defaultX={6.3}
               // onChange={onCurrent1Change}
-              fill={"blue"}
-              stroke={"black"}
-              strokeWidth={2}
+              fill={curve1Color}
+              stroke={cursorStroke}
+              strokeWidth={cursorStrokeWidth}
+              r={ChartHistogramTheme.cursorRadius}
+              interpolation={Interpolation.Linear}
+            />
+          )}
+
+          {curve2 && (
+            <ChartCursorCircle
+              points={curve2}
+              defaultX={6.3}
+              // onChange={onCurrent1Change}
+              fill={curve2Color}
+              stroke={cursorStroke}
+              strokeWidth={cursorStrokeWidth}
               r={ChartHistogramTheme.cursorRadius}
               interpolation={Interpolation.Linear}
             />

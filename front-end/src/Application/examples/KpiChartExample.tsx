@@ -45,7 +45,22 @@ export function KpiChartExample(): JSX.Element {
         onHistogram1Change={setCurrent1}
         onHistogram2Change={setCurrent2}
 
+        histogram1BaseLine={0}
+        histogram2BaseLine={0}
+
         atMostMinY={0}
+
+        cursorStroke={"black"}
+        cursorStrokeWidth={4}
+
+        cursorDefaultX={6.3}
+        cursorDefaultXStroke={"rgb(0, 0, 0, 0.25)"}
+
+        histogram1Color={"blue"}
+        histogram2Color={"green"}
+
+        curve1Color={"#0088ff"}
+        curve2Color={"#00ff88"}
       />
     </div>
   );

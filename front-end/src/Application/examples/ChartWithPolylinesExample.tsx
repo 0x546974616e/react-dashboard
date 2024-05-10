@@ -139,6 +139,8 @@ function __KpiChart(
 
           <ChartCursorLine
             defaultX={6.3}
+            stroke={"black"}
+            strokeWidth={4}
           />
 
           <ChartCursorCircle
