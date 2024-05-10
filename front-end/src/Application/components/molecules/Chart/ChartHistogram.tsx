@@ -1,32 +1,25 @@
 import { memo } from "react";
-import { Interpolation, Position } from "Application/types";
-import { ChartHistogramTheme } from "Application/theme";
+import { Position } from "Application/types";
 import { ChartRect } from "Application/components/atoms";
-import { ChartCursorCircle } from "./ChartCursorCircle";
-import { useChartContext } from "Application/contexts";
 
 export interface ChartHistogramProps {
   points: Position[];
+  color?: string,
   baseLine?: number,
-  color: string,
   boxWidth?: number,
   boxOffset?: number,
-  panningFollow?: boolean,
-  panningDefaultX?: Position["x"],
-  panningOnChange?(position: Position | null): void,
+  className?: string,
 }
 
 export const ChartHistogram = memo(_ChartHistogram);
 
 function _ChartHistogram(
     { points,
-      baseLine,
       color,
+      baseLine,
       boxWidth,
       boxOffset,
-      panningFollow,
-      panningDefaultX,
-      panningOnChange,
+      className,
     }: ChartHistogramProps
   ): JSX.Element
 {
@@ -36,7 +29,7 @@ function _ChartHistogram(
   boxOffset ??= 0.0;
 
   return (
-    <g className={"chart-curve"}>
+    <g className={"chart-histogram"}>
       {points.map(
         ({ x, y }, index, points) => {
           if (index <= 0 || points.length < 2) {
@@ -52,29 +45,13 @@ function _ChartHistogram(
               y={baseLine!}
               w={(x - nx) * boxWidth!}
               h={y - baseLine!}
-              animated={true}
-              stroke={"none"}
               fill={color}
+              stroke={"none"}
+              animated={true}
+              className={className}
             />
           );
         }
-      )}
-
-      {panningFollow && (
-        <ChartCursorCircle
-          points={points}
-          defaultX={panningDefaultX}
-          onChange={panningOnChange}
-          fill={color}
-          stroke={"black"}
-          strokeWidth={1}
-          r={ChartHistogramTheme.cursorRadius}
-          interpolation={Interpolation.Horizontal}
-          interpolationOptions={{
-            horizontalWidth: boxWidth,
-            horizontalOffset: boxOffset,
-          }}
-        />
       )}
     </g>
   );

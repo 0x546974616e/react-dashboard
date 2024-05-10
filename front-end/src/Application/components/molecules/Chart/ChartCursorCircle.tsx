@@ -17,6 +17,7 @@ export interface ChartCursorCircleProps extends
   interpolation?: Interpolation,
   interpolationOptions?: InterpolationOptions,
   onChange?(position: Position | null): void,
+  className?: string,
 }
 
 /**
@@ -32,6 +33,7 @@ export function ChartCursorCircle(
       fill,
       stroke,
       strokeWidth,
+      className,
     }: ChartCursorCircleProps
   ): JSX.Element
 {
@@ -81,6 +83,7 @@ export function ChartCursorCircle(
           fill={fill}
           stroke={stroke}
           strokeWidth={strokeWidth}
+          className={className}
         />
       )}
     </g>

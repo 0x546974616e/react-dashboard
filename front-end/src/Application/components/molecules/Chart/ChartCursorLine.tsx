@@ -6,7 +6,8 @@ export interface ChartCursorLineProps {
   defaultX?: Position["x"],
   panningStroke?: string,
   strokeWidth?: number,
-  stroke?: string,
+  defaultStroke?: string,
+  activeStroke?: string,
 }
 
 /**
@@ -15,8 +16,8 @@ export interface ChartCursorLineProps {
 export function ChartCursorLine(
     { defaultX,
       strokeWidth,
-      panningStroke,
-      stroke,
+      defaultStroke,
+      activeStroke,
     }: ChartCursorLineProps
   ): JSX.Element
 {
@@ -32,7 +33,16 @@ export function ChartCursorLine(
               x2={defaultX} y2={y2}
               strokeWidth={strokeWidth}
               strokeLinecap={"round"}
-              stroke={position ? stroke : (panningStroke ?? stroke)}
+              className={
+                position
+                  ? "chart-cursor-line-default"
+                  : "chart-cursor-line-active"
+                }
+              stroke={
+                position
+                  ? (defaultStroke ?? activeStroke)
+                  : (activeStroke ?? defaultStroke)
+              }
             />
           )}
 
@@ -40,7 +50,8 @@ export function ChartCursorLine(
             <ChartLine
               x1={position.x} y1={y1}
               x2={position.x} y2={y2}
-              stroke={panningStroke ?? stroke}
+              className={"chart-cursor-line-active"}
+              stroke={activeStroke ?? defaultStroke}
               strokeWidth={strokeWidth}
               strokeLinecap={"round"}
             />

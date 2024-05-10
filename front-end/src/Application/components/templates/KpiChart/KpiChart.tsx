@@ -1,7 +1,9 @@
 import { useState } from "react";
 
-import { KpiChart } from "Application/components";
+import { ChartCurvesWithHistograms } from "Application/components";
 import { Position } from "Application/types";
+
+import "./KpiChart.scss";
 
 const histogram1: Position[] = [
   // { x: -1, y: 9000 },
@@ -26,16 +28,16 @@ const histogram2: Position[] = [
   // { x: 7.3, y: 81000 },
 ];
 
-export function KpiChartExample(): JSX.Element {
+export function KpiChart(): JSX.Element {
   const [ current1, setCurrent1 ] = useState<Position | null>(null);
   const [ current2, setCurrent2 ] = useState<Position | null>(null);
 
   return (
-    <div>
+    <div className={"dada"}>
       <div><code>[1]</code><span>{current1?.x.toFixed(2)} - {current1?.y.toFixed(2)}</span></div>
       <div><code>[2]</code><span>{current2?.x.toFixed(2)} - {current2?.y.toFixed(2)}</span></div>
 
-      <KpiChart
+      <ChartCurvesWithHistograms
         histogram1={histogram1}
         histogram2={histogram2}
 
@@ -43,24 +45,19 @@ export function KpiChartExample(): JSX.Element {
         curve2={histogram2}
 
         onHistogram1Change={setCurrent1}
-        onHistogram2Change={setCurrent2}
+        onHistogram2Change={() => {}}
+
+        onCurve1Change={setCurrent2}
+        onCurve2Change={() => {}}
 
         histogram1BaseLine={0}
         histogram2BaseLine={0}
 
         atMostMinY={0}
 
-        cursorStroke={"black"}
+        curveWidth={6}
         cursorStrokeWidth={4}
-
         cursorDefaultX={6.3}
-        cursorDefaultXStroke={"rgb(0, 0, 0, 0.25)"}
-
-        histogram1Color={"blue"}
-        histogram2Color={"green"}
-
-        curve1Color={"#0088ff"}
-        curve2Color={"#00ff88"}
       />
     </div>
   );

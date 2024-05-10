@@ -139,7 +139,8 @@ function __KpiChart(
 
           <ChartCursorLine
             defaultX={6.3}
-            stroke={"black"}
+            activeStroke={"black"}
+            defaultStroke={"gray"}
             strokeWidth={4}
           />
 

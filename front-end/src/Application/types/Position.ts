@@ -158,15 +158,13 @@ export namespace Position {
         return positions[0]!;
       }
 
-      let width = 1.0;
       let offset = 0.0;
 
       if (interpolationOptions) {
-        width = interpolationOptions.horizontalWidth ?? width;
         offset = interpolationOptions.horizontalOffset ?? offset;
       }
 
-      const { x: x1, y: y1 } = positions[0]!;
+      const { x: x1 } = positions[0]!;
       const { x: x2, y: y2 } = positions[1]!;
 
       return {
@@ -187,7 +185,7 @@ export namespace Position {
         offset = interpolationOptions.horizontalOffset ?? offset;
       }
 
-      const { x: x1, y: y1 } = positions[length - 2]!;
+      const { x: x1 } = positions[length - 2]!;
       const { x: x2, y: y2 } = positions[length - 1]!;
 
       return {

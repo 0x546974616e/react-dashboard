@@ -2,8 +2,9 @@ import { memo, useCallback, useMemo, useState } from "react";
 
 import { clamp } from "Application/utils";
 import { useDimensions } from "Application/hooks";
+import { ChartHistogramTheme } from "Application/theme";
 import { Dimensions, Interpolation, Position } from "Application/types";
-import { ChartPolyline, ChartSvg } from "Application/components/atoms";
+import { ChartSvg } from "Application/components/atoms";
 
 import {
   ChartCursorCircle,
@@ -13,13 +14,10 @@ import {
   ChartHistogram,
   ChartPanning,
 } from "Application/components/molecules";
-import { ChartHistogramTheme } from "Application/theme";
-import { ChartContext } from "Application/contexts";
 
-const INSET = 0;
-const RADIUS = 10;
+const INSET = 0; // TODO Remove
 
-export interface KpiChartProps {
+export interface ChartCurvesWithHistogramsProps {
   histogram1?: Position[],
   histogram2?: Position[],
 
@@ -44,23 +42,24 @@ export interface KpiChartProps {
   cursorDefaultX?: number,
   cursorDefaultXStroke?: string,
 
-  cursorStroke: string,
-  cursorStrokeWidth: number,
+  cursorStroke?: string,
+  cursorStrokeWidth?: number,
 
-  histogram1Color: string,
-  histogram2Color: string,
+  histogram1Color?: string,
+  histogram2Color?: string,
 
-  curve1Color: string,
-  curve2Color: string,
+  curve1Color?: string,
+  curve2Color?: string,
+  curveWidth?: number,
 }
 
-export const KpiChart = memo(_KpiChart);
+export const ChartCurvesWithHistograms = memo(_KpiChart);
 
-function _KpiChart(props: KpiChartProps): JSX.Element {
+function _KpiChart(props: ChartCurvesWithHistogramsProps): JSX.Element {
   // A state is used instead a ref to prevent multiple re-render.
   const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
 
-  const { height: screenHeight } = useDimensions();
+  const { height: _screenHeight } = useDimensions();
   const width = container?.getBoundingClientRect().width ?? null;
   // const height = clamp(screenHeight * 0.6, 200, 600);
   const height = clamp((width ?? 0) * 0.8, 200, 600);
@@ -123,11 +122,12 @@ function _KpiGrid(
 
       curve1Color,
       curve2Color,
+      curveWidth,
 
       width,
       height,
     }: (
-      & KpiChartProps
+      & ChartCurvesWithHistogramsProps
       & Dimensions
     )
   ): JSX.Element
@@ -219,55 +219,56 @@ function _KpiGrid(
           {histogram1 && (
             <ChartHistogram
               points={histogram1}
+              className={"chart-histogram-1"}
               baseLine={histogram1BaseLine}
               color={histogram1Color}
               boxWidth={0.5}
               boxOffset={0.1}
-              panningFollow={false}
             />
           )}
 
           {histogram2 && (
             <ChartHistogram
               points={histogram2}
+              className={"chart-histogram-2"}
               baseLine={histogram2BaseLine}
               color={histogram2Color}
               boxWidth={0.5}
               boxOffset={0.4}
-              panningFollow={false}
             />
           )}
 
           {curve1 && (
             <ChartCurve
               points={curve1}
+              className={"chart-curve-1"}
               strokeColor={curve1Color}
-              strokeWidth={5}
-              panningFollow={false}
+              strokeWidth={curveWidth}
             />
           )}
 
           {curve2 && (
             <ChartCurve
               points={curve2}
+              className={"chart-curve-2"}
               strokeColor={curve2Color}
-              strokeWidth={5}
-              panningFollow={false}
+              strokeWidth={curveWidth}
             />
           )}
 
           <ChartCursorLine
             defaultX={cursorDefaultX}
-            panningStroke={cursorStroke}
             strokeWidth={cursorStrokeWidth}
-            stroke={cursorDefaultXStroke}
+            defaultStroke={cursorDefaultXStroke}
+            activeStroke={cursorStroke}
           />
 
-          {histogram1 && (
+          {histogram1 && onHistogram1Change && (
             <ChartCursorCircle
               points={histogram1}
               defaultX={cursorDefaultX}
-              // onChange={onCurrent2Change}
+              onChange={onHistogram1Change}
+              className={"chart-cursor-histogram-1"}
               fill={histogram1Color}
               stroke={cursorStroke}
               strokeWidth={cursorStrokeWidth}
@@ -280,11 +281,12 @@ function _KpiGrid(
             />
           )}
 
-          {histogram2 && (
+          {histogram2 && onHistogram2Change && (
             <ChartCursorCircle
               points={histogram2}
               defaultX={cursorDefaultX}
-              // onChange={onCurrent2Change}
+              onChange={onHistogram2Change}
+              className={"chart-cursor-histogram-2"}
               fill={histogram2Color}
               stroke={cursorStroke}
               strokeWidth={cursorStrokeWidth}
@@ -297,11 +299,12 @@ function _KpiGrid(
             />
           )}
 
-          {curve1 && (
+          {curve1 && onCurve1Change && (
             <ChartCursorCircle
               points={curve1}
-              defaultX={6.3}
-              // onChange={onCurrent1Change}
+              defaultX={cursorDefaultX}
+              onChange={onCurve1Change}
+              className={"chart-cursor-curve-1"}
               fill={curve1Color}
               stroke={cursorStroke}
               strokeWidth={cursorStrokeWidth}
@@ -310,11 +313,12 @@ function _KpiGrid(
             />
           )}
 
-          {curve2 && (
+          {curve2 && onCurve2Change && (
             <ChartCursorCircle
               points={curve2}
-              defaultX={6.3}
-              // onChange={onCurrent1Change}
+              defaultX={cursorDefaultX}
+              onChange={onCurve2Change}
+              className={"chart-cursor-curve-2"}
               fill={curve2Color}
               stroke={cursorStroke}
               strokeWidth={cursorStrokeWidth}

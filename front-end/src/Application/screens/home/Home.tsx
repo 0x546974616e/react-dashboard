@@ -1,12 +1,11 @@
 import React from "react";
 
-import { KpiValues } from "Application/components";
+import { KpiChart, KpiValues } from "Application/components";
 
 import {
   ChartWithGridExample,
   ChartWithNestedTransformsExample,
   ChartWithPolylinesExamples,
-  KpiChartExample,
 } from "Application/examples";
 
 import "./Home.scss";
@@ -25,7 +24,7 @@ function _Home(): JSX.Element {
       </h1>
       <div className="p-4 flex flex-col gap-4">
         <div className="bg-white rounded-lg shadow p-4 w-full">
-          <KpiChartExample/>
+          <KpiChart/>
         </div>
 
 

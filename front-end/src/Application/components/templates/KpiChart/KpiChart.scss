@@ -1,0 +1,45 @@
+
+.dada {
+  rect {
+    &.chart-histogram-1 {
+      @apply fill-blue-500;
+    }
+    &.chart-histogram-2 {
+      @apply fill-green-500;
+    }
+  }
+
+  polyline {
+    &.chart-curve-1 {
+      @apply stroke-blue-700;
+    }
+    &.chart-curve-2 {
+      @apply stroke-green-700;
+    }
+  }
+
+  circle {
+    &.chart-cursor-histogram-1 {
+      @apply fill-blue-500 stroke-black;
+    }
+    &.chart-cursor-histogram-2 {
+      @apply fill-green-500 stroke-black;
+    }
+
+    &.chart-cursor-curve-1 {
+      @apply fill-blue-700 stroke-black;
+    }
+    &.chart-cursor-curve-2 {
+      @apply fill-green-700 stroke-black;
+    }
+  }
+
+  line {
+    &.chart-cursor-line-default {
+      @apply stroke-stone-500;
+    }
+    &.chart-cursor-line-active {
+      @apply stroke-black;
+    }
+  }
+}
