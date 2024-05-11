@@ -36,7 +36,7 @@ export function DivLayout(
   return (
     <div
       ref={setLayout}
-      className={debug && "relative" || undefined}
+      className={debug ? "relative border-2 border-stone-300" : undefined}
       style={style}
     >
       {debug && (

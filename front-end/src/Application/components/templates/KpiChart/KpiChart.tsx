@@ -110,10 +110,11 @@ export function KpiChart(
 
       {width && (
         <div
-          className="absolute bottom-0 right-0 bg-blue-900 cursor-pointer"
+          title={"TODO TMP"}
+          className={"absolute bottom-0 right-0 p-2 bg-blue-900 text-white cursor-pointer"}
           onClick={toggleDisplay}
         >
-          dada
+          Toggle
         </div>
       )}
     </div>

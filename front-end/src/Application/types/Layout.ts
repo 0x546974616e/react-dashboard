@@ -28,12 +28,16 @@ export namespace Layout {
     switch (true) {
       case width <= Layout.PHONE:
         return Layout.PHONE;
+
       case width <= Layout.TABLET:
         return Layout.TABLET;
+
       case width <= Layout.LAPTOP:
         return Layout.LAPTOP;
+
       case width <= Layout.DESKTOP:
         return Layout.DESKTOP;
+
       default:
         return Layout.DESKTOP;
     }

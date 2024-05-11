@@ -31,12 +31,27 @@ function _HomeLayout(
         </DivLayout>
       );
     }
+
+    case Layout.TABLET: {
+      return (
+        <div className={"w-full h-full flex flex-row"}>
+          <div className={"grow-[2]"}>
+            <DivLayout height={"100%"} debug>
+              <p className={"text-center"}>
+                {Layout[layout]}
+              </p>
+            </DivLayout>
+          </div>
+          <div className={"grow"}>2</div>
+        </div>
+      );
+    }
   }
 
   return (
     <div className={"w-full h-full flex flex-row"}>
       <div className={"grow"}>1</div>
-      <div className={"grow"}>
+      <div className={"grow-[2]"}>
         <DivLayout height={"100%"} debug>
           <p className={"text-center"}>
             {Layout[layout]}
