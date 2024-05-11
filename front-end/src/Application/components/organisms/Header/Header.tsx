@@ -21,6 +21,10 @@ const routes = [
     route: "/settings",
     label: "Settings",
   },
+  {
+    route: "/examples",
+    label: "Examples",
+  },
 ];
 
 export function Header(): JSX.Element {

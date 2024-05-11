@@ -2,6 +2,7 @@ import React from "react";
 
 import { useLayout } from "Application/hooks";
 import { Layout } from "Application/types";
+import { DivLayout } from "./DivLayout";
 
 export const HomeLayout = React.memo(_HomeLayout);
 
@@ -20,15 +21,29 @@ function _HomeLayout(
 {
   const layout = useLayout(layouts);
 
-  /*
   switch (layout) {
-    case
+    case Layout.PHONE: {
+      return (
+        <DivLayout width={"100%"} height={"100%"} debug>
+          <p className={"text-center"}>
+            {Layout[layout]}
+          </p>
+        </DivLayout>
+      );
+    }
   }
-  */
 
   return (
-    <div style={{ flexDirection: "row" }}>
-      {Layout[layout]}
+    <div className={"w-full h-full flex flex-row"}>
+      <div className={"grow"}>1</div>
+      <div className={"grow"}>
+        <DivLayout height={"100%"} debug>
+          <p className={"text-center"}>
+            {Layout[layout]}
+          </p>
+        </DivLayout>
+      </div>
+      <div className={"grow"}>2</div>
     </div>
   );
 }

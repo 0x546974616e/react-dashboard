@@ -3,6 +3,7 @@ import { LogUpdates } from "Application/utils";
 import Example from "./with_shared_borders";
 import Example2 from "./with_shared_borders2";
 import { KpiChartExample } from "Application/examples";
+import Example3 from "./with_shared_borders3";
 
 export const Settings = React.memo(_Settings);
 
@@ -24,6 +25,9 @@ function _Settings(): JSX.Element {
         </div>
         <div className="mt-6">
           <Example2/>
+        </div>
+        <div className="mt-6">
+          <Example3/>
         </div>
       </div>
     </LogUpdates>

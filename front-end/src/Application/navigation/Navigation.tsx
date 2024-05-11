@@ -1,7 +1,7 @@
 // import React from "react";
 
 import { NavigationLayout } from "Application/layouts";
-import { Home, Notifications, Settings } from "Application/screens";
+import { Example, Home, Notifications, Settings } from "Application/screens";
 
 import {
   // BrowserRouter,
@@ -48,14 +48,16 @@ const router = createBrowserRouter([
         path: "/settings",
         element: <Settings/>
       },
+      {
+        path: "/examples",
+        element: <Example/>
+      },
     ]
   },
 ]);
 
 export function Navigation() {
   return (
-    <div id="navigation">
-      <RouterProvider router={router}/>
-    </div>
+    <RouterProvider router={router}/>
   );
 }

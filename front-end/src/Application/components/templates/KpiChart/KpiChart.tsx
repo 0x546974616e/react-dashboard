@@ -97,7 +97,7 @@ export function KpiChart(
           boxOffset1={boxOffset1}
           boxOffset2={boxOffset2}
 
-          cursorDefaultX={14}
+          cursorDefaultX={18.4}
           atMostMinY={0}
 
           nearestXLegend={nearestX}
@@ -110,7 +110,7 @@ export function KpiChart(
 
       {width && (
         <div
-          className="absolute bottom-0 right-0 bg-blue-900"
+          className="absolute bottom-0 right-0 bg-blue-900 cursor-pointer"
           onClick={toggleDisplay}
         >
           dada

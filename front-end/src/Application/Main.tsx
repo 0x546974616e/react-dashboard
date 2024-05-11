@@ -1,4 +1,4 @@
-import { DimensionsProvider } from "./contexts";
+import { ScreenLayout } from "./layouts";
 import { Navigation } from "./navigation";
 import { LogUpdates } from "./utils";
 
@@ -8,9 +8,9 @@ export function Main(): JSX.Element {
 
   return (
     <LogUpdates id="main">
-      <DimensionsProvider>
+      <ScreenLayout>
         <Navigation/>
-      </DimensionsProvider>
+      </ScreenLayout>
     </LogUpdates>
   );
 }
