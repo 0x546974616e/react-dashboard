@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useChartContext } from "Application/contexts";
 import { Position } from "Application/types";
 import { ChartPolylineTheme } from "Application/theme";
@@ -37,7 +37,10 @@ function _ChartPolyline(
 {
   const { nx, ny } = useChartContext();
   const [ element, setElement ] = useState<SVGPolylineElement | null>(null);
+  const [ animate, setAnimate ] = useState<SVGAnimateElement | null>(null);
   const length = element?.getTotalLength();
+
+  useEffect(() => { animate?.beginElement() }, [ animate, points ]);
 
   return (
     <polyline
@@ -58,6 +61,8 @@ function _ChartPolyline(
     >
       {animated && length && (
         <animate
+          // @ts-expect-error
+          ref={setAnimate}
           from={length} to={0}
           attributeName={"stroke-dashoffset"}
           calcMode={"spline"}

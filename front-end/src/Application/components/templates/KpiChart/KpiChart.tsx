@@ -1,64 +1,121 @@
 import { useState } from "react";
 
 import { ChartCurvesWithHistograms } from "Application/components";
+import { useDimensions } from "Application/hooks";
 import { Position } from "Application/types";
+import { clamp } from "Application/utils";
+
+import { KpiChartProps } from "./KpiChartProps";
+import { useKpiChart } from "./useKpiChart";
 
 import "./KpiChart.scss";
 
-const histogram1: Position[] = [
-  // { x: -1, y: 9000 },
-  // { x: 1.2, y: -2222 },
-  { x: 2.2, y: 45151 },
-  // { x: 2.8, y: 45151 },
-  { x: 3, y: 30000 },
-  // { x: 4.5, y: 30010 },
-  { x: 4.6, y: 35010 },
-  // { x: 4.9, y: 5800 },
-  { x: 6, y: 50000 },
-  { x: 6.9, y: 89000 },
-];
+// TODO accoding to screen and histogram.
+function hour(hour: number, index: number): string | null {
+  if (index % 2 == 0) {
+    return `${hour.toFixed(0)} h`;
+  }
 
-const histogram2: Position[] = [
-  // { x: -1.3, y: -10000 },
-  { x: 2.7, y: 21000 },
-  { x: 3.8, y: 42151 },
-  // { x: 4.1, y: 28000 },
-  { x: 4.9, y: 55000 },
-  // { x: 6.3, y: -10000 },
-  // { x: 7.3, y: 81000 },
-];
+  return null;
+}
 
-export function KpiChart(): JSX.Element {
+function euro(euro: number): string {
+  return `${Math.floor(euro)} €`;
+}
+
+export function KpiChart(
+    props: KpiChartProps
+  ): JSX.Element
+{
   const [ current1, setCurrent1 ] = useState<Position | null>(null);
   const [ current2, setCurrent2 ] = useState<Position | null>(null);
 
+  const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
+  const width = container?.getBoundingClientRect().width ?? null;
+  const height = clamp((width ?? 0) * 0.8, 200, 400);
+
+  useDimensions(); // TODO TMP Only to trigger re-render.
+
+  const {
+    nearestX,
+    nearestY,
+
+    histogram1,
+    histogram2,
+
+    cumulative1,
+    cumulative2,
+
+    boxWidth1,
+    boxWidth2,
+
+    boxOffset1,
+    boxOffset2,
+
+    toggleDisplay,
+  } = useKpiChart(props);
+
   return (
-    <div className={"dada"}>
+    <div
+      ref={setContainer}
+      className={"kpi-chart w-full"}
+    >
       <div><code>[1]</code><span>{current1?.x.toFixed(2)} - {current1?.y.toFixed(2)}</span></div>
       <div><code>[2]</code><span>{current2?.x.toFixed(2)} - {current2?.y.toFixed(2)}</span></div>
 
-      <ChartCurvesWithHistograms
-        histogram1={histogram1}
-        histogram2={histogram2}
+      {!width && (
+        <div className={"w-full min-h-[200px] max-h-[400px] overflow-hidden bg-stone-100 animate-pulse"}>
+          <div className={"w-full pb-[100%] text-center"}>
+            <p className={"p-4"}>Loading...</p>
+          </div>
+        </div>
+      )}
 
-        curve1={histogram1}
-        curve2={histogram2}
+      {width && (
+        <ChartCurvesWithHistograms
+          width={width}
+          height={height}
 
-        onHistogram1Change={setCurrent1}
-        onHistogram2Change={() => {}}
+          histogram1={histogram1}
+          histogram2={histogram2}
 
-        onCurve1Change={setCurrent2}
-        onCurve2Change={() => {}}
+          curve1={cumulative1}
+          curve2={cumulative2}
 
-        histogram1BaseLine={0}
-        histogram2BaseLine={0}
+          // onHistogram1Change={nop}
+          onHistogram2Change={setCurrent1}
 
-        atMostMinY={0}
+          // onCurve1Change={nop}
+          onCurve2Change={setCurrent2}
 
-        curveWidth={6}
-        cursorStrokeWidth={4}
-        cursorDefaultX={6.3}
-      />
+          histogram1BaseLine={0}
+          histogram2BaseLine={0}
+
+          boxWidth1={boxWidth1}
+          boxWidth2={boxWidth2}
+
+          boxOffset1={boxOffset1}
+          boxOffset2={boxOffset2}
+
+          cursorDefaultX={14}
+          atMostMinY={0}
+
+          nearestXLegend={nearestX}
+          nearestYLegend={nearestY}
+
+          renderXLegend={hour}
+          renderYLegend={euro}
+        />
+      )}
+
+      {width && (
+        <div
+          className="absolute bottom-0 right-0 bg-blue-900"
+          onClick={toggleDisplay}
+        >
+          dada
+        </div>
+      )}
     </div>
   );
 }

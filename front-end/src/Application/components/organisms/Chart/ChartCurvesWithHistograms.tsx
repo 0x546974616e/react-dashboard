@@ -1,12 +1,11 @@
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 
-import { clamp } from "Application/utils";
-import { useDimensions } from "Application/hooks";
-import { ChartHistogramTheme } from "Application/theme";
-import { Dimensions, Interpolation, Position } from "Application/types";
+import { ChartCurveTheme, ChartHistogramTheme } from "Application/theme";
+import { Interpolation, Position } from "Application/types";
 import { ChartSvg } from "Application/components/atoms";
 
 import {
+  ChartBaseLines,
   ChartCursorCircle,
   ChartCursorLine,
   ChartCurve,
@@ -18,6 +17,9 @@ import {
 const INSET = 0; // TODO Remove
 
 export interface ChartCurvesWithHistogramsProps {
+  width: number,
+  height: number,
+
   histogram1?: Position[],
   histogram2?: Position[],
 
@@ -48,49 +50,40 @@ export interface ChartCurvesWithHistogramsProps {
   histogram1Color?: string,
   histogram2Color?: string,
 
+  gridStroke?: string,
+  gridWidth?: number,
+
   curve1Color?: string,
   curve2Color?: string,
   curveWidth?: number,
+
+  histogram1BaseLineColor?: string,
+  histogram2BaseLineColor?: string,
+  histogramBaseLineWidth?: number,
+
+  boxWidth1?: number,
+  boxWidth2?: number,
+
+  boxOffset1?: number,
+  boxOffset2?: number,
+
+  nearestXLegend: number,
+  nearestYLegend: number,
+
+  offsetXLegend?: number,
+  offsetYLegend?: number,
+
+  renderXLegend?(value: number, index: number): string | null;
+  renderYLegend?(value: number, index: number): string | null;
 }
 
 export const ChartCurvesWithHistograms = memo(_KpiChart);
 
-function _KpiChart(props: ChartCurvesWithHistogramsProps): JSX.Element {
-  // A state is used instead a ref to prevent multiple re-render.
-  const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
+function _KpiChart(
+    { width,
+      height,
 
-  const { height: _screenHeight } = useDimensions();
-  const width = container?.getBoundingClientRect().width ?? null;
-  // const height = clamp(screenHeight * 0.6, 200, 600);
-  const height = clamp((width ?? 0) * 0.8, 200, 600);
-
-  return (
-    <div
-      className={"w-full"}
-      ref={(element) => setContainer(element)}
-    >
-      {width == null && (
-        <div
-          className={"w-full bg-red-100"}
-          style={{ height }}
-        >
-          Skeletton
-        </div>
-      )}
-
-      {width != null && (
-        <_KpiGrid
-          {...props}
-          width={width}
-          height={height}
-        />
-      )}
-    </div>
-  );
-}
-
-function _KpiGrid(
-    { histogram1,
+      histogram1,
       histogram2,
 
       curve1,
@@ -120,26 +113,41 @@ function _KpiGrid(
       histogram1Color,
       histogram2Color,
 
+      gridStroke,
+      gridWidth,
+
       curve1Color,
       curve2Color,
       curveWidth,
 
-      width,
-      height,
-    }: (
-      & ChartCurvesWithHistogramsProps
-      & Dimensions
-    )
+      histogram1BaseLineColor,
+      histogram2BaseLineColor,
+      histogramBaseLineWidth,
+
+      boxWidth1,
+      boxWidth2,
+
+      boxOffset1,
+      boxOffset2,
+
+      nearestXLegend,
+      nearestYLegend,
+
+      offsetXLegend,
+      offsetYLegend,
+
+      renderXLegend,
+      renderYLegend,
+    }: ChartCurvesWithHistogramsProps
   ): JSX.Element
 {
-  const dada = useCallback((v: number) => `${v.toFixed(2)}s`, []);
-  const fafa = useCallback((v: number, i: number) => i % 3 > 0 ? null : `${(v / 1000).toFixed(0)} K€`, []);
-
   const extremum = useMemo(
     () => {
       const extremum = Position.minMax(
-        histogram1, histogram2,
-        curve1, curve2,
+        histogram1,
+        histogram2,
+        curve1,
+        curve2,
       );
 
       if (extremum) {
@@ -198,22 +206,23 @@ function _KpiGrid(
         w={1000}
         h={1000}
 
-        stroke={"gray"}
-        strokeWidth={1}
+        stroke={gridStroke}
+        strokeWidth={gridWidth}
 
         minX={extremum.min.x}
         maxX={extremum.max.x}
-        offsetXLegend={1}
-        nearestXLegend={1.75}
-        // nearestXLegend={5.75}
-        renderXLegend={dada}
 
         minY={extremum.min.y}
         maxY={extremum.max.y}
-        offsetYLegend={23}
-        nearestYLegend={12345}
-        // nearestYLegend={50000}
-        renderYLegend={fafa}
+
+        nearestXLegend={nearestXLegend}
+        nearestYLegend={nearestYLegend}
+
+        offsetXLegend={offsetXLegend}
+        offsetYLegend={offsetYLegend}
+
+        renderXLegend={renderXLegend}
+        renderYLegend={renderYLegend}
       >
         <ChartPanning>
           {histogram1 && (
@@ -222,8 +231,8 @@ function _KpiGrid(
               className={"chart-histogram-1"}
               baseLine={histogram1BaseLine}
               color={histogram1Color}
-              boxWidth={0.5}
-              boxOffset={0.1}
+              boxWidth={boxWidth1}
+              boxOffset={boxOffset1}
             />
           )}
 
@@ -233,10 +242,19 @@ function _KpiGrid(
               className={"chart-histogram-2"}
               baseLine={histogram2BaseLine}
               color={histogram2Color}
-              boxWidth={0.5}
-              boxOffset={0.4}
+              boxWidth={boxWidth2}
+              boxOffset={boxOffset2}
             />
           )}
+
+          <ChartBaseLines
+            baseLine1={histogram1BaseLine}
+            baseLine2={histogram2BaseLine}
+            strokeWidth1={histogramBaseLineWidth}
+            strokeWidth2={histogramBaseLineWidth}
+            strokeColor1={histogram1BaseLineColor}
+            strokeColor2={histogram2BaseLineColor}
+          />
 
           {curve1 && (
             <ChartCurve
@@ -275,8 +293,8 @@ function _KpiGrid(
               r={ChartHistogramTheme.cursorRadius}
               interpolation={Interpolation.Horizontal}
               interpolationOptions={{
-                horizontalWidth: 0.5,
-                horizontalOffset: 0.1,
+                horizontalWidth: boxWidth1,
+                horizontalOffset: boxOffset1,
               }}
             />
           )}
@@ -293,8 +311,8 @@ function _KpiGrid(
               r={ChartHistogramTheme.cursorRadius}
               interpolation={Interpolation.Horizontal}
               interpolationOptions={{
-                horizontalWidth: 0.5,
-                horizontalOffset: 0.4,
+                horizontalWidth: boxWidth2,
+                horizontalOffset: boxOffset2,
               }}
             />
           )}
@@ -308,7 +326,7 @@ function _KpiGrid(
               fill={curve1Color}
               stroke={cursorStroke}
               strokeWidth={cursorStrokeWidth}
-              r={ChartHistogramTheme.cursorRadius}
+              r={ChartCurveTheme.cursorRadius}
               interpolation={Interpolation.Linear}
             />
           )}
@@ -322,7 +340,7 @@ function _KpiGrid(
               fill={curve2Color}
               stroke={cursorStroke}
               strokeWidth={cursorStrokeWidth}
-              r={ChartHistogramTheme.cursorRadius}
+              r={ChartCurveTheme.cursorRadius}
               interpolation={Interpolation.Linear}
             />
           )}

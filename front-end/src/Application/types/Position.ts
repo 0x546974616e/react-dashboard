@@ -9,6 +9,16 @@ export interface Position {
 export namespace Position {
   export const ZERO: Readonly<Position> = { x: 0, y: 0 };
 
+  export function cumulativeYSum(
+      positions: Position[]
+    ): Position[]
+  {
+    let sum = 0;
+    return positions.map(
+      ({ x, y }) => ({ x, y: sum += y})
+    );
+  }
+
   export function minMax(
       ...positions: (
         | Position

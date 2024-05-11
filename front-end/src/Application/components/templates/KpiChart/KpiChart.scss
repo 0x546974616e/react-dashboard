@@ -1,45 +1,69 @@
 
-.dada {
+.kpi-chart {
+  position: relative;
+
+  .chart-grid-rules line {
+    @apply stroke-stone-400;
+    stroke-width: 1px;
+  }
+
+  .chart-baselines line {
+    @apply stroke-stone-800;
+    stroke-width: 2px;
+  }
+
   rect {
     &.chart-histogram-1 {
-      @apply fill-blue-500;
+      @apply fill-indigo-300;
     }
     &.chart-histogram-2 {
-      @apply fill-green-500;
+      @apply fill-indigo-600;
     }
   }
 
   polyline {
+    $strokeWidth: 5px;
     &.chart-curve-1 {
-      @apply stroke-blue-700;
+      @apply stroke-indigo-300;
+      stroke-width: $strokeWidth;
     }
     &.chart-curve-2 {
-      @apply stroke-green-700;
+      @apply stroke-indigo-600;
+      stroke-width: $strokeWidth;
     }
   }
 
   circle {
+    $strokeWidth: 3px;
     &.chart-cursor-histogram-1 {
-      @apply fill-blue-500 stroke-black;
+      @apply fill-indigo-300 stroke-stone-800;
+      stroke-width: $strokeWidth;
     }
     &.chart-cursor-histogram-2 {
-      @apply fill-green-500 stroke-black;
+      @apply fill-indigo-600 stroke-stone-800;
+      stroke-width: $strokeWidth;
     }
 
     &.chart-cursor-curve-1 {
-      @apply fill-blue-700 stroke-black;
+      @apply fill-indigo-300 stroke-stone-800;
+      stroke-width: $strokeWidth;
     }
     &.chart-cursor-curve-2 {
-      @apply fill-green-700 stroke-black;
+      @apply fill-indigo-600 stroke-stone-800;
+      stroke-width: $strokeWidth;
     }
   }
 
   line {
+    $strokeWidth: 5px;
     &.chart-cursor-line-default {
-      @apply stroke-stone-500;
+      // @apply stroke-stone-500;
+      stroke: rgb(0, 0, 0, 0.4);
+      stroke-width: $strokeWidth;
     }
     &.chart-cursor-line-active {
-      @apply stroke-black;
+      @apply stroke-stone-800;
+      stroke-width: $strokeWidth;
     }
   }
 }

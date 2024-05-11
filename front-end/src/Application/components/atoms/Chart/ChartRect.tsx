@@ -1,5 +1,5 @@
-import { memo } from "react";
-import { ChartContext } from "Application/contexts";
+import { memo, useEffect, useRef, useState } from "react";
+import { ChartContext, useChartContext } from "Application/contexts";
 import { ChartRectTheme } from "Application/theme";
 
 export interface ChartRectProps extends
@@ -32,54 +32,67 @@ function _ChartRect(
     }: ChartRectProps
   ): JSX.Element
 {
+  const { nx, ny, nw, nh } = useChartContext();
+
+  const animate1 = useRef<SVGAnimateElement | null>(null);
+  const animate2 = useRef<SVGAnimateElement | null>(null);
+
+  const ww = nw(w);
+  const hh = nh(h);
+
+  const fromY = ny(y);
+
+  useEffect(
+    () => {
+      animate1.current?.beginElement();
+      animate2.current?.beginElement();
+    },
+    [ fromY, hh ] // Mmmm?
+  );
+
   return (
-    <ChartContext.Consumer>
-      {({ nx, ny, nw, nh }) => {
-        const ww = nw(w);
-        const hh = nh(h);
+    <rect
+      x={nx(x) + (ww < 0 ? ww : 0)}
+      y={fromY + (hh < 0 ? hh : 0)}
+      width={Math.abs(ww)}
+      height={Math.abs(hh)}
+      fill={fill}
+      stroke={stroke}
+      strokeWidth={strokeWidth}
+      strokeLinecap={strokeLinecap}
+      className={className}
+    >
+      {animated && hh < 0 && (
+        <animate
+          ref={animate1}
+          // .@ts-expect-error
+          // ref={setAnimate1}
+          from={fromY}
+          to={fromY + hh}
+          attributeName={"y"}
+          calcMode={"spline"}
+          keySplines={ChartRectTheme.splines}
+          dur={ChartRectTheme.duration}
+          repeatCount={1}
+          fill={"freeze"}
+        />
+      )}
 
-        const fromY = ny(y);
-
-        return (
-          <rect
-            x={nx(x) + (ww < 0 ? ww : 0)}
-            y={fromY + (hh < 0 ? hh : 0)}
-            width={Math.abs(ww)}
-            height={Math.abs(hh)}
-            fill={fill}
-            stroke={stroke}
-            strokeWidth={strokeWidth}
-            strokeLinecap={strokeLinecap}
-            className={className}
-          >
-            {animated && hh < 0 && (
-              <animate
-                from={fromY}
-                to={fromY + hh}
-                attributeName={"y"}
-                calcMode={"spline"}
-                keySplines={ChartRectTheme.splines}
-                dur={ChartRectTheme.duration}
-                repeatCount={1}
-                fill={"freeze"}
-              />
-            )}
-
-            {animated && (
-              <animate
-                from={0}
-                to={Math.abs(hh)}
-                attributeName={"height"}
-                calcMode={"spline"}
-                keySplines={ChartRectTheme.splines}
-                dur={ChartRectTheme.duration}
-                repeatCount={1}
-                fill={"freeze"}
-              />
-            )}
-          </rect>
-        );
-      }}
-    </ChartContext.Consumer>
+      {animated && (
+        <animate
+          ref={animate2}
+          // .@ts-expect-error
+          // ref={setAnimate2}
+          from={0}
+          to={Math.abs(hh)}
+          attributeName={"height"}
+          calcMode={"spline"}
+          keySplines={ChartRectTheme.splines}
+          dur={ChartRectTheme.duration}
+          repeatCount={1}
+          fill={"freeze"}
+        />
+      )}
+    </rect>
   );
 }
