@@ -14,20 +14,22 @@ function _Settings(): JSX.Element {
   // @ts-ignore
   return (
     <LogUpdates id="settings">
-      <div>Settings</div>
-      <div className="bg-stone-100 p-4">
-        <div className="bg-white rounded-lg shadow p-4 w-full">
-          <KpiChartExample/>
-        </div>
+      <div className="h-full overflow-scroll">
+        <div>Settings</div>
+        <div className="bg-stone-100 p-4">
+          <div className="bg-white rounded-lg shadow p-4 w-full">
+            <KpiChartExample />
+          </div>
 
-        <div className="mt-6">
-          <Example/>
-        </div>
-        <div className="mt-6">
-          <Example2/>
-        </div>
-        <div className="mt-6">
-          <Example3/>
+          <div className="mt-6">
+            <Example/>
+          </div>
+          <div className="mt-6">
+            <Example2/>
+          </div>
+          <div className="mt-6">
+            <Example3/>
+          </div>
         </div>
       </div>
     </LogUpdates>

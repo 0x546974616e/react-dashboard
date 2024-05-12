@@ -75,7 +75,7 @@ function SelectTree(
 {
   return (
     <div className="h-full overflow-hidden flex flex-col">
-      <div className="bg-stone-100">
+      <div className="bg-stone-100 text-center">
         Search & filter
       </div>
       <div className="grow overflow-hidden">
