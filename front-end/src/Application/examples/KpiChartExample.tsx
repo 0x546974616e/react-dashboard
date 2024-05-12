@@ -123,11 +123,9 @@ export const histogram2 = [
 
 export function KpiChartExample(): JSX.Element {
   return (
-    <div>
-      <KpiChart
-        histogram1={histogram1}
-        histogram2={histogram2}
-      />
-    </div>
+    <KpiChart
+      histogram1={histogram1}
+      histogram2={histogram2}
+    />
   );
 }

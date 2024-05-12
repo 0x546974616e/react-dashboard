@@ -1,5 +1,6 @@
-import { memo, useEffect, useRef, useState } from "react";
-import { ChartContext, useChartContext } from "Application/contexts";
+import { memo, useEffect, useRef } from "react";
+
+import { useChartContext } from "Application/contexts";
 import { ChartRectTheme } from "Application/theme";
 
 export interface ChartRectProps extends
@@ -37,8 +38,21 @@ function _ChartRect(
   const animate1 = useRef<SVGAnimateElement | null>(null);
   const animate2 = useRef<SVGAnimateElement | null>(null);
 
+
   const ww = nw(w);
-  const hh = nh(h);
+
+  //#region Temporary tests for animation.
+  const a = useRef(0);
+  const b = useRef(h);
+
+  if (b.current != h) {
+    a.current = b.current;
+    b.current = h;
+  }
+
+  const h0 = nh(a.current);
+  const hh = nh(b.current);
+  //#endregion
 
   const fromY = ny(y);
 
@@ -83,7 +97,7 @@ function _ChartRect(
           ref={animate2}
           // .@ts-expect-error
           // ref={setAnimate2}
-          from={0}
+          from={Math.abs(h0)}
           to={Math.abs(hh)}
           attributeName={"height"}
           calcMode={"spline"}

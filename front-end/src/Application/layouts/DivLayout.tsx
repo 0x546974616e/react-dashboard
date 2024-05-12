@@ -4,6 +4,7 @@ import { DimensionsContext } from "Application/contexts";
 import { useDimensions } from "Application/hooks";
 
 export interface DivLayoutProps {
+  id?: string,
   children?: ReactNode,
 
   debug?: boolean,
@@ -17,6 +18,10 @@ export interface DivLayoutProps {
   maxWidth?: number | string,
   maxHeight?: number | string,
 
+  overflow?: "hidden" | "visible" | "scroll",
+  overflowX?: "hidden" | "visible" | "scroll",
+  overflowY?: "hidden" | "visible" | "scroll",
+
   flex?: number | string,
   flexDirection?: "row" | "column",
   flexShrink?: number | string,
@@ -25,7 +30,7 @@ export interface DivLayoutProps {
 }
 
 export function DivLayout(
-    { children, debug, ...style }: DivLayoutProps
+    { id, children, debug, ...style }: DivLayoutProps
   ): JSX.Element
 {
   useDimensions();
@@ -35,6 +40,7 @@ export function DivLayout(
 
   return (
     <div
+      id={id}
       ref={setLayout}
       className={debug ? "relative border-2 border-stone-300" : undefined}
       style={style}

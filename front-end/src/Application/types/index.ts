@@ -4,3 +4,4 @@ export * from "./kpi";
 export * from "./Layout";
 export * from "./Position";
 export * from "./Size";
+export * from "./Tree";

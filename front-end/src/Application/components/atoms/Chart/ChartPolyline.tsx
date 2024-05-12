@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { useChartContext } from "Application/contexts";
 import { Position } from "Application/types";
 import { ChartPolylineTheme } from "Application/theme";

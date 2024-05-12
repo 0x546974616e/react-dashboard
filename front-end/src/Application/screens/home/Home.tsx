@@ -3,6 +3,9 @@ import React from "react";
 import { HomeLayout } from "Application/layouts";
 
 import "./Home.scss";
+import { LogUpdates } from "Application/utils";
+import { KpiChartExample } from "Application/examples";
+import { TreeSelectorExample } from "Application/examples";
 
 export const Home = React.memo(_Home);
 
@@ -11,6 +14,18 @@ export const Home = React.memo(_Home);
 
 function _Home(): JSX.Element {
   return (
-    <HomeLayout></HomeLayout>
+    <HomeLayout
+      chart={
+        <LogUpdates id="dada">
+          <KpiChartExample/>
+        </LogUpdates>
+      }
+      kpis={
+        "KPIsssss"
+      }
+      tree={
+        <TreeSelectorExample/>
+      }
+    />
   );
 }
