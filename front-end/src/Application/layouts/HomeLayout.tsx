@@ -68,8 +68,8 @@ function _HomeLayout(
           width={"100%"}
           height={"100%"}
           overflowX={"hidden"}
-          overflowY={"scroll"}
-          debug={debug}
+          overflowY={"hidden"}
+          // debug={debug}
         >
           {props.tree}
         </DivLayout>
@@ -89,7 +89,18 @@ function _HomeLayout(
           {props.chart}
         </DivLayout>
       </div>
-      <div className={"w-[30%]"}>2</div>
+      <div className={"w-[30%]"}>
+        <DivLayout
+          id={"home-ranking"}
+          width={"100%"}
+          height={"100%"}
+          overflowX={"hidden"}
+          overflowY={"hidden"}
+          debug={debug}
+        >
+          Ranking
+        </DivLayout>
+      </div>
     </div>
   );
 }
