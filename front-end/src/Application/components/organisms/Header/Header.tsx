@@ -29,10 +29,9 @@ const routes = [
 
 export function Header(): JSX.Element {
   return (
-    <header id={"header"} className={"h-full bg-blue-500"}>
+    <header id={"header"} className={"h-full bg-blue-500 flex flex-row items-center"}>
       <LogUpdates id={"header"}>
-        <div>Header</div>
-        <nav>
+        <nav className={"grow"}>
           <ul>
             {routes.map(
               ({ route, label }) => (

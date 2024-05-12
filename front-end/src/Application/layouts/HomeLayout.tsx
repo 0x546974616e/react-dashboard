@@ -24,9 +24,8 @@ function _HomeLayout(
     }
   ): JSX.Element
 {
+  const debug = false;
   const layout = useLayout(layouts);
-
-  const debug = true;
 
   switch (layout) {
     case Layout.PHONE: {
@@ -57,8 +56,8 @@ function _HomeLayout(
       leftChildren={props.treeSelector}
       middleChildren={props.kpiChart}
       rightChildren={props.ranking}
-      debug={debug}
       id={"home-layout"}
+      debug={debug}
     />
   );
 }

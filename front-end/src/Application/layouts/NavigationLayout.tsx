@@ -6,7 +6,7 @@ import { Col1Fixed1GrowLayout } from "./atoms";
 export function NavigationLayout(): JSX.Element {
   return (
     <Col1Fixed1GrowLayout
-      topHeight={80}
+      topHeight={50}
       topChildren={<Header/>}
       bottomChildren={<Outlet/>}
       id={"navigation-layout"}

@@ -6,6 +6,7 @@ import "./Home.scss";
 import { LogUpdates } from "Application/utils";
 import { KpiChartExample } from "Application/examples";
 import { TreeSelectorExample } from "Application/examples";
+import { Breadcrumbs } from "Application/components";
 
 export const Home = React.memo(_Home);
 
@@ -20,6 +21,15 @@ function _Home(): JSX.Element {
       }
       kpiChart={
         <LogUpdates id="kpi-chart">
+          <Breadcrumbs>
+            {[
+              { label: "Europe" },
+              { label: "Belgique" },
+              { label: "Brussels" },
+              { label: "Foot Locker" },
+              { label: "Jane Doe" },
+            ]}
+          </Breadcrumbs>
           <KpiChartExample/>
         </LogUpdates>
       }
