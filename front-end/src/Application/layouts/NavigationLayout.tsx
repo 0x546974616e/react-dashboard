@@ -1,14 +1,16 @@
-import { Header } from "Application/components";
 import { Outlet } from "react-router-dom";
-import { DivLayout } from "./DivLayout";
+import { Header } from "Application/components";
+
+import { Col1Fixed1GrowLayout } from "./atoms";
 
 export function NavigationLayout(): JSX.Element {
   return (
-    <div className={"w-full h-full flex flex-col overflow-hidden"}>
-      <Header/>
-      <div className={"grow overflow-hidden"}>
-        <Outlet/>
-      </div>
-    </div>
+    <Col1Fixed1GrowLayout
+      topHeight={80}
+      topChildren={<Header/>}
+      bottomChildren={<Outlet/>}
+      id={"navigation-layout"}
+      // debug
+    />
   );
 }

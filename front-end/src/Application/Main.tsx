@@ -7,7 +7,7 @@ import "./theme";
 export function Main(): JSX.Element {
 
   return (
-    <LogUpdates id="main">
+    <LogUpdates id={"main"}>
       <ScreenLayout>
         <Navigation/>
       </ScreenLayout>

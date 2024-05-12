@@ -29,42 +29,40 @@ const routes = [
 
 export function Header(): JSX.Element {
   return (
-    <LogUpdates
-      as={"header"}
-      id={"header"}
-    >
-      <div>Header</div>
-
-      <nav>
-        <ul>
-          {routes.map(
-            ({ route, label }) => (
-              <li key={route}>
-                <NavLink
-                  to={route}
-                  className={
-                    ({ isActive }: any) => {
-                      return isActive ? "active" : null
+    <header id={"header"} className={"h-full bg-blue-500"}>
+      <LogUpdates id={"header"}>
+        <div>Header</div>
+        <nav>
+          <ul>
+            {routes.map(
+              ({ route, label }) => (
+                <li key={route}>
+                  <NavLink
+                    to={route}
+                    className={
+                      ({ isActive }: any) => {
+                        return isActive ? "active" : null
+                      }
                     }
-                  }
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              )
+            )}
+            {[ Language.French, Language.English ].map(
+              (language) => (
+                <li
+                  key={language.id}
+                  onClick={() => language.set()}
                 >
-                  {label}
-                </NavLink>
-              </li>
-            )
-          )}
-          {[ Language.French, Language.English ].map(
-            (language) => (
-              <li
-                key={language.id}
-                onClick={() => language.set()}
-              >
-                {language.id}
-              </li>
-            )
-          )}
-        </ul>
-      </nav>
-    </LogUpdates>
+                  {language.id}
+                </li>
+              )
+            )}
+          </ul>
+        </nav>
+      </LogUpdates>
+    </header>
   );
 }

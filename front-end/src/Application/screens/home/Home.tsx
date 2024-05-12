@@ -15,16 +15,16 @@ export const Home = React.memo(_Home);
 function _Home(): JSX.Element {
   return (
     <HomeLayout
-      chart={
-        <LogUpdates id="dada">
+      treeSelector={
+        <TreeSelectorExample/>
+      }
+      kpiChart={
+        <LogUpdates id="kpi-chart">
           <KpiChartExample/>
         </LogUpdates>
       }
-      kpis={
-        "KPIsssss"
-      }
-      tree={
-        <TreeSelectorExample/>
+      ranking={
+        "ranking"
       }
     />
   );

@@ -2,7 +2,11 @@ import React, { ReactNode } from "react";
 
 import { useLayout } from "Application/hooks";
 import { Layout } from "Application/types";
-import { DivLayout } from "./DivLayout";
+
+import {
+  Row1Fixed1Percentage1AutoLayout,
+  Row1Percentage1AutoLayout,
+} from "./atoms";
 
 export const HomeLayout = React.memo(_HomeLayout);
 
@@ -14,9 +18,9 @@ const layouts = [
 
 function _HomeLayout(
     props: {
-      chart: ReactNode,
-      kpis: ReactNode,
-      tree: ReactNode,
+      kpiChart?: ReactNode,
+      treeSelector?: ReactNode,
+      ranking?: ReactNode,
     }
   ): JSX.Element
 {
@@ -27,80 +31,34 @@ function _HomeLayout(
   switch (layout) {
     case Layout.PHONE: {
       return (
-        <DivLayout width={"100%"} height={"100%"} debug={debug}>
-          <p className={"text-center"}>
-            {Layout[layout]}
-          </p>
-          {props.chart}
-        </DivLayout>
+        <div>
+          {props.kpiChart}
+        </div>
       );
     }
 
     case Layout.LAPTOP: {
       return (
-        <div className={"w-full h-full flex flex-row"}>
-          <div className={"w-[60%]"}>
-            <DivLayout
-              id={"home-chart"}
-              width={"100%"}
-              height={"100%"}
-              overflowX={"hidden"}
-              overflowY={"scroll"}
-              debug={debug}
-            >
-              <p className={"text-center"}>
-                {Layout[layout]}
-              </p>
-              {props.chart}
-            </DivLayout>
-          </div>
-          <div className={"grow"}>2</div>
-        </div>
+        <Row1Percentage1AutoLayout
+          leftPercentage={0.6}
+          leftChildren={props.kpiChart }
+          rightChildren={props.ranking}
+          id={"home-layout"}
+          debug={debug}
+        />
       );
     }
   }
 
   return (
-    <div className={"w-full h-full flex flex-row overflow-hidden"}>
-      <div className={"grow overflow-hidden"}>
-        <DivLayout
-          id={"home-tree"}
-          width={"100%"}
-          height={"100%"}
-          overflowX={"hidden"}
-          overflowY={"hidden"}
-          // debug={debug}
-        >
-          {props.tree}
-        </DivLayout>
-      </div>
-      <div className={"w-[50%]"}>
-        <DivLayout
-          id={"home-chart"}
-          width={"100%"}
-          height={"100%"}
-          overflowX={"hidden"}
-          overflowY={"scroll"}
-          debug={debug}
-        >
-          <p className={"text-center"}>
-            {Layout[layout]}
-          </p>
-          {props.chart}
-        </DivLayout>
-      </div>
-      <div className={"w-[30%]"}>
-        <DivLayout
-          id={"home-ranking"}
-          width={"100%"}
-          height={"100%"}
-          overflowX={"hidden"}
-          overflowY={"hidden"}
-          debug={debug}
-        >
-          Ranking
-        </DivLayout>
-      </div>
-    </div>
+    <Row1Fixed1Percentage1AutoLayout
+      leftWidth={300}
+      middlePercentage={0.6}
+      leftChildren={props.treeSelector}
+      middleChildren={props.kpiChart}
+      rightChildren={props.ranking}
+      debug={debug}
+      id={"home-layout"}
+    />
   );
 }
