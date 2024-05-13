@@ -23,6 +23,10 @@ function euro(euro: number): string {
   return `${Math.floor(euro)} €`;
 }
 
+function nop() {
+  // Do nothing.
+}
+
 export function KpiChart(
     props: KpiChartProps
   ): JSX.Element

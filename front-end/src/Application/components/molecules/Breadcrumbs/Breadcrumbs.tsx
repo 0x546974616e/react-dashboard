@@ -1,5 +1,6 @@
 import { useBreadcrumbs } from "./useBreadcrumbs";
 import { BreadcrumbsUnit } from "./BreadcrumbsUnit";
+import { useEffect, useRef } from "react";
 
 export interface BreadcrumbsProps {
   children?: Array<{
@@ -18,7 +19,14 @@ export function Breadcrumbs(
     allUnitWidths,
     unitWidthsTotal,
     updateUnitWidth,
+    firstRender,
   } = useBreadcrumbs();
+
+
+  const dotsWidth = allUnitWidths[0] ?? 0;
+  if (unitWidthsTotal - dotsWidth <= parentWidth) {
+    unitWidthsTotal -= dotsWidth;
+  }
 
   return (
     <div
@@ -29,7 +37,7 @@ export function Breadcrumbs(
         <BreadcrumbsUnit
           label={"..."}
           separator={true}
-          visible={unitWidthsTotal > parentWidth}
+          visible={unitWidthsTotal > parentWidth || firstRender}
           onWidth={width => updateUnitWidth({ index: 0, width })}
           lastWidth={allUnitWidths[0]}
         />
@@ -45,7 +53,7 @@ export function Breadcrumbs(
               <BreadcrumbsUnit
                 key={label}
                 label={label}
-                visible={visible}
+                visible={visible || firstRender}
                 separator={index < length}
                 onWidth={width => updateUnitWidth({ index, width })}
                 lastWidth={allUnitWidths[index]}

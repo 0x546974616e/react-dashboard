@@ -1,5 +1,5 @@
 import { useReducer, useState } from "react";
-import { useDimensions } from "Application/hooks";
+import { useDimensions, useIsFirstRender } from "Application/hooks";
 
 export function useBreadcrumbs() {
   useDimensions(); // Only to trigger re-render.
@@ -35,5 +35,6 @@ export function useBreadcrumbs() {
     allUnitWidths: allWidths,
     unitWidthsTotal: totalWidth,
     updateUnitWidth: updateWidth,
+    firstRender: useIsFirstRender(),
   };
 }
