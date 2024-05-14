@@ -39,7 +39,7 @@ function _HomeLayout(
     case Layout.LAPTOP: {
       return (
         <Row1Percentage1AutoLayout
-          leftPercentage={0.6}
+          leftPercentage={0.65}
           leftChildren={props.kpiChart }
           rightChildren={props.ranking}
           id={"home-layout"}
@@ -51,8 +51,8 @@ function _HomeLayout(
 
   return (
     <Row1Fixed1Percentage1AutoLayout
-      leftWidth={300}
-      middlePercentage={0.6}
+      leftWidth={350}
+      middlePercentage={0.65}
       leftChildren={props.treeSelector}
       middleChildren={props.kpiChart}
       rightChildren={props.ranking}

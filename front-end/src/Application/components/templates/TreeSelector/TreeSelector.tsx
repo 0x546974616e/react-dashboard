@@ -1,5 +1,6 @@
-import { Tree } from "Application/types";
 import { useState } from "react";
+import { Tree } from "Application/types";
+import { FeedCell } from "./FeedCell";
 
 export interface TreeSelectorProps {
   root: Tree,
@@ -13,7 +14,13 @@ export function TreeSelector(
   ): JSX.Element
 {
   return (
-    <div className="h-full">
+    <div className="h-full bg-white pt-2">
+      {/* <div
+        className="whitespace-nowrap truncate pr-2 text-stone-400"
+        style={{ direction: "rtl"}}
+      >
+        Chiffre d'affaires / Objectif
+      </div> */}
       <RecursiveTree tree={root} root={true}/>
     </div>
   );
@@ -27,32 +34,20 @@ function RecursiveTree(
 
   return (
     <div className="flex flex-col h-full">
-      <div
-        className="cursor-pointer relative flex flex-row p-2 gap-2 items-center"
-        onClick={
-          () => setSelected(null)
-        }
+      <FeedCell
+        first={root}
+        last={selected == null}
+        onPress={() => setSelected(null)}
       >
-        {!root && (
-          <div className="absolute top-0 flex w-6 justify-center bottom-1/2">
-            <div className="w-px bg-gray-200"></div>
+        <div className={"flex flex-row text-gray-900"}>
+          <div className="grow">
+            {label}
           </div>
-        )}
-
-        {selected != null && (
-          <div className="absolute top-1/2 flex w-6 justify-center bottom-0">
-            <div className="w-px bg-gray-200"></div>
+          <div>
+            {Math.ceil(Math.random() * 100)} €
           </div>
-        )}
-
-        <div className="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
-          <div className="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
         </div>
-
-        <p className="flex-auto py-0.5 text-gray-500">
-          <span className="text-gray-900">{label}</span>
-        </p>
-      </div>
+      </FeedCell>
 
       <div className="grow overflow-hidden">
         {selected == null && children && (
@@ -69,28 +64,50 @@ function RecursiveTree(
   );
 }
 
+/*
+
+*/
+
+
 function SelectTree(
     { children, onSelect }: { children: Tree[], onSelect(tree: Tree): void }
   ): JSX.Element
 {
   return (
     <div className="h-full overflow-hidden flex flex-col">
-      <div className="bg-stone-100 text-center">
+      <div className="bg-white text-center">
         Search & filter
       </div>
-      <div className="grow overflow-hidden">
-        <div className="h-full overflow-y-scroll">
+      <div className="grow overflow-hidden flex flex-col">
+        <div className="flex flex-row p-2 text-stone-400 gap-2 justify-between">
+          <div className="whitespace-nowrap truncate min-w-[20%]">
+            Magasins
+          </div>
+          <div className="whitespace-nowrap truncate" style={{ direction: "rtl"}}>
+            Chiffre d'affaires / Objectif
+          </div>
+        </div>
+        <div className="overflow-y-scroll grow px-2">
           <div className="">
             {children.map(
               (tree) => (
                 <div
-                  className="cursor-pointer"
+                  className="cursor-pointer px-2 pb-2"
                   key={tree.label}
                   onClick={
                     () => onSelect(tree)
                   }
                 >
-                  {tree.label}
+                  <div className="flex flex-row">
+                    <div className="grow">
+                      {tree.label}
+                    </div>
+                    <div>
+                      {Math.ceil(Math.random() * 100)} €
+                    </div>
+                  </div>
+
+                  <hr className="mt-2"/>
                 </div>
               )
             )}

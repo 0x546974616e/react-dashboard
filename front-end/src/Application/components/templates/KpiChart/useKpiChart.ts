@@ -4,6 +4,8 @@ import { KpiDisplay, Position } from "Application/types";
 import { computeCumulative } from "./computeCumulative";
 import { KpiChartProps } from "./KpiChartProps";
 
+const nearestX = 2;
+
 function nearestY(extremum: ReturnType<typeof Position["minMax"]>) {
   if (extremum) {
     const diff = Math.abs(extremum.max.y - extremum.min.y);
@@ -42,7 +44,7 @@ export function useKpiChart(
       }
 
       return {
-        nearestX: 1,
+        nearestX: nearestX,
         nearestY: nearestY(extremum),
 
         histogram1: undefined,
@@ -70,7 +72,7 @@ export function useKpiChart(
       );
 
       return {
-        nearestX: 1,
+        nearestX: nearestX,
         nearestY: nearestY(extremum),
 
         histogram1: dataSet1?.histogram,
@@ -98,7 +100,7 @@ export function useKpiChart(
       );
 
       return {
-        nearestX: 1,
+        nearestX: nearestX,
         nearestY: nearestY(extremum),
 
         histogram1: dataSet1?.histogram,

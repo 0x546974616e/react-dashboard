@@ -3,7 +3,7 @@ import { Position } from "Application/types";
 /**
  * TODO: Adjust according to the width.
  */
-const NEAREST_MINUTE = 60;
+const NEAREST_MINUTE = 120;
 
 /**
  * - `histogram.*.x` In minutes

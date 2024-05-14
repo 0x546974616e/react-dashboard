@@ -37,7 +37,10 @@ export function BreadcrumbsUnit(
     >
       {visible && (
         <div className={"flex flex-row items-center shrink-0 min-w-fit"}>
-          <span onClick={() => onPress?.(label)}>
+          <span
+            onClick={() => onPress?.(label)}
+            className={onPress ? "cursor-pointer hover:underline" : undefined}
+          >
             {label}
           </span>
           {separator && (

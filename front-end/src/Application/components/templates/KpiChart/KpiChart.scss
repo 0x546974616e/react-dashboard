@@ -22,7 +22,7 @@
   }
 
   polyline {
-    $strokeWidth: 5px;
+    $strokeWidth: 4px;
     &.chart-curve-1 {
       @apply stroke-indigo-300;
       stroke-width: $strokeWidth;
