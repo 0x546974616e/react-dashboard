@@ -1,119 +1,72 @@
-import { useState } from "react";
+import {  useState } from "react";
 import { Tree } from "Application/types";
-import { FeedCell } from "./FeedCell";
+import { TreeProvider } from "./TreeProvider";
+import { TreeChildren } from "./TreeChildren";
+import { TreeFeedNode } from "./TreeFeedNode";
 
 export interface TreeSelectorProps {
-  root: Tree,
+  onSelect?(tree: Tree | null): void,
+  root: Tree | null,
 }
 
-/**
- * WIP (prototype).
- */
 export function TreeSelector(
-    { root }: TreeSelectorProps
+    { root,
+      onSelect,
+    }: TreeSelectorProps
   ): JSX.Element
 {
   return (
-    <div className="h-full bg-white pt-2">
-      {/* <div
-        className="whitespace-nowrap truncate pr-2 text-stone-400"
-        style={{ direction: "rtl"}}
-      >
-        Chiffre d'affaires / Objectif
-      </div> */}
-      <RecursiveTree tree={root} root={true}/>
-    </div>
+    <TreeProvider>
+      {root != null && (
+        <RecursiveTree
+          tree={root}
+          root={true}
+        />
+      )}
+
+      {root == null && (
+        <div>Oops, we didn't see that coming.</div>
+      )}
+    </TreeProvider>
   );
 }
 
-function RecursiveTree(
-    { tree: { label, children }, root }: { tree: Tree, root: boolean }
+export interface RecursiveTreeProps {
+  dada?(tree: Tree | null): void,
+  root?: boolean,
+  tree: Tree,
+}
+
+export function RecursiveTree(
+    { tree, root, dada }: RecursiveTreeProps
   ): JSX.Element
 {
-  const [ selected, setSelected ] = useState<Tree | null>(null);
+  const [ subtree, selectSubtree ] = useState<Tree | null>(null);
 
   return (
-    <div className="flex flex-col h-full">
-      <FeedCell
+    <div className="w-full h-full flex flex-col shrink-0 overflow-hidden">
+      <TreeFeedNode
+        tree={tree}
         first={root}
-        last={selected == null}
-        onPress={() => setSelected(null)}
-      >
-        <div className={"flex flex-row text-gray-900"}>
-          <div className="grow">
-            {label}
-          </div>
-          <div>
-            {Math.ceil(Math.random() * 100)} €
-          </div>
+        last={subtree == null}
+        onDive={() => subtree == null ? dada?.(tree) : selectSubtree(null)}
+      />
+
+        <div className="flex-1 overflow-hidden">
+      {subtree != null && (
+        <RecursiveTree
+          tree={subtree}
+          dada={() => selectSubtree(null)}
+        />
+      )}
+
+      {subtree == null && (
+          <TreeChildren
+            selectSubtree={selectSubtree}
+            tree={tree}
+          />
+      )}
         </div>
-      </FeedCell>
-
-      <div className="grow overflow-hidden">
-        {selected == null && children && (
-          <SelectTree onSelect={setSelected}>
-            {children}
-          </SelectTree>
-        )}
-
-        {selected != null && (
-          <RecursiveTree tree={selected} root={false}/>
-        )}
-      </div>
-    </div>
-  );
-}
-
-/*
-
-*/
-
-
-function SelectTree(
-    { children, onSelect }: { children: Tree[], onSelect(tree: Tree): void }
-  ): JSX.Element
-{
-  return (
-    <div className="h-full overflow-hidden flex flex-col">
-      <div className="bg-white text-center">
-        Search & filter
-      </div>
-      <div className="grow overflow-hidden flex flex-col">
-        <div className="flex flex-row p-2 text-stone-400 gap-2 justify-between">
-          <div className="whitespace-nowrap truncate min-w-[20%]">
-            Magasins
-          </div>
-          <div className="whitespace-nowrap truncate" style={{ direction: "rtl"}}>
-            Chiffre d'affaires / Objectif
-          </div>
-        </div>
-        <div className="overflow-y-scroll grow px-2">
-          <div className="">
-            {children.map(
-              (tree) => (
-                <div
-                  className="cursor-pointer px-2 pb-2"
-                  key={tree.label}
-                  onClick={
-                    () => onSelect(tree)
-                  }
-                >
-                  <div className="flex flex-row">
-                    <div className="grow">
-                      {tree.label}
-                    </div>
-                    <div>
-                      {Math.ceil(Math.random() * 100)} €
-                    </div>
-                  </div>
-
-                  <hr className="mt-2"/>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

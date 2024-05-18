@@ -19,7 +19,7 @@ function _Home(): JSX.Element {
     <HomeLayout
       treeSelector={
         // <div className="w-full h-full border-r-2 border-r-white">
-        <div className="w-full h-full border-r-2 border-r-stone-200">
+        <div className="w-full h-full border-r border-r-stone-200">
           <TreeSelectorExample/>
         </div>
       }
@@ -61,7 +61,7 @@ function _Home(): JSX.Element {
         </LogUpdates>
       }
       ranking={
-        <div className="w-full h-full bg-white border-l-2 border-l-stone-200">
+        <div className="w-full h-full bg-white border-l border-l-stone-200">
           "ranking"
         </div>
       }

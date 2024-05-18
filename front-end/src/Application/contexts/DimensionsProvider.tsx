@@ -34,7 +34,7 @@ export function DimensionsProvider(
   return (
     <DimensionsContext.Provider value={value}>
       <div id={id} className={debug ? "relative border border-stone-200" : undefined}>
-        <div style={value} className={"overflow-x-hidden overflow-y-scroll"}>
+        <div style={value} className={"overflow-x-hidden overflow-y-auto"}>
           {children}
         </div>
 

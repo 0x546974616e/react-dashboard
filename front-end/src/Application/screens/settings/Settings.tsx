@@ -14,7 +14,7 @@ function _Settings(): JSX.Element {
   // @ts-ignore
   return (
     <LogUpdates id="settings">
-      <div className="h-full overflow-scroll">
+      <div className="h-full overflow-auto">
         <div>Settings</div>
         <div className="bg-stone-100 p-4">
           <div className="bg-white rounded-lg shadow p-4 w-full">

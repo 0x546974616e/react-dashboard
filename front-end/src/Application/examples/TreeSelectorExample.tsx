@@ -1,6 +1,5 @@
 import { TreeSelector } from "Application/components";
 import { Tree } from "Application/types";
-import { Children } from "react";
 
 const countries = {
   "Belgium": [
@@ -463,50 +462,96 @@ const lastNames = [
   "Jimenez",
 ];
 
-function makeRetailers(): Tree[] {
+function makeId(): string {
+  return Math.random().toString(36).slice(2);
+}
+
+function makeRetailers(parent: Tree, depth: number): Tree[] {
   const r = Math.random() * 0.5 + 0.2;
   return retailers.filter(() => Math.random() < r).map(
-    retailer => ({
-      label: retailer,
-      level: "retailer",
-      children: makeStaff(),
-    })
+    retailer => {
+      const tree: Tree = {
+        id: makeId(),
+        label: retailer,
+        children: null,
+        parent,
+        depth,
+      };
+
+      tree.children = {
+        label: "Staff",
+        nodes: makeStaff(tree, depth + 1),
+      };
+
+      return tree;
+    }
   );
 }
 
-function makeStaff(): Tree[] {
+function makeStaff(parent: Tree, depth: number): Tree[] {
   const r = Math.random() * 0.9 + 0.1;
   return firstNames.filter(() => Math.random() < r).map(
     staff => ({
+      id: makeId(),
       label: `${staff} ${lastNames[Math.floor(Math.random() * lastNames.length)]}`,
-      level: "staff",
-      children: undefined,
+      children: null,
+      parent,
+      depth,
     })
   );
 }
 
-const tree: Tree = {
+const root: Tree = {
+  id: makeId(),
   label: "Europe",
-  level: "contient",
-  children: Object.entries(countries).map(
-    ([ country, cities ]) => ({
-      label: country,
-      level: "country",
-      children: cities.map(
-        city => ({
-          label: city,
-          level: "city",
-          children: makeRetailers(),
-        })
-      )
-    })
+  parent: null,
+  children: null,
+  depth: 0,
+};
+
+root.children = {
+  label: "Countries",
+  nodes: Object.entries(countries).map(
+    ([ country, cities ]) => {
+      const tree: Tree = {
+        id: makeId(),
+        label: country,
+        children: null,
+        parent: root,
+        depth: 1,
+      }
+
+      tree.children = {
+        label: "Cities",
+        nodes: cities.map(
+          city => {
+            const subtree: Tree = {
+              id: makeId(),
+              label: city,
+              parent: tree,
+              children: null,
+              depth: 2,
+            }
+
+            subtree.children = {
+              label: "Retailers",
+              nodes: makeRetailers(subtree, 3),
+            };
+
+            return subtree;
+          }
+        ),
+      };
+
+      return tree;
+    }
   ),
 };
 
 export function TreeSelectorExample(): JSX.Element {
   return (
     <TreeSelector
-      root={tree}
+      root={root}
     />
   );
 }

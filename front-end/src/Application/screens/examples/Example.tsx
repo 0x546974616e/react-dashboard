@@ -16,7 +16,7 @@ export const Example = React.memo(_Example);
 
 function _Example(): JSX.Element {
   return (
-    <div className="bg-stone-100 h-full overflow-scroll">
+    <div className="bg-stone-100 h-full overflow-auto">
       <p>Example</p>
 
       <h1 className="text-3xl font-bold underline text-blue-600">
