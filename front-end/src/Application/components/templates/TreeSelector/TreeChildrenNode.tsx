@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Tree } from "Application/types";
 import { useOnChildBlur } from "Application/hooks";
 import { useTreeContext } from "./TreeContext";
+import { join } from "Application/utils";
 
 export interface TreeChildrenNodeProps {
   searchPattern?: RegExp | null,
@@ -25,6 +26,7 @@ export function TreeChildrenNode(
     preselectedTree,
   } = useTreeContext();
 
+  const onBlur = useOnChildBlur(() => preselectTree(null));
   const amount = useMemo(() => Math.floor(Math.random() * 100), []);
 
   const label = useMemo(
@@ -51,24 +53,31 @@ export function TreeChildrenNode(
     [ searchPattern ]
   );
 
-  const onBlur = useOnChildBlur(
-    () => preselectTree(null)
-  );
-
   if (label == null) {
     return null;
   }
 
   return (
-    <div onBlur={onBlur}>
+    <div
+      onBlur={onBlur}
+      className={"relative flex flex-row gap-2 px-2 py-1 w-full border-b border-b-stone-200"}
+    >
       <button
         className={
-          "py-1 accent-indigo-600 " + (
+          join(
+            "cursor-pointer",
+            "flex flex-row gap-2 grow",
+            "px-2 py-1 min-w-0",
+            "border rounded-lg",
+            selectedTree == tree ||
+            preselectedTree == tree
+              ? "border-indigo-300"
+              : "border-white",
             selectedTree == tree
-              ? "bg-indigo-600"
-              : preselectedTree == tree
-                  ? "border border-indigo-600"
-                  : undefined
+              ? "bg-indigo-100"
+              : "",
+            "accent-blue-600",
+            "hover:border-indigo-600",
           )
         }
         onDoubleClick={
@@ -83,29 +92,41 @@ export function TreeChildrenNode(
           }
         }
       >
-        <div className={"flex flex-row gap-2 justify-between"}>
-          <div className={"grow"}>
-            {label.map(
-              (label, index) => (
-                label && (
-                  <span
-                    key={index}
-                    className={index % 2 == 1 ? "text-red-500" : undefined}
-                  >
-                    {label}
-                  </span>
-                )
+        <div className={"grow text-left"}>
+          {label.map(
+            (label, index) => (
+              label && (
+                <span
+                  key={index}
+                  className={index % 2 == 1 ? "text-red-500" : undefined}
+                >
+                  {label}
+                </span>
               )
-            )}
-          </div>
-          <div>
-            {amount} €
-          </div>
+            )
+          )}
         </div>
+
+        {preselectedTree != tree && (
+          <div className={"shrink-0"}>
+            {amount}&nbsp;€
+          </div>
+        )}
       </button>
 
       {preselectedTree == tree && (
         <button
+          className={
+            join(
+              "px-4 py-1 shrink-0",
+              "text-white",
+              "border rounded-lg",
+              "border-indigo-600",
+              "hover:border-indigo-700",
+              "accent-blue-600",
+              "bg-indigo-500",
+            )
+          }
           onClick={
             () => {
               preselectTree(null);
@@ -117,7 +138,7 @@ export function TreeChildrenNode(
         </button>
       )}
 
-      {!last && <hr/>}
+      {/* {!last && <hr/>} */}
     </div>
   );
 }
