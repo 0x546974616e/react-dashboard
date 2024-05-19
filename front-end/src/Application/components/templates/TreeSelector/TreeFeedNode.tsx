@@ -28,7 +28,6 @@ export function TreeFeedNode(
   } = useTreeContext();
 
   const amount = useMemo(() => Math.floor(Math.random() * 100), []);
-  const hasChildren = tree.children && tree.children.nodes.length > 0;
 
   return (
     <div
@@ -39,8 +38,8 @@ export function TreeFeedNode(
         className={
           join(
             "cursor-pointer",
-            "px-2 py-1 min-w-0 grow",
-            "flex flex-row gap-2",
+            "flex flex-row gap-2 grow",
+            "px-2 py-1 min-w-0",
             "border rounded-lg",
             selectedTree == tree ||
             preselectedTree == tree
@@ -56,40 +55,30 @@ export function TreeFeedNode(
         onDoubleClick={
           () => {
             preselectTree(null);
-            if (hasChildren) {
-              onDive?.(tree);
-            }
-            else {
-              selectTree(tree);
-            }
+            onDive?.(tree);
           }
         }
         onClick={
           () => {
-            if (preselectedTree == tree) {
-              preselectTree(null);
-            }
-            else {
-              preselectTree(tree);
-            }
+            preselectTree(preselectedTree == tree ? null : tree);
           }
         }
       >
         <div className={"shrink-0"}>
           {!first && (
             <div className={"absolute flex top-0 bottom-1/2 w-6 justify-center"}>
-              <div className={"w-[2px] bg-indigo-600"}/>
+              <div className={"w-[2px] bg-indigo-500"}/>
             </div>
           )}
 
           {!last && (
             <div className={"absolute flex top-1/2 bottom-0 w-6 justify-center"}>
-              <div className={"w-[2px] bg-indigo-600"}/>
+              <div className={"w-[2px] bg-indigo-500"}/>
             </div>
           )}
 
           <div className={"relative flex w-6 h-full items-center justify-center"}>
-            <div className={"h-1.5 w-1.5 rounded-full bg-indigo-50 ring-[2px] ring-indigo-600"}/>
+            <div className={"h-1.5 w-1.5 rounded-full bg-indigo-50 ring-[2px] ring-indigo-500"}/>
           </div>
         </div>
 
@@ -112,6 +101,7 @@ export function TreeFeedNode(
               "text-white",
               "border rounded-lg",
               "border-indigo-600",
+              "hover:border-indigo-700",
               "accent-blue-600",
               "bg-indigo-500",
             )

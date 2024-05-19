@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { FaChartColumn, FaChartGantt, FaChartLine } from "react-icons/fa6";
 
 import { ChartCurvesWithHistograms } from "Application/components";
 import { useDimensions } from "Application/hooks";
-import { Position } from "Application/types";
-import { clamp } from "Application/utils";
+import { KpiDisplay, Position } from "Application/types";
+import { clamp, join } from "Application/utils";
 
 import { KpiChartProps } from "./KpiChartProps";
 import { useKpiChart } from "./useKpiChart";
@@ -57,6 +58,7 @@ export function KpiChart(
     boxOffset2,
 
     toggleDisplay,
+    display,
   } = useKpiChart(props);
 
   return (
@@ -114,11 +116,30 @@ export function KpiChart(
 
       {width && (
         <div
-          title={"TODO TMP"}
-          className={"absolute bottom-0 right-0 p-2 bg-indigo-700 text-white cursor-pointer"}
           onClick={toggleDisplay}
+          title={KpiDisplay[display]}
+          className={
+            join(
+              "cursor-pointer",
+              "absolute bottom-0 right-0",
+              "p-2 rounded-lg",
+              "text-white bg-indigo-500",
+              "border border-indigo-600",
+              "hover:border-indigo-700",
+            )
+          }
         >
-          Toggle
+          {display == KpiDisplay.Cumulative && (
+            <FaChartLine size={"1.25em"}/>
+          )}
+
+          {display == KpiDisplay.Combined && (
+            <FaChartGantt size={"1.25em"}/>
+          )}
+
+          {display == KpiDisplay.Histogram && (
+            <FaChartColumn size={"1.25em"}/>
+          )}
         </div>
       )}
     </div>

@@ -60,6 +60,7 @@ export function useKpiChart(
         boxOffset2: undefined,
 
         toggleDisplay,
+        display,
       };
     }
 
@@ -88,6 +89,7 @@ export function useKpiChart(
         boxOffset2: 0.1,
 
         toggleDisplay,
+        display,
       };
     }
 
@@ -116,6 +118,7 @@ export function useKpiChart(
         boxOffset2: 0.1,
 
         toggleDisplay,
+        display,
       };
     }
   }

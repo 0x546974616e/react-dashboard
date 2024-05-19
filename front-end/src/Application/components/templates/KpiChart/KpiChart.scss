@@ -3,12 +3,12 @@
   position: relative;
 
   .chart-grid-rules line {
-    @apply stroke-stone-400;
+    @apply stroke-stone-300;
     stroke-width: 1px;
   }
 
   .chart-baselines line {
-    @apply stroke-stone-800;
+    @apply stroke-stone-600;
     stroke-width: 2px;
   }
 
@@ -17,7 +17,7 @@
       @apply fill-indigo-300;
     }
     &.chart-histogram-2 {
-      @apply fill-indigo-600;
+      @apply fill-indigo-500;
     }
   }
 
@@ -28,7 +28,7 @@
       stroke-width: $strokeWidth;
     }
     &.chart-curve-2 {
-      @apply stroke-indigo-600;
+      @apply stroke-indigo-500;
       stroke-width: $strokeWidth;
     }
   }
@@ -36,20 +36,20 @@
   circle {
     $strokeWidth: 3px;
     &.chart-cursor-histogram-1 {
-      @apply fill-indigo-300 stroke-stone-800;
+      @apply fill-indigo-300 stroke-stone-600;
       stroke-width: $strokeWidth;
     }
     &.chart-cursor-histogram-2 {
-      @apply fill-indigo-600 stroke-stone-800;
+      @apply fill-indigo-500 stroke-stone-600;
       stroke-width: $strokeWidth;
     }
 
     &.chart-cursor-curve-1 {
-      @apply fill-indigo-300 stroke-stone-800;
+      @apply fill-indigo-300 stroke-stone-600;
       stroke-width: $strokeWidth;
     }
     &.chart-cursor-curve-2 {
-      @apply fill-indigo-600 stroke-stone-800;
+      @apply fill-indigo-500 stroke-stone-600;
       stroke-width: $strokeWidth;
     }
   }
@@ -62,7 +62,7 @@
       stroke-width: $strokeWidth;
     }
     &.chart-cursor-line-active {
-      @apply stroke-stone-800;
+      @apply stroke-stone-600;
       stroke-width: $strokeWidth;
     }
   }

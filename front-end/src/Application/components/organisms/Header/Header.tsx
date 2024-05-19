@@ -29,7 +29,7 @@ const routes = [
 
 export function Header(): JSX.Element {
   return (
-    <header id={"header"} className={"h-full bg-indigo-600 text-white flex flex-row items-center"}>
+    <header id={"header"} className={"h-full bg-indigo-500 text-white flex flex-row items-center"}>
       <LogUpdates id={"header"}>
         <nav className={"grow"}>
           <ul>

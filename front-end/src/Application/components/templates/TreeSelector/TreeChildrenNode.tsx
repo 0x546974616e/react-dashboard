@@ -6,11 +6,13 @@ import { useTreeContext } from "./TreeContext";
 export interface TreeChildrenNodeProps {
   searchPattern?: RegExp | null,
   onDive?(tree: Tree | null): void,
+  last?: boolean,
   tree: Tree,
 }
 
 export function TreeChildrenNode(
     { tree,
+      last,
       onDive,
       searchPattern,
     }: TreeChildrenNodeProps
@@ -24,7 +26,6 @@ export function TreeChildrenNode(
   } = useTreeContext();
 
   const amount = useMemo(() => Math.floor(Math.random() * 100), []);
-  const hasChildren = tree.children && tree.children.nodes.length > 0;
 
   const label = useMemo(
     () => {
@@ -62,7 +63,7 @@ export function TreeChildrenNode(
     <div onBlur={onBlur}>
       <button
         className={
-          "accent-indigo-600 " + (
+          "py-1 accent-indigo-600 " + (
             selectedTree == tree
               ? "bg-indigo-600"
               : preselectedTree == tree
@@ -73,22 +74,12 @@ export function TreeChildrenNode(
         onDoubleClick={
           () => {
             preselectTree(null);
-            if (hasChildren) {
-              onDive?.(tree);
-            }
-            else {
-              selectTree(tree);
-            }
+            onDive?.(tree);
           }
         }
         onClick={
           () => {
-            if (preselectedTree == tree) {
-              preselectTree(null);
-            }
-            else {
-              preselectTree(tree);
-            }
+            preselectTree(preselectedTree == tree ? null : tree);
           }
         }
       >
@@ -125,6 +116,8 @@ export function TreeChildrenNode(
           Select
         </button>
       )}
+
+      {!last && <hr/>}
     </div>
   );
 }

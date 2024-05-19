@@ -1,31 +1,107 @@
-import { FormEvent, useCallback } from "react";
-import { stringToRegExp } from "Application/utils";
+import { FormEvent, useCallback, useId } from "react";
+import { VscFilter, VscSearch } from "react-icons/vsc";
+import { join, stringToRegExp } from "Application/utils";
 
 export interface TreeFeedSearchProps {
   onSearchPattern(regexp: RegExp | null): void,
   placeholder?: string,
+  first?: boolean,
+  last?: boolean,
 }
 
 export function TreeFeedSearch(
-    { placeholder,
+    { first, last,
+      placeholder,
       onSearchPattern,
     }: TreeFeedSearchProps
   ): JSX.Element
 {
+  const id = useId();
+
   return (
-    <div>
-      <input
-        type={"text"}
-        placeholder={`${placeholder ?? "Search"}...`}
-        onInput={
-          useCallback(
-            (event: FormEvent<HTMLInputElement>) => {
-              const value = event.currentTarget.value.trim().toLowerCase();
-              onSearchPattern?.(value ? stringToRegExp(value) : null);
-            }, []
+    <div className={"relative flex flex-row gap-2 px-2 py-1 w-full"}>
+      <label
+        htmlFor={id}
+        className={
+          join(
+            "cursor-pointer",
+            "flex flex-row gap-2 grow",
+            "px-2 py-1 min-w-0",
+            "border rounded-lg",
+            "border-stone-200",
+            "hover:border-indigo-600",
+            "focus-within:border-indigo-600",
           )
         }
-      />
+      >
+        <div className={"shrink-0"}>
+          {!first && (
+            <div className={"absolute flex top-0 bottom-1/2 w-6 justify-center"}>
+              <div className={"w-[2px] bg-indigo-500"}/>
+            </div>
+          )}
+
+          {!last && (
+            <div className={"absolute flex top-1/2 bottom-0 w-6 justify-center"}>
+              <div className={"w-[2px] bg-indigo-500"}/>
+            </div>
+          )}
+
+          <div className={"relative flex w-6 h-full items-center justify-center"}>
+            <div className={"h-1.5 w-1.5 rounded-full bg-indigo-50 ring-[2px] ring-indigo-500"}/>
+          </div>
+        </div>
+
+        <div className={"flex-1"}>
+          <input
+            id={id}
+            type={"text"}
+            className={"w-full appearance-none outline-none accent-indigo-600"}
+            placeholder={`${placeholder ?? "Search"}...`}
+            onKeyUp={
+              function(event) {
+                const key = event.key || event.charCode || event.keyCode || event.which;
+                if (key == "Escape" || key == 27) {
+                  event.currentTarget.value = "";
+                  onSearchPattern(null);
+                }
+              }
+            }
+            onInput={
+              useCallback(
+                (event: FormEvent<HTMLInputElement>) => {
+                  const value = event.currentTarget.value.trim().toLowerCase();
+                  onSearchPattern?.(value ? stringToRegExp(value) : null);
+                }, []
+              )
+            }
+          />
+        </div>
+
+        <div className={"flex items-center shrink-0"}>
+          <VscSearch size={"1.25em"}/>
+        </div>
+      </label>
+
+      <div
+        className={
+          join(
+            "text-white",
+            "cursor-pointer",
+            "px-2 py-1 shrink-0",
+            "flex flex-row items-center",
+            "border rounded-lg",
+            "border-indigo-600",
+            "hover:border-indigo-700",
+            "bg-indigo-500",
+          )
+        }
+      >
+        <VscFilter
+          title={`Filter ${placeholder}`}
+          size={"1.25em"}
+        />
+      </div>
     </div>
   );
 }

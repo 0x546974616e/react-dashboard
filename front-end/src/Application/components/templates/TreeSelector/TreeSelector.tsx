@@ -18,10 +18,12 @@ export function TreeSelector(
   return (
     <TreeProvider>
       {root != null && (
-        <RecursiveTree
-          tree={root}
-          root={true}
-        />
+        <div className={"w-full h-full pt-1"}>
+          <RecursiveTree
+            tree={root}
+            root={true}
+          />
+          </div>
       )}
 
       {root == null && (
@@ -48,25 +50,28 @@ export function RecursiveTree(
       <TreeFeedNode
         tree={tree}
         first={root}
-        last={subtree == null}
+        // last={subtree == null}
+        // last={!subtree?.children}
+        last={subtree == null && !tree.children}
         onDive={() => subtree == null ? dada?.(tree) : selectSubtree(null)}
+        // onDive={() => dada?.(tree)}
       />
 
-        <div className="flex-1 overflow-hidden">
-      {subtree != null && (
-        <RecursiveTree
-          tree={subtree}
-          dada={() => selectSubtree(null)}
-        />
-      )}
+      <div className="flex-1 overflow-hidden">
+        {subtree != null && (
+          <RecursiveTree
+            tree={subtree}
+            dada={() => selectSubtree(null)}
+          />
+        )}
 
-      {subtree == null && (
+        {subtree == null && (
           <TreeChildren
             selectSubtree={selectSubtree}
             tree={tree}
           />
-      )}
-        </div>
+        )}
+      </div>
     </div>
   );
 }

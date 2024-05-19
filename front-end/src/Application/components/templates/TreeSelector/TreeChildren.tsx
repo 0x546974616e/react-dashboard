@@ -19,20 +19,22 @@ export function TreeChildren(
   if (!children) {
     return (
       // <div>Click to TODO</div>
-      <div></div>
+      <div>No node TODO</div>
     );
   }
 
   return (
     <div className="flex flex-col h-full">
-      <div className={"bg-indigo-300"}>
+      <div className={""}>
         <TreeFeedSearch
           onSearchPattern={setSearch}
           placeholder={children.label}
+          first={false}
+          last={true}
         />
       </div>
 
-      <div className={"flex flex-row justify-between text-stone-300"}>
+      <div className={"flex flex-row px-2 pt-1 justify-between text-stone-300"}>
         <div>
           {children.label}
         </div>
@@ -41,13 +43,14 @@ export function TreeChildren(
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 px-2 overflow-y-auto">
         {children.nodes.map(
-          (tree) => (
+          (tree, index, { length }) => (
             <TreeChildrenNode
               key={tree.id}
               searchPattern={search}
               onDive={selectSubtree}
+              last={index + 1 >= length}
               tree={tree}
             />
           )

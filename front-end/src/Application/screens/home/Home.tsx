@@ -40,7 +40,7 @@ function _Home(): JSX.Element {
               </Breadcrumbs>
             </div>
             {/* <hr className="m-2 mb-4 border"/> */}
-            <div className="mx-4 mb-4 mt-2 px-4 py-2 rounded-lg bg-indigo-500">
+            <div className="mx-4 mb-4 mt-2 px-4 py-2 rounded-lg bg-indigo-500 border border-indigo-600">
               <div className="text-white flex flex-col justify-center items-center gap-0">
                 <div className="h-4"></div>
                 <strong className="text-6xl font-normal">80%</strong>
