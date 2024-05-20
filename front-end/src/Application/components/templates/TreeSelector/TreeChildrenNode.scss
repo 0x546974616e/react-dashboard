@@ -1,0 +1,12 @@
+
+.tree-children-node {
+  &:not(:first-child) {
+    @apply border-t border-t-stone-200;
+  }
+
+  &:hover, &:hover + &,
+  &.selected, &.selected + &,
+  &.preselected, &.preselected + & {
+    @apply border-t-white;
+  }
+}

@@ -1,0 +1,18 @@
+
+.tree-feed-search-label {
+  .close {
+    opacity: 0;
+    @apply px-1 rounded-lg;
+    &:hover {
+      @apply bg-stone-100;
+    }
+  }
+
+  &:hover, &:focus-within {
+    @apply border-indigo-600;
+  }
+
+  &:focus-within .close {
+    opacity: 1;
+  }
+}

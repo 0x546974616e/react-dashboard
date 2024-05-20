@@ -35,8 +35,9 @@ export function KpiChart(
   const [ current1, setCurrent1 ] = useState<Position | null>(null);
   const [ current2, setCurrent2 ] = useState<Position | null>(null);
 
-  const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
-  const width = container?.getBoundingClientRect().width ?? null;
+  // const [ container, setContainer ] = useState<HTMLDivElement | null>(null);
+  // const width = container?.getBoundingClientRect().width ?? null;
+  const [ width, setWidth ] = useState<number | null>(null);
   const height = clamp((width ?? 0) * 0.8, 200, 400);
 
   useDimensions(); // TODO TMP Only to trigger re-render.
@@ -63,7 +64,8 @@ export function KpiChart(
 
   return (
     <div
-      ref={setContainer}
+      // ref={setContainer}
+      ref={(element) => setWidth(element?.getBoundingClientRect().width ?? null)}
       className={"kpi-chart w-full"}
     >
       <div><code>[1]</code><span>{current1?.x.toFixed(2)} - {current1?.y.toFixed(2)}</span></div>

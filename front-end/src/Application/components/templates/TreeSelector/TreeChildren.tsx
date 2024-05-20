@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Tree } from "Application/types";
 import { TreeChildrenNode } from "./TreeChildrenNode";
 import { TreeFeedSearch } from "./TreeFeedSearch";
+import { join } from "Application/utils";
 
 export interface TreeChildrenProps {
   selectSubtree?(tree: Tree | null): void,
@@ -18,8 +19,9 @@ export function TreeChildren(
 
   if (!children) {
     return (
-      // <div>Click to TODO</div>
-      <div>No node TODO</div>
+      <div className={"px-2 py-1 h-full flex flex-col items-center justify-center text-stone-300"}>
+        TODO Tips
+      </div>
     );
   }
 
@@ -34,7 +36,14 @@ export function TreeChildren(
         />
       </div>
 
-      <div className={"flex flex-row px-2 pt-1 justify-between text-stone-300"}>
+      <div
+        className={
+          join(
+            "flex flex-row mx-2 py-1 justify-between",
+            "border-b border-b-stone-200 text-stone-300",
+          )
+        }
+      >
         <div>
           {children.label}
         </div>
@@ -43,7 +52,7 @@ export function TreeChildren(
         </div>
       </div>
 
-      <div className="flex-1 px-2 overflow-y-auto">
+      <div className="flex-1 px-2 pb-1 overflow-y-auto">
         {children.nodes.map(
           (tree, index, { length }) => (
             <TreeChildrenNode

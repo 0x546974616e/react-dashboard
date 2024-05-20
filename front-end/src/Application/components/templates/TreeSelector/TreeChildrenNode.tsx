@@ -1,8 +1,10 @@
 import { useMemo } from "react";
 import { Tree } from "Application/types";
+import { join } from "Application/utils";
 import { useOnChildBlur } from "Application/hooks";
 import { useTreeContext } from "./TreeContext";
-import { join } from "Application/utils";
+
+import "./TreeChildrenNode.scss";
 
 export interface TreeChildrenNodeProps {
   searchPattern?: RegExp | null,
@@ -60,7 +62,14 @@ export function TreeChildrenNode(
   return (
     <div
       onBlur={onBlur}
-      className={"relative flex flex-row gap-2 px-2 py-1 w-full border-b border-b-stone-200"}
+      className={
+        join(
+          "tree-children-node",
+          selectedTree == tree ? "selected" : null,
+          preselectedTree == tree ? "preselected" : null,
+          "relative flex flex-row gap-2 w-full",
+        )
+      }
     >
       <button
         className={
@@ -92,13 +101,13 @@ export function TreeChildrenNode(
           }
         }
       >
-        <div className={"grow text-left"}>
+        <div className={"grow text-left truncate"}>
           {label.map(
             (label, index) => (
               label && (
                 <span
                   key={index}
-                  className={index % 2 == 1 ? "text-red-500" : undefined}
+                  className={index % 2 == 1 ? "text-indigo-600 font-semibold" : undefined}
                 >
                   {label}
                 </span>

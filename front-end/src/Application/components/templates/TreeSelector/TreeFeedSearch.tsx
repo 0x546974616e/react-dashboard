@@ -1,6 +1,8 @@
-import { FormEvent, useCallback, useId } from "react";
-import { VscFilter, VscSearch } from "react-icons/vsc";
+import { FormEvent, useCallback, useId, useRef } from "react";
+import { VscClose, VscFilter, VscSearch } from "react-icons/vsc";
 import { join, stringToRegExp } from "Application/utils";
+
+import "./TreeFeedSearch.scss";
 
 export interface TreeFeedSearchProps {
   onSearchPattern(regexp: RegExp | null): void,
@@ -17,20 +19,22 @@ export function TreeFeedSearch(
   ): JSX.Element
 {
   const id = useId();
+  const input = useRef<HTMLInputElement>(null);
 
   return (
-    <div className={"relative flex flex-row gap-2 px-2 py-1 w-full"}>
+    <div className={"tree-feed-search relative flex flex-row gap-2 px-2 py-1 w-full"}>
       <label
         htmlFor={id}
         className={
           join(
+            "tree-feed-search-label",
             "cursor-pointer",
-            "flex flex-row gap-2 grow",
+            "flex flex-row grow",
             "px-2 py-1 min-w-0",
             "border rounded-lg",
             "border-stone-200",
-            "hover:border-indigo-600",
-            "focus-within:border-indigo-600",
+            // "hover:border-indigo-600",
+            // "focus-within:border-indigo-600",
           )
         }
       >
@@ -52,9 +56,10 @@ export function TreeFeedSearch(
           </div>
         </div>
 
-        <div className={"flex-1"}>
+        <div className={"flex-1 ml-2"}>
           <input
             id={id}
+            ref={input}
             type={"text"}
             className={"w-full appearance-none outline-none accent-indigo-600"}
             placeholder={`${placeholder ?? "Search"}...`}
@@ -78,29 +83,53 @@ export function TreeFeedSearch(
           />
         </div>
 
+        <div
+          className={"close flex items-center shrink-0"}
+          onClick={
+            useCallback(
+              () => {
+                if (input.current) {
+                  input.current.value = "";
+                  onSearchPattern(null);
+                }
+              }, []
+            )
+          }
+        >
+          <VscClose size={"1.25em"}/>
+        </div>
+
         <div className={"flex items-center shrink-0"}>
           <VscSearch size={"1.25em"}/>
         </div>
       </label>
 
-      <div
-        className={
-          join(
-            "text-white",
-            "cursor-pointer",
-            "px-2 py-1 shrink-0",
-            "flex flex-row items-center",
-            "border rounded-lg",
-            "border-indigo-600",
-            "hover:border-indigo-700",
-            "bg-indigo-500",
-          )
-        }
-      >
-        <VscFilter
-          title={`Filter ${placeholder}`}
-          size={"1.25em"}
-        />
+      <div className={"relative shrink-0"}>
+        <button
+          className={
+            join(
+              "tree-filter",
+              "text-white",
+              "cursor-pointer",
+              "px-2 py-1 h-full shrink-0",
+              "flex flex-row items-center",
+              "border rounded-lg",
+              "border-indigo-600",
+              "accent-indigo-600",
+              "hover:border-indigo-700",
+              "bg-indigo-500",
+            )
+          }
+        >
+          <VscFilter
+            title={`Filter ${placeholder}`}
+            size={"1.25em"}
+          />
+        </button>
+
+        <div className={"absolute hidden"}>
+          dada fafa
+        </div>
       </div>
     </div>
   );
