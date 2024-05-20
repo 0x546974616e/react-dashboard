@@ -3,12 +3,12 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import { DimensionsContext } from "Application/contexts";
 import { Dimensions } from "Application/types";
 
-export interface ScreenLayoutProps {
+export interface ScreenDimensionsProviderProps {
   children?: ReactNode,
 }
 
-export function ScreenLayout(
-    { children }: ScreenLayoutProps
+export function ScreenDimensionsProvider(
+    { children }: ScreenDimensionsProviderProps
   ): JSX.Element
 {
   const [ dimensions, setDimensions ] = (

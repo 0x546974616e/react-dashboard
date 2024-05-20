@@ -1,5 +1,7 @@
 import { FormEvent, useCallback, useId, useRef } from "react";
 import { VscClose, VscFilter, VscSearch } from "react-icons/vsc";
+import { BsSortAlphaDown, BsSortAlphaUpAlt, BsSortNumericDown, BsSortNumericUpAlt } from "react-icons/bs";
+import { StickModal } from "Application/components/molecules";
 import { join, stringToRegExp } from "Application/utils";
 
 import "./TreeFeedSearch.scss";
@@ -22,7 +24,7 @@ export function TreeFeedSearch(
   const input = useRef<HTMLInputElement>(null);
 
   return (
-    <div className={"tree-feed-search relative flex flex-row gap-2 px-2 py-1 w-full"}>
+    <div className={"tree-feed-search relative flex flex-row gap-2 px-4 pt-2 w-full"}>
       <label
         htmlFor={id}
         className={
@@ -104,33 +106,60 @@ export function TreeFeedSearch(
         </div>
       </label>
 
-      <div className={"relative shrink-0"}>
-        <button
-          className={
-            join(
-              "tree-filter",
-              "text-white",
-              "cursor-pointer",
-              "px-2 py-1 h-full shrink-0",
-              "flex flex-row items-center",
-              "border rounded-lg",
-              "border-indigo-600",
-              "accent-indigo-600",
-              "hover:border-indigo-700",
-              "bg-indigo-500",
-            )
-          }
-        >
+      <StickModal
+        className={
+          join(
+            "tree-filter",
+            "text-white",
+            "cursor-pointer",
+            "px-2 py-1 h-full shrink-0",
+            "flex flex-row items-center",
+            "border rounded-lg",
+            "border-indigo-600",
+            "accent-indigo-600",
+            "hover:border-indigo-700",
+            "bg-indigo-500",
+          )
+        }
+        button={
           <VscFilter
             title={`Filter ${placeholder}`}
             size={"1.25em"}
           />
-        </button>
+        }
+      >
+        <div
+          className={
+            join(
+              "flex flex-col gap-2 p-4",
+              "rounded-lg border border-stone-200 bg-stone-50",
+            )
+          }
+        >
+          <p>Sort:</p>
+          <div className={"flex flex-row gap-2"}>
+            <div className={"cursor-pointer p-2 bg-white rounded-lg border border-stone-100"}>
+              <BsSortAlphaDown size={"1.25em"}/>
+            </div>
 
-        <div className={"absolute hidden"}>
-          dada fafa
+            <div className={"cursor-pointer p-2 bg-white rounded-lg border border-stone-100"}>
+              <BsSortAlphaUpAlt size={"1.25em"}/>
+            </div>
+
+            <div className={"cursor-pointer p-2 bg-white rounded-lg border border-stone-100"}>
+              <BsSortNumericDown size={"1.25em"}/>
+            </div>
+
+            <div className={"cursor-pointer p-2 bg-white rounded-lg border border-stone-100"}>
+              <BsSortNumericUpAlt size={"1.25em"}/>
+            </div>
+          </div>
+          <p>Display:</p>
+          <div>
+            TODO: Turnover, Basket, etc.
+          </div>
         </div>
-      </div>
+      </StickModal>
     </div>
   );
 }

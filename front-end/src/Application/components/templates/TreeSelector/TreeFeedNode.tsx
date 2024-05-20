@@ -31,8 +31,13 @@ export function TreeFeedNode(
 
   return (
     <div
-      className={"relative flex flex-row gap-2 px-2 py-1 w-full"}
       onBlur={useOnChildBlur(() => preselectTree(null))}
+      className={
+        join(
+          "relative flex flex-row gap-2 px-4 w-full",
+          !first ? "pt-2" : null,
+        )
+      }
     >
       <button
         className={

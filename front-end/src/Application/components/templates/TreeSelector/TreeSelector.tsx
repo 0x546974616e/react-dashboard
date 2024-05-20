@@ -18,7 +18,7 @@ export function TreeSelector(
   return (
     <TreeProvider>
       {root != null && (
-        <div className={"w-full h-full pt-1"}>
+        <div className={"w-full h-full pt-4"}>
           <RecursiveTree
             tree={root}
             root={true}

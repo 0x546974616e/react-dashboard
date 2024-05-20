@@ -39,7 +39,7 @@ export function TreeChildren(
       <div
         className={
           join(
-            "flex flex-row mx-2 py-1 justify-between",
+            "flex flex-row mx-4 py-2 justify-between",
             "border-b border-b-stone-200 text-stone-300",
           )
         }
@@ -48,11 +48,11 @@ export function TreeChildren(
           {children.label}
         </div>
         <div>
-          Chiffre d'affaires
+          Turnover
         </div>
       </div>
 
-      <div className="flex-1 px-2 pb-1 overflow-y-auto">
+      <div className="flex-1 px-4 pb-2 overflow-y-auto">
         {children.nodes.map(
           (tree, index, { length }) => (
             <TreeChildrenNode
