@@ -1,11 +1,14 @@
 import React, { ReactNode, useMemo, useState } from "react";
 
+import { HomeLayoutContext } from "Application/contexts";
 import { useLayout } from "Application/hooks";
 import { Layout } from "Application/types";
 
-import { Row1f1p1gLayout, Row1p1gLayout } from "./base";
-import { Row1p1pm1gLayout } from "./base/Row1p1pm1gLayout";
-import { HomeLayoutContext } from "Application/contexts/HomeLayoutContext";
+import {
+  Row1f1p1gLayout,
+  Row1g1gmLayout,
+  Row1p1pm1gLayout,
+} from "./base";
 
 const layouts = [
   Layout.PHONE,
@@ -32,16 +35,27 @@ function _HomeLayout(
     (): HomeLayoutContext => ({
       openTreeSelector() {
         setTreeSelectorModal(true);
-      }
+      },
+      closeTreeSelector() {
+        setTreeSelectorModal(false);
+      },
     }), []
   );
 
   switch (layout) {
     case Layout.PHONE: {
       return (
-        <div>
+        <HomeLayoutContext.Provider value={layoutContext}>
+          <Row1g1gmLayout
+            modal={props.treeSelector}
+            children={props.kpiChart}
+            showModal={showTreeSelectorModal}
+            onModalDismiss={layoutContext.closeTreeSelector}
+            id={"home-layout"}
+            debug={debug}
+          />
           {props.kpiChart}
-        </div>
+        </HomeLayoutContext.Provider>
       );
     }
 
@@ -54,7 +68,7 @@ function _HomeLayout(
             rightChildren={props.ranking}
             leftModal={props.treeSelector}
             showLeftModal={showTreeSelectorModal}
-            onLeftModalDismiss={() => setTreeSelectorModal(false)}
+            onLeftModalDismiss={layoutContext.closeTreeSelector}
             id={"home-layout"}
             debug={debug}
           />

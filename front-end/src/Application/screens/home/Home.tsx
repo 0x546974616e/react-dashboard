@@ -15,6 +15,7 @@ export const Home = React.memo(_Home);
 // https://tailwindui.com/components/application-ui/page-examples/detail-screens
 // https://tailwindui.com/components/application-ui/page-examples/home-screens
 
+
 function Dada(): JSX.Element {
   const { openTreeSelector } = useHomeLayoutContext(); // TODO TMP
 
@@ -34,14 +35,34 @@ function Dada(): JSX.Element {
   );
 }
 
+function Fafa(): JSX.Element {
+  const { closeTreeSelector } = useHomeLayoutContext(); // TODO TMP
+
+  return (
+    // <div className="w-full h-full border-r-2 border-r-white">
+    <div className="w-full h-full flex flex-col border-r border-r-stone-200 bg-white">
+      {closeTreeSelector && (
+        <div className={"shrink-0"}>
+          <button
+            className={"accent-indigo-600 px-2 py-1 rounded-lg border border-indigo-600 bg-indigo-500 text-white"}
+            onClick={closeTreeSelector}
+          >
+            &lt; Back (WIP)
+          </button>
+        </div>
+      )}
+      <div className={"flex-1 min-h-0 overflow-hidden"}>
+        <TreeSelectorExample/>
+      </div>
+    </div>
+  );
+}
+
 function _Home(): JSX.Element {
   return (
     <HomeLayout
       treeSelector={
-        // <div className="w-full h-full border-r-2 border-r-white">
-        <div className="w-full h-full border-r border-r-stone-200 bg-white">
-          <TreeSelectorExample/>
-        </div>
+        <Fafa/>
       }
       kpiChart={
         <LogUpdates id="kpi-chart">
