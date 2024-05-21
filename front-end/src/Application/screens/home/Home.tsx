@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import { HomeLayout } from "Application/layouts";
 
@@ -8,18 +8,38 @@ import { KpiChartExample } from "Application/examples";
 import { TreeSelectorExample } from "Application/examples";
 import { Breadcrumbs } from "Application/components";
 import Example3 from "../settings/with_shared_borders3";
+import { useHomeLayoutContext } from "Application/contexts/HomeLayoutContext";
 
 export const Home = React.memo(_Home);
 
 // https://tailwindui.com/components/application-ui/page-examples/detail-screens
 // https://tailwindui.com/components/application-ui/page-examples/home-screens
 
+function Dada(): JSX.Element {
+  const { openTreeSelector } = useHomeLayoutContext(); // TODO TMP
+
+  return (
+    <Breadcrumbs>
+      {useMemo(
+        () => [
+          { label: "Europe", onPress: openTreeSelector },
+          { label: "Belgique", onPress: openTreeSelector },
+          { label: "Brussels", onPress: openTreeSelector },
+          { label: "Foot Locker", onPress: openTreeSelector },
+          { label: "Jane Doe", onPress: openTreeSelector },
+        ],
+        [ openTreeSelector ]
+      )}
+    </Breadcrumbs>
+  );
+}
+
 function _Home(): JSX.Element {
   return (
     <HomeLayout
       treeSelector={
         // <div className="w-full h-full border-r-2 border-r-white">
-        <div className="w-full h-full border-r border-r-stone-200">
+        <div className="w-full h-full border-r border-r-stone-200 bg-white">
           <TreeSelectorExample/>
         </div>
       }
@@ -27,17 +47,7 @@ function _Home(): JSX.Element {
         <LogUpdates id="kpi-chart">
           <div className="h-full w-full bg-stone-100">
             <div className="px-4 pt-2">
-              <Breadcrumbs>
-                {useMemo(
-                  () => [
-                    { label: "Europe", onPress: label => console.log(label)  },
-                    { label: "Belgique", onPress: label => console.log(label) },
-                    { label: "Brussels", onPress: label => console.log(label)  },
-                    { label: "Foot Locker", onPress: label => console.log(label)  },
-                    { label: "Jane Doe", onPress: label => console.log(label)  },
-                  ], []
-                )}
-              </Breadcrumbs>
+              <Dada/>
             </div>
             {/* <hr className="m-2 mb-4 border"/> */}
             <div className="mx-4 mb-4 mt-2 px-4 py-2 rounded-lg bg-indigo-500 border border-indigo-600">

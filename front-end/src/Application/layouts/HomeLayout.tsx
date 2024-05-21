@@ -1,20 +1,19 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useMemo, useState } from "react";
 
 import { useLayout } from "Application/hooks";
 import { Layout } from "Application/types";
 
-import {
-  Row1Fixed1Percentage1AutoLayout,
-  Row1Percentage1AutoLayout,
-} from "./atoms";
-
-export const HomeLayout = React.memo(_HomeLayout);
+import { Row1f1p1gLayout, Row1p1gLayout } from "./base";
+import { Row1p1pm1gLayout } from "./base/Row1p1pm1gLayout";
+import { HomeLayoutContext } from "Application/contexts/HomeLayoutContext";
 
 const layouts = [
   Layout.PHONE,
   Layout.LAPTOP,
   Layout.DESKTOP,
 ] as const;
+
+export const HomeLayout = React.memo(_HomeLayout);
 
 function _HomeLayout(
     props: {
@@ -27,6 +26,16 @@ function _HomeLayout(
   const debug = false;
   const layout = useLayout(layouts);
 
+  const [ showTreeSelectorModal, setTreeSelectorModal ] = useState(false);
+
+  const layoutContext = useMemo(
+    (): HomeLayoutContext => ({
+      openTreeSelector() {
+        setTreeSelectorModal(true);
+      }
+    }), []
+  );
+
   switch (layout) {
     case Layout.PHONE: {
       return (
@@ -38,19 +47,24 @@ function _HomeLayout(
 
     case Layout.LAPTOP: {
       return (
-        <Row1Percentage1AutoLayout
-          leftPercentage={0.65}
-          leftChildren={props.kpiChart }
-          rightChildren={props.ranking}
-          id={"home-layout"}
-          debug={debug}
-        />
+        <HomeLayoutContext.Provider value={layoutContext}>
+          <Row1p1pm1gLayout
+            leftPercentage={0.65}
+            leftChildren={props.kpiChart}
+            rightChildren={props.ranking}
+            leftModal={props.treeSelector}
+            showLeftModal={showTreeSelectorModal}
+            onLeftModalDismiss={() => setTreeSelectorModal(false)}
+            id={"home-layout"}
+            debug={debug}
+          />
+        </HomeLayoutContext.Provider>
       );
     }
   }
 
   return (
-    <Row1Fixed1Percentage1AutoLayout
+    <Row1f1p1gLayout
       leftWidth={350}
       middlePercentage={0.65}
       leftChildren={props.treeSelector}

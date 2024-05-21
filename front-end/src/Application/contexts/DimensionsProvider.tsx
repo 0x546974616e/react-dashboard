@@ -31,9 +31,11 @@ export function DimensionsProvider(
     ]
   );
 
+  // TODO: Inline-block?
+
   return (
     <DimensionsContext.Provider value={value}>
-      <div id={id} className={debug ? "relative" : undefined}>
+      <div id={id} className={debug ? "relative inline-block" : "inline-block"}>
         <div style={value} className={"overflow-x-hidden overflow-y-auto"}>
           {children}
         </div>

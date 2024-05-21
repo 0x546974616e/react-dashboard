@@ -53,7 +53,8 @@ export function RecursiveTree(
         // last={subtree == null}
         // last={!subtree?.children}
         last={subtree == null && !tree.children}
-        onDive={() => subtree == null ? dada?.(tree) : selectSubtree(null)}
+        // onDive={() => subtree == null ? dada?.(tree) : selectSubtree(null)}
+        onDive={() => dada ? dada(tree) : selectSubtree(null)}
         // onDive={() => dada?.(tree)}
       />
 

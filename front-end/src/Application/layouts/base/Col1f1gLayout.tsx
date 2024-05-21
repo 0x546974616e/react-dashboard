@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { DimensionsProvider } from "Application/contexts";
 import { useDimensions } from "Application/hooks";
 
-export interface Col1Fixed1GrowLayoutProps {
+export interface Col1f1gLayoutProps {
   topHeight: number,
   topChildren?: ReactNode,
   bottomChildren?: ReactNode,
@@ -11,12 +11,12 @@ export interface Col1Fixed1GrowLayoutProps {
   id?: string,
 }
 
-export function Col1Fixed1GrowLayout(
+export function Col1f1gLayout(
     { topHeight,
       topChildren,
       bottomChildren,
       debug, id,
-    }: Col1Fixed1GrowLayoutProps
+    }: Col1f1gLayoutProps
   ): JSX.Element
 {
   const dimensions = useDimensions();

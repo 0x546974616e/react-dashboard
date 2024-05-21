@@ -3,24 +3,20 @@ import { ReactNode } from "react";
 import { DimensionsProvider } from "Application/contexts";
 import { useDimensions } from "Application/hooks";
 
-export interface Row1Fixed1Percentage1AutoLayoutProps {
-  leftWidth: number,
-  middlePercentage: number,
+export interface Row1p1gLayoutProps {
+  leftPercentage: number,
   leftChildren?: ReactNode,
-  middleChildren?: ReactNode,
   rightChildren?: ReactNode,
   debug?: boolean,
   id?: string,
 }
 
-export function Row1Fixed1Percentage1AutoLayout(
-    { leftWidth,
-      middlePercentage,
+export function Row1p1gLayout(
+    { leftPercentage,
       leftChildren,
-      middleChildren,
       rightChildren,
       debug, id,
-    }: Row1Fixed1Percentage1AutoLayoutProps
+    }: Row1p1gLayoutProps
   ): JSX.Element
 {
   const dimensions = useDimensions();
@@ -28,7 +24,7 @@ export function Row1Fixed1Percentage1AutoLayout(
   return (
     <div id={id} style={dimensions} className={"flex flex-row"}>
       <DimensionsProvider
-        width={leftWidth}
+        width={dimensions.width * leftPercentage}
         height={dimensions.height}
         debug={debug}
       >
@@ -36,15 +32,7 @@ export function Row1Fixed1Percentage1AutoLayout(
       </DimensionsProvider>
 
       <DimensionsProvider
-        width={(dimensions.width - leftWidth) * middlePercentage}
-        height={dimensions.height}
-        debug={debug}
-      >
-        {middleChildren}
-      </DimensionsProvider>
-
-      <DimensionsProvider
-        width={(dimensions.width - leftWidth) * (1 - middlePercentage)}
+        width={dimensions.width * (1 - leftPercentage)}
         height={dimensions.height}
         debug={debug}
       >

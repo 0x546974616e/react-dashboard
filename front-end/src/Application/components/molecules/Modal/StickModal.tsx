@@ -15,6 +15,8 @@ function getBBox(container: RefObject<HTMLDivElement>) {
   const { top, left, height } = current.getBoundingClientRect();
   const { width: screenWidth, height: screenHeight } = Dimensions.retrieve();
 
+  // TODO: Add min width/height to shift the modal when the screen is too small.
+
   return {
     left: left,
     top: top + height,
@@ -33,8 +35,6 @@ export function StickModal(
 {
   const [ modal, setModal ] = useState(false);
   const container = useRef<HTMLDivElement>(null);
-
-  const dada = container.current?.getBoundingClientRect();
 
   return (
     <div ref={container}>

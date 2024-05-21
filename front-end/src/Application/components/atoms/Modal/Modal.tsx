@@ -26,6 +26,13 @@ export class Modal extends React.PureComponent<ModalProps> {
     }
   };
 
+  private _onDocumentKeyUp = (event: KeyboardEvent ) => {
+    const key = event.key || event.charCode || event.keyCode || event.which;
+    if (key == "Escape" || key == 27) {
+      this.props.onDismiss?.();
+    }
+  };
+
   private _onVisibilityChange = () => {
     this.props.onDismiss?.();
   };
@@ -41,6 +48,7 @@ export class Modal extends React.PureComponent<ModalProps> {
       root.appendChild(this._element);
       this._element.addEventListener("click", this._onElementClick, true);
       document.addEventListener("visibilitychange", this._onVisibilityChange, true);
+      document.addEventListener("keyup", this._onDocumentKeyUp, true);
       window.addEventListener("resize", this._onWindowResize, true);
 
       // Prevent <body> to be scrollable.
@@ -55,6 +63,7 @@ export class Modal extends React.PureComponent<ModalProps> {
       root.removeChild(this._element);
       this._element.removeEventListener("click", this._onElementClick, true);
       document.removeEventListener("visibilitychange", this._onVisibilityChange, true);
+      document.removeEventListener("keyup", this._onDocumentKeyUp, true);
       window.removeEventListener("resize", this._onWindowResize, true);
 
       // Reset <body> scrollbar.
